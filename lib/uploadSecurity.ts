@@ -110,6 +110,7 @@ export function uploadSecurityResponse(error: unknown) {
 }
 
 export function isTrustedReceiptUrl(value: string) {
+  if (value.startsWith('/')) return true;
   try {
     const url = new URL(value);
 

@@ -116,7 +116,7 @@ export async function sendMarketingEmails({
     return;
   }
 
-  const appUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? 'https://' + process.env.VERCEL_PROJECT_PRODUCTION_URL : process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:3000')).replace(/\/$/, '');
   for (let index = 0; index < recipients.length; index += 10) {
     const batch = recipients.slice(index, index + 10);
     await Promise.allSettled(batch.map((recipient) => {
