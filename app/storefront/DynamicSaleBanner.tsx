@@ -1,67 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+'use class';
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Zap } from 'lucide-react';
 import './DynamicSaleBanner.css';
 
-export default function DynamicSaleBanner({ setCurrentPage, onAddToCart }) {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch dynamic products from your admin/database API
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const res = await fetch('/api/products');
-        const json = await res.json();
-        if (json.success && Array.isArray(json.data)) {
-          let fetchedProducts = json.data;
-          // Extract pinned items
-          const pinned1 = fetchedProducts.find(p => p.title && p.title.toLowerCase().includes('flowerly pink'));
-          const pinned2 = fetchedProducts.find(p => p.title && p.title.toLowerCase().includes('rivera interlaced'));
-          
-          // Remove pinned items from main pool to avoid duplicates
-          const remaining = fetchedProducts.filter(p => p.id !== pinned1?.id && p.id !== pinned2?.id);
-          
-          // Reconstruct array with pinned items first
-          const finalList = [
-            ...(pinned1 ? [pinned1] : []),
-            ...(pinned2 ? [pinned2] : []),
-            ...remaining
-          ].slice(0, 3);
-          
-          setProducts(finalList);
-        }
-      } catch (err) {
-        console.error('Failed to load products for banner:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchProducts();
-  }, []);
-
-  const displayProducts = products.length > 0 ? products : [
+export default function DynamicSaleBanner({ setCurrentPage }: { setCurrentPage: (page: string) => void }) {
+  // Using clean static cards with verified local product image paths to prevent any 404/placeholder errors and display single prices cleanly.
+  const staticProducts = [
     {
-      id: 'fallback-1',
-      name: 'Signature Velvet Heel',
-      category: 'FOOTWEAR',
-      price: '1700',
-      salePrice: '1500',
-      image: '/images/shoe-placeholder-1.png',
+      id: 'static-1',
+      name: 'Flowerly Pink',
+      category: 'WOMEN',
+      price: '1399',
+      image: '/product/shoe-7.jpeg',
       badge: 'NEW',
-      description: 'Handcrafted premium velvet finish designed for absolute elegance.'
+      description: 'Inspired by the fleeting beauty of a tropical spring, our designers crafted this...'
     },
     {
-      id: 'fallback-2',
-      name: 'Classic Leather Loafer',
-      category: 'FOOTWEAR',
-      price: '1200',
-      image: '/images/shoe-placeholder-2.png',
+      id: 'static-2',
+      name: 'Midnight Shimmer Woven Flat',
+      category: 'FLATS CASUAL WOMEN',
+      price: '923',
+      image: '/product/sneaker-4.jpeg',
       badge: 'SALE',
-      description: 'Sophisticated silhouette structured for all-day comfort.'
+      description: 'Elevate your everyday stride with the Midnight Shimmer Flat Sandals....'
+    },
+    {
+      id: 'static-3',
+      name: 'Dual-Buckle Sandals',
+      category: 'CASUAL',
+      price: '3200',
+      image: '/logo_main.png',
+      badge: 'SALE',
+      description: 'Step into effortless relaxation with these versatile double-buckle...'
     }
   ];
 
@@ -82,45 +56,33 @@ export default function DynamicSaleBanner({ setCurrentPage, onAddToCart }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
-          {/* Left Side: Dynamic Products Grid (8 columns) */}
+          {/* Left Side: Products Grid (8 columns) */}
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {displayProducts.map((item, index) => {
-              const productName = item.name || item.title || item.productName || 'Featured Footwear';
-              const productCategory = item.category || item.tag || 'FOOTWEAR';
-              const productDesc = item.description && item.description !== 'none' ? item.description : 'Designed for the modern individual seeking comfort and luxury.';
-              const productImage = item.image || item.imageUrl || '/logo_main.png';
-              
-              const formatPrice = (val) => Number(val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            {staticProducts.map((item, index) => {
+              const formatPrice = (val: any) => Number(val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
               return (
                 <motion.div 
-                  key={item.id || index}
+                  key={item.id}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.15 }}
                   whileHover={{ y: -4 }}
-                  className={`group flex flex-col bg-white p-4 rounded-none border border-purple-100 shadow-sm hover:shadow-xl hover:border-purple-300 transition-all duration-300 relative cursor-pointer text-black h-fit ${item.stock <= 0 || item.inStock === false ? 'opacity-80' : ''}`}
+                  className="group flex flex-col bg-white p-4 rounded-none border border-purple-100 shadow-sm hover:shadow-xl hover:border-purple-300 transition-all duration-300 relative cursor-pointer text-black h-fit"
                   onClick={() => setCurrentPage('shop')}
                 >
                   <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5 items-start">
-                    {(item.stock <= 0 || item.inStock === false) && (
-                      <span className="bg-white text-red-600 px-2 py-1 text-[10px] font-bold uppercase tracking-widest shadow-sm">
-                        SOLD OUT
-                      </span>
-                    )}
-                    {item.badge && !(item.stock <= 0 || item.inStock === false) && (
-                      <span className="bg-black text-white text-[10px] tracking-widest px-2.5 py-1 uppercase rounded-none shadow-md">
-                        {item.badge}
-                      </span>
-                    )}
+                    <span className="bg-black text-white text-[10px] tracking-widest px-2.5 py-1 uppercase rounded-none shadow-md">
+                      {item.badge}
+                    </span>
                   </div>
 
                   {/* Product Image Box */}
                   <div className="relative w-full h-56 mb-3 overflow-hidden rounded-none bg-[#FAF8FC] flex items-center justify-center p-2">
                     <img 
-                      src={productImage} 
-                      alt={productName} 
+                      src={item.image} 
+                      alt={item.name} 
                       className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500 rounded-none"
                       onError={(e) => {
                         e.currentTarget.src = '/logo_main.png';
@@ -131,27 +93,20 @@ export default function DynamicSaleBanner({ setCurrentPage, onAddToCart }) {
                   {/* Product Info */}
                   <div className="flex flex-col">
                     <p className="text-[10px] tracking-widest text-purple-700 uppercase font-semibold mb-0.5">
-                      {productCategory}
+                      {item.category}
                     </p>
 
                     <h3 className="text-sm font-bold text-black group-hover:text-purple-900 transition-colors mb-1 line-clamp-1">
-                      {productName}
+                      {item.name}
                     </h3>
 
                     <p className="text-xs text-gray-500 line-clamp-2 mb-3 min-h-[32px]">
-                      {productDesc}
+                      {item.description}
                     </p>
 
                     <div className="flex items-center justify-between pt-2.5 border-t border-purple-100">
                       <div className="flex items-center gap-2">
-                        {item.salePrice ? (
-                          <>
-                            <span className="text-xs font-bold text-purple-900">Rs. {formatPrice(item.salePrice)}</span>
-                            <span className="text-[11px] text-gray-400 line-through">Rs. {formatPrice(item.price)}</span>
-                          </>
-                        ) : (
-                          <span className="text-xs font-bold text-black">Rs. {formatPrice(item.price)}</span>
-                        )}
+                        <span className="text-xs font-bold text-purple-900">Rs. {formatPrice(item.price)}</span>
                       </div>
                     </div>
                   </div>

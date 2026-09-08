@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -17,10 +18,10 @@ export default function WomenShopPage({ onAddToCart }) {
     let isMounted = true;
     async function loadData() {
       setLoading(true);
-      // Fetch women's products from the API
-      const fetched = await fetchProducts('women');
+      // Fetch all products to ensure category-specific items are not filtered out by the backend query
+      const fetched = await fetchProducts();
       if (isMounted) {
-        setProducts(Array.isArray(fetched) ? fetched : []);
+        setProducts(Array.isArray(fetched) ? fetched : (fetched?.data || []));
         setLoading(false);
       }
     }
@@ -28,21 +29,25 @@ export default function WomenShopPage({ onAddToCart }) {
     return () => { isMounted = false; };
   }, []);
 
-  // Strict and robust isolation for Women products only
+  // Robust gender isolation: matches women, female, or items where gender is unassigned/loose
   const strictWomenProducts = products.filter(item => {
     const g = (item.gender || '').toLowerCase().trim();
-    return g === 'women' || g === 'female';
+    const title = (item.title || '').toLowerCase();
+    const category = (item.category || '').toLowerCase();
+    
+    return g === 'women' || g === 'female' || g === 'unisex' || (!g.includes('men') && !g.includes('kids') && (category.includes('women') || title.includes('women') || g === ''));
   });
 
-  // Updated casual and subcategory filtering logic with fallback keyword matching
+  // Bulletproof subcategory matching that handles casual, bridal, and formal keywords
   const filtered = activeSubcategory === 'all'
     ? strictWomenProducts
     : strictWomenProducts.filter(item => {
         const itemCat = (item.category || '').toLowerCase().trim();
+        const itemSub = (item.subcategory || '').toLowerCase().trim();
         const itemTitle = (item.title || '').toLowerCase().trim();
         const targetSub = activeSubcategory.toLowerCase().trim();
         
-        return itemCat === targetSub || itemCat.includes(targetSub) || itemTitle.includes(targetSub);
+        return itemCat.includes(targetSub) || itemSub.includes(targetSub) || itemTitle.includes(targetSub);
       });
 
   const itemsPerPage = 8;

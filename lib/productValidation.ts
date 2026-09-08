@@ -87,12 +87,25 @@ export function parseProductPayload(
     data.gender = 'men';
   }
 
-  // Robustly handle category parsing matching the selected section without cross-defaults
+  // Robustly handle category parsing matching the selected section with normalization for casual/bridal/formal
   if (body.category !== undefined && body.category !== null) {
     const cleanCategory = String(body.category).trim().toLowerCase();
     const defaultCat = data.gender === 'women' ? 'casual' : data.gender === 'kids' ? 'kids' : 'sneakers';
-    data.category = cleanCategory || defaultCat;
+    
+    let resolvedCategory = cleanCategory || defaultCat;
+
+    // Normalize variations of categories so they cleanly match the filter tabs ('casual', 'bridal', 'formal')
+    if (resolvedCategory.includes('casual')) {
+      resolvedCategory = 'casual';
+    } else if (resolvedCategory.includes('bridal')) {
+      resolvedCategory = 'bridal';
+    } else if (resolvedCategory.includes('formal')) {
+      resolvedCategory = 'formal';
+    }
+
+    data.category = resolvedCategory;
   } else if (!allowPartial) {
+    data.gender = data.gender || 'men'; // safety fallback
     data.category = data.gender === 'women' ? 'casual' : data.gender === 'kids' ? 'kids' : 'sneakers';
   }
 
