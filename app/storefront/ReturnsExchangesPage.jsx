@@ -26,7 +26,7 @@ export default function ReturnsPage({ setCurrentPage }) {
           {/* Clean Single-Wrapper Image Showcase */}
           <div className="w-full h-64 md:h-96 rounded-2xl overflow-hidden border-2 border-[#9b4de0] shadow-md bg-white relative flex items-center justify-center">
             <img 
-              src="/assets/Banner/returnpolicy.png" 
+              src="/assets/returnpolicy.png" 
               alt="Step & Styl Return Policy" 
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
               onError={(e) => {

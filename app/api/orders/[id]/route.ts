@@ -64,12 +64,31 @@ export async function PATCH(
     }
 
     const updateData: Record<string, any> = {};
-    if (cleanStatus) updateData.status = cleanStatus;
-    if (cleanPaymentStatus) updateData.paymentStatus = cleanPaymentStatus;
+
+    const validOrderStatuses = ['PENDING', 'PAID', 'SHIPPED', 'COMPLETED', 'CANCELLED'];
+    const validPaymentStatuses = ['PENDING', 'APPROVED', 'DISAPPROVED'];
+
+    if (cleanStatus && validOrderStatuses.includes(cleanStatus)) {
+      updateData.status = cleanStatus;
+    }
+    
+    if (cleanPaymentStatus && validPaymentStatuses.includes(cleanPaymentStatus)) {
+      updateData.paymentStatus = cleanPaymentStatus;
+      
+      if (cleanPaymentStatus === 'APPROVED') {
+        updateData.approvedAt = new Date();
+      } else if (cleanPaymentStatus === 'DISAPPROVED') {
+        updateData.disapprovedAt = new Date();
+      }
+    }
+
+    if (typeof body.adminNote === 'string') {
+      updateData.adminNote = body.adminNote.trim();
+    }
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json(
-        { success: false, error: 'No valid status or paymentStatus provided in request body.' },
+        { success: false, error: 'No valid status, paymentStatus, or adminNote provided in request body.' },
         { status: 400 }
       );
     }
@@ -83,6 +102,7 @@ export async function PATCH(
       success: true,
       message: 'Order updated successfully.',
       data: updatedOrder,
+      order: updatedOrder,
     });
   } catch (error: any) {
     console.error('SERVER CRASH IN ORDER UPDATE:', error);
