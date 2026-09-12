@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React from 'react';
-import { MapPin, Phone, Clock, Mail, MessageCircle } from 'lucide-react';
+import { MessageCircle, CreditCard, ShieldCheck } from 'lucide-react';
 import './Footer.css';
 
 export default function Footer({ setCurrentPage }) {
@@ -9,50 +10,15 @@ export default function Footer({ setCurrentPage }) {
     <footer className="footer-section">
       <div className="footer-container">
         
-        {/* Column 1: Step&Styl Navigation */}
+        {/* Column 1 — Brand Info & Socials */}
         <div className="footer-column">
-          <h3 className="footer-heading">Step&Styl</h3>
-          <ul className="footer-links">
-            <li onClick={() => setCurrentPage('shop')}>Category</li>
-            <li onClick={() => setCurrentPage('shop')}>New arrivals</li>
-            <li onClick={() => setCurrentPage('shop')}>Sales</li>
-            <li onClick={() => setCurrentPage('shop')}>Shop</li>
-            <li onClick={() => setCurrentPage('shop')}>Contact us</li>
-          </ul>
-        </div>
-
-        {/* Column 2: Information */}
-        <div className="footer-column">
-          <h3 className="footer-heading">Information</h3>
-          <ul className="footer-links">
-            <li onClick={() => window.open('https://wa.me/923329822592', '_blank')}>Contact Us</li>
-            <li onClick={() => setCurrentPage('shipping-delivery')}>Shipping & Delivery</li>
-            <li onClick={() => setCurrentPage('returns-exchanges')}>Returns & Exchanges</li>
-          </ul>
-        </div>
-
-        {/* Column 3: Our Contacts & Socials */}
-        <div className="footer-column">
-          <h3 className="footer-heading">Our Contacts</h3>
-          <ul className="footer-contact-list">
-            <li>
-              <MapPin size={16} className="contact-icon" />
-              <span>Islamabad, Pakistan</span>
-            </li>
-            <li>
-              <Phone size={16} className="contact-icon" />
-              <span>+92 332 9822592</span>
-            </li>
-            <li>
-              <Clock size={16} className="contact-icon" />
-              <span>Mon - Fri: 10:00 - 18:00</span>
-            </li>
-            <li>
-              <Mail size={16} className="contact-icon" />
-              <span>support@stepandstyl.com</span>
-            </li>
-          </ul>
-
+          <div className="footer-brand-header" onClick={() => setCurrentPage('home')}>
+            <img src="/assets/step&styl-newlogo.png" alt="Step & Styl Logo" className="footer-logo-img" />
+            <span className="footer-brand-title">Step & Styl</span>
+          </div>
+          <p className="footer-description">
+            Modern footwear for every style, occasion and step.
+          </p>
           <div className="footer-socials">
             {/* Instagram */}
             <a 
@@ -62,7 +28,7 @@ export default function Footer({ setCurrentPage }) {
               aria-label="Instagram" 
               className="social-icon-btn"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
@@ -77,7 +43,7 @@ export default function Footer({ setCurrentPage }) {
               aria-label="TikTok" 
               className="social-icon-btn"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
               </svg>
             </a>
@@ -90,7 +56,7 @@ export default function Footer({ setCurrentPage }) {
               aria-label="Facebook" 
               className="social-icon-btn"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
               </svg>
             </a>
@@ -103,16 +69,62 @@ export default function Footer({ setCurrentPage }) {
               aria-label="WhatsApp" 
               className="social-icon-btn"
             >
-              <MessageCircle size={18} />
+              <MessageCircle size={16} />
             </a>
           </div>
         </div>
 
+        {/* Column 2 — Shop */}
+        <div className="footer-column">
+          <h3 className="footer-heading">Shop</h3>
+          <ul className="footer-links">
+            <li onClick={() => setCurrentPage('women')}>Women</li>
+            <li onClick={() => setCurrentPage('men')}>Men</li>
+            <li onClick={() => setCurrentPage('kids')}>Kids</li>
+            <li onClick={() => setCurrentPage('home')}>New Arrivals</li>
+            <li onClick={() => setCurrentPage('shop')}>Sale</li>
+          </ul>
+        </div>
+
+        {/* Column 3 — Customer Care */}
+        <div className="footer-column">
+          <h3 className="footer-heading">Customer Care</h3>
+          <ul className="footer-links">
+            <li onClick={() => window.open('https://wa.me/923329822592', '_blank')}>Contact Us</li>
+            <li onClick={() => setCurrentPage('shipping-delivery')}>Shipping Information</li>
+            <li onClick={() => setCurrentPage('returns-exchanges')}>Returns & Exchange</li>
+            <li onClick={() => setCurrentPage('shop')}>FAQs</li>
+            <li onClick={() => setCurrentPage('shop')}>Size Guide</li>
+          </ul>
+        </div>
+
+        {/* Column 4 — Information */}
+        <div className="footer-column">
+          <h3 className="footer-heading">Information</h3>
+          <ul className="footer-links">
+            <li onClick={() => setCurrentPage('shop')}>About Us</li>
+            <li onClick={() => setCurrentPage('shop')}>Privacy Policy</li>
+            <li onClick={() => setCurrentPage('shop')}>Terms & Conditions</li>
+            <li onClick={() => setCurrentPage('affiliate')}>Affiliate Program</li>
+          </ul>
+        </div>
+
       </div>
 
-      {/* Bottom Copyright Bar */}
+      {/* Bottom Footer */}
       <div className="footer-bottom">
-        <p>© 2026 Step&Styl. All rights reserved.</p>
+        <div className="footer-bottom-container">
+          <p>© 2026 Step & Styl. All rights reserved.</p>
+          
+          <div className="footer-payment-methods">
+            <span className="payment-badge"><CreditCard size={14} /> Direct Bank Transfer (5% Off)</span>
+            <span className="payment-badge"><ShieldCheck size={14} /> Cash on Delivery (Check Before Payment)</span>
+          </div>
+
+          <div className="footer-support-info">
+            <span>Support: +92 332 9822592</span>
+          </div>
+        </div>
       </div>
     </footer>
   );

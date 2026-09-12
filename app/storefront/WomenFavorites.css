@@ -1,0 +1,260 @@
+.women-favorites-section {
+  width: 100%;
+  padding: 5rem 1.5rem;
+  background-color: #FFFFFF;
+  overflow: hidden;
+}
+
+.women-favorites-container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Split Grid Layout */
+.women-favorites-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+/* Left Banner Styles */
+.women-fav-banner {
+  width: 100%;
+  height: 520px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 3rem;
+  position: relative;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.women-banner-eyebrow {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #d8b4fe;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.women-fav-title {
+  font-family: Georgia, serif;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 500;
+  color: #FFFFFF;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.women-fav-subtitle {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.95rem;
+  color: #E5E7EB;
+  margin: 0 0 2rem 0;
+  line-height: 1.5;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+.btn-explore-favorites {
+  background-color: #FFFFFF;
+  color: #1F2937;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  padding: 0.9rem 2.5rem;
+  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
+  width: fit-content;
+}
+
+.btn-explore-favorites:hover {
+  background-color: #9b4de0;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+/* Right Auto-Scrolling Ticker Styles */
+.women-fav-carousel-container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.women-fav-carousel-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  padding: 0.5rem 0.25rem 1.5rem 0.25rem;
+}
+
+.women-ticker-track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  animation: womenTickerScroll 45s linear infinite;
+}
+
+/* Pause running animation on hover so users can click products */
+.women-fav-carousel-container:hover .women-ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes womenTickerScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-33.333% - 0.75rem));
+  }
+}
+
+/* Individual Product Card */
+.women-product-card {
+  flex: 0 0 270px;
+  cursor: pointer;
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  position: relative;
+  border-radius: 0px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+}
+
+.women-product-card:hover {
+  border-color: #9b4de0;
+  box-shadow: 0 10px 25px rgba(155, 77, 224, 0.1);
+}
+
+.women-product-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #1F2937;
+  color: #FFFFFF;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 4px 8px;
+  z-index: 10;
+}
+
+.women-product-img-wrap {
+  width: 100%;
+  height: 320px;
+  background-color: #F9F8F6;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.women-product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.women-product-card:hover .women-product-img {
+  transform: scale(1.05);
+}
+
+.women-product-details {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background-color: #FFFFFF;
+}
+
+.women-product-title {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.women-product-price {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #9b4de0;
+  margin: 0 0 0.25rem 0;
+}
+
+.women-product-link {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #4B5563;
+  transition: color 0.2s ease;
+}
+
+.women-product-card:hover .women-product-link {
+  color: #9b4de0;
+}
+
+/* Responsive Media Queries for Mobile & Tablet */
+@media (max-width: 1024px) {
+  .women-favorites-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .women-fav-banner {
+    height: 380px;
+    padding: 2rem;
+  }
+  .women-product-card {
+    flex: 0 0 230px;
+  }
+  .women-product-img-wrap {
+    height: 260px;
+  }
+}
+
+@media (max-width: 640px) {
+  .women-favorites-section {
+    padding: 3rem 1rem;
+  }
+  .women-fav-banner {
+    height: 320px;
+    padding: 1.5rem;
+  }
+  .women-product-card {
+    flex: 0 0 190px;
+  }
+  .women-product-img-wrap {
+    height: 200px;
+  }
+  .women-ticker-track {
+    gap: 1rem;
+    animation-duration: 35s; /* Slightly faster smooth scroll for small screens */
+  }
+}

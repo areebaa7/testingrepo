@@ -1,0 +1,81 @@
+.trust-badge-wrapper {
+  width: 100%;
+  background-color: #F9F8F6; /* Lighter visual tone as requested */
+  border-top: 1px solid #EFECE9;
+  border-bottom: 1px solid #EFECE9;
+  padding: 1rem 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.trust-badge-track {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  width: max-content;
+  animation: badgeTicker 25s linear infinite;
+}
+
+.trust-badge-track:hover {
+  animation-play-state: paused; /* Pause on hover for user inspection */
+}
+
+.trust-badge-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  white-space: nowrap;
+  color: #4B5563;
+}
+
+.trust-badge-icon {
+  color: #9b4de0; /* Brand purple accent */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trust-badge-text {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #1F2937;
+}
+
+.trust-badge-bullet {
+  color: #D1D5DB;
+  font-size: 0.9rem;
+  margin-left: 1.5rem;
+}
+
+@keyframes badgeTicker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Mobile responsiveness: turn into a smooth touch-scrolling banner */
+@media (max-width: 768px) {
+  .trust-badge-wrapper {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .trust-badge-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .trust-badge-track {
+    animation: none;
+    display: flex;
+    gap: 2rem;
+    padding: 0 1rem;
+    width: max-content;
+  }
+}

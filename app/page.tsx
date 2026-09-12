@@ -8,7 +8,11 @@ import { ArrowRight, Zap } from 'lucide-react';
 import Navbar from './storefront/Navbar';
 import SplashScreen from './storefront/SplashScreen';
 import Hero from './storefront/Hero';
+import TrustBenefits from './storefront/TrustBenefits';
+import TrustBadge from './storefront/TrustBadge';
+import KidsBanner from './storefront/KidsBanner';
 import NewArrivals from './storefront/NewArrivals';
+import WomenFavorites from './storefront/WomenFavorites';
 import ForHerForHim from './storefront/ForHerForHim';
 import BestSellers from './storefront/BestSellers';
 import DiscoverMore from './storefront/DiscoverMore';
@@ -294,17 +298,26 @@ export default function Home() {
           <>
             <Hero setCurrentPage={setCurrentPage} />
             
+            <ForHerForHim setCurrentPage={setCurrentPage} />
+            
+            {/* Trust Badge Banner Strip */}
+            <TrustBadge />
+
+            {/* Trust Benefits Hero Carousel */}
+            <TrustBenefits setCurrentPage={setCurrentPage} />
+
+            {/* 1. New Arrivals Section */}
             <div id="new-arrivals-section">
               <NewArrivals setCurrentPage={setCurrentPage} />
             </div>
 
-            <DynamicSaleBanner setCurrentPage={setCurrentPage} />
-
-            <ForHerForHim setCurrentPage={setCurrentPage} />
+            {/* 2. Kids Collection Section Banner */}
+            <KidsBanner setCurrentPage={setCurrentPage} />
             
-            <div id="best-sellers-section">
-              <BestSellers setCurrentPage={setCurrentPage} />
-            </div>
+            {/* 3. Women's Favorites Carousel Section */}
+            <WomenFavorites setCurrentPage={setCurrentPage} />
+
+            <DynamicSaleBanner setCurrentPage={setCurrentPage} />
 
             <DiscoverMore setCurrentPage={setCurrentPage} />
             <AffiliateSection setCurrentPage={setCurrentPage} />

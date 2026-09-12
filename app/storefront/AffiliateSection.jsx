@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import './AffiliateSection.css';
@@ -12,13 +14,14 @@ export default function AffiliateSection({ setCurrentPage }) {
           <h2 className="affiliate-section-main-heading">Join Affiliate</h2>
         </div>
 
-        {/* Full-width Luxury Card with Background Image */}
+        {/* Full-width Luxury Card with Local Asset Background Image */}
         <motion.div 
           className="affiliate-luxury-card"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
+          style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65)), url('/assets/affiliate1.jpg')` }}
         >
           <div className="affiliate-card-overlay">
             
@@ -61,6 +64,7 @@ export default function AffiliateSection({ setCurrentPage }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.5 }}
+                style={{ width: '100%' }}
               >
                 <motion.button 
                   className="btn-apply-now"
