@@ -291,6 +291,7 @@ export default function Home() {
         cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)} 
         onOpenCart={() => setIsCartOpen(true)}
         onOpenAuthModal={handleOpenAuthModal}
+        onOpenSearch={() => {}}
       />
 
       <main className="flex flex-col">
