@@ -1,0 +1,145 @@
+.mens-banner-section {
+  width: 100%;
+  padding: 3rem 1rem;
+  background-color: #FFFFFF;
+}
+
+.mens-banner-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  height: 500px;
+  border-radius: 8px; /* Slightly softened edges for modern mobile screens */
+  display: flex;
+  align-items: center;
+  padding: 3rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.mens-banner-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+.mens-banner-content {
+  max-width: 600px;
+  z-index: 2;
+  position: relative;
+  width: 100%;
+}
+
+.mens-banner-eyebrow {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #c084fc;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.mens-banner-title {
+  font-family: Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-weight: 500;
+  color: #FFFFFF;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.mens-banner-subtitle {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  color: #E5E7EB;
+  margin: 0 0 2rem 0;
+  line-height: 1.5;
+}
+
+.btn-shop-men {
+  background-color: #FFFFFF;
+  color: #1F2937;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  padding: 0.85rem 2.2rem;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
+}
+
+.btn-shop-men:hover {
+  background-color: #9b4de0;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+/* Pagination Dots */
+.mens-banner-dots {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 2rem;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+}
+
+.mens-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.mens-dot.active {
+  background-color: #c084fc;
+  border-color: #c084fc;
+  width: 26px;
+  border-radius: 5px;
+}
+
+/* Mobile Devices Optimization */
+@media (max-width: 768px) {
+  .mens-banner-section {
+    padding: 1rem 0.5rem;
+  }
+  
+  .mens-banner-container {
+    height: 400px;
+    padding: 1.5rem;
+    border-radius: 0px; /* Edge-to-edge look feels native on smaller screens */
+  }
+
+  .mens-banner-content {
+    max-width: 100%;
+    padding-right: 1rem;
+  }
+
+  .mens-banner-dots {
+    right: 50%;
+    transform: translateX(50%);
+    bottom: 1.2rem;
+  }
+
+  .btn-shop-men {
+    width: 100%;
+    justify-content: center;
+    padding: 0.9rem 1.5rem;
+  }
+}

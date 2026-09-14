@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Minus, Plus, ShoppingBag, 
-  Truck, ShieldCheck, RefreshCw, X, Ruler 
+  Truck, ShieldCheck, RefreshCw, X, Ruler, Percent, CheckCircle2, Sparkles, CreditCard 
 } from 'lucide-react';
 import './ProductDetail.css';
 
@@ -29,6 +32,17 @@ export default function ProductDetail({ product, onBack, onAddToCart }) {
   const [quantity, setQuantity] = useState(1);
   const [showSizeChart, setShowSizeChart] = useState(false);
   const [addedNotification, setAddedNotification] = useState(false);
+
+  // Pop-up modal state for 5% Bank Transfer offer upon opening product page and adding to cart
+  const [showBankOfferModal, setShowBankOfferModal] = useState(false);
+
+  useEffect(() => {
+    // Show bank offer popup automatically when product page mounts
+    const timer = setTimeout(() => {
+      setShowBankOfferModal(true);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Accordion Toggle State for Product Details (Open by default)
   const [productDetailsOpen, setProductDetailsOpen] = useState(true);
@@ -63,7 +77,6 @@ export default function ProductDetail({ product, onBack, onAddToCart }) {
       title: product.title || product.name,
       description: activeDescription,
       image: images[activeImageIndex],
-      // Explicitly map properties so both drawer and checkout capture them seamlessly
       selectedSize: selectedSize,
       size: selectedSize,
       selectedColor: chosenColor,
@@ -72,6 +85,8 @@ export default function ProductDetail({ product, onBack, onAddToCart }) {
     });
 
     setAddedNotification(true);
+    // Show popup again when item is added to cart to remind about bank transfer savings
+    setShowBankOfferModal(true);
     setTimeout(() => setAddedNotification(false), 2500);
   };
 
@@ -212,7 +227,44 @@ export default function ProductDetail({ product, onBack, onAddToCart }) {
           )}
 
           {/* ========================================== */}
-          {/* PRODUCT DETAILS ACCORDION SECTION ONLY     */}
+          {/* HIGHLY VISIBLE ASSURANCES GRID BELOW CART  */}
+          {/* ========================================== */}
+          <div className="pdp-product-assurances-grid">
+            <div className="assurance-card">
+              <CheckCircle2 size={20} className="assurance-icon" />
+              <div>
+                <h5>Check Before You Pay</h5>
+                <p>Inspect your order before payment.</p>
+              </div>
+            </div>
+
+            <div className="assurance-card">
+              <RefreshCw size={20} className="assurance-icon" />
+              <div>
+                <h5>7 Days Easy Return</h5>
+                <p>Easy return within 7 days.</p>
+              </div>
+            </div>
+
+            <div className="assurance-card highlight-bank-card">
+              <Percent size={20} className="assurance-icon" />
+              <div>
+                <h5>5% OFF Bank Transfer</h5>
+                <p>Get extra discount on direct payment.</p>
+              </div>
+            </div>
+
+            <div className="assurance-card">
+              <Truck size={20} className="assurance-icon" />
+              <div>
+                <h5>Nationwide Fast Delivery</h5>
+                <p>Fast delivery across Pakistan.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* ========================================== */}
+          {/* PRODUCT DETAILS ACCORDION SECTION ONLY    */}
           {/* ========================================== */}
           <div className="pdp-accordion-wrapper">
             <div className="accordion-item">
@@ -242,33 +294,47 @@ export default function ProductDetail({ product, onBack, onAddToCart }) {
             </div>
           </div>
 
-          {/* Trust Badges */}
-          <div className="pdp-trust-badges">
-            <div className="trust-badge-item">
-              <Truck size={20} />
-              <div>
-                <h4>Open Parcel Then Pay</h4>
-                <p>Inspect your order upon delivery</p>
-              </div>
-            </div>
-            <div className="trust-badge-item">
-              <ShieldCheck size={20} />
-              <div>
-                <h4>Free Delivery</h4>
-                <p>On all prepaid & standard orders</p>
-              </div>
-            </div>
-            <div className="trust-badge-item">
-              <RefreshCw size={20} />
-              <div>
-                <h4>7-Day Return & Exchange</h4>
-                <p>Hassle-free returns nationwide</p>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
+
+      {/* ========================================== */}
+      {/* 5% OFF BANK TRANSFER AUTO POP-UP MODAL     */}
+      {/* ========================================== */}
+      <AnimatePresence>
+        {showBankOfferModal && (
+          <div className="bank-offer-modal-overlay" onClick={() => setShowBankOfferModal(false)}>
+            <motion.div 
+              className="bank-offer-modal-content"
+              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, scale: 0.85, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.85, y: 20 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            >
+              <button className="bank-offer-close-btn" onClick={() => setShowBankOfferModal(false)}>
+                <X size={20} />
+              </button>
+
+              <div className="bank-offer-icon-box">
+                <CreditCard size={32} />
+              </div>
+
+              <span className="bank-offer-badge">Limited Time Savings</span>
+              <h3>Get 5% OFF on Bank Transfer!</h3>
+              <p>
+                Enjoy an instant <strong>5% extra discount</strong> automatically applied when you choose direct Bank Transfer at checkout.
+              </p>
+
+              <button 
+                className="bank-offer-cta-btn" 
+                onClick={() => setShowBankOfferModal(false)}
+              >
+                Got It, Thanks!
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Size Chart Modal */}
       <AnimatePresence>

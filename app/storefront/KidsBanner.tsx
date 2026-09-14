@@ -3,96 +3,80 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import './KidsBanner.css';
 
 export default function KidsBanner({ setCurrentPage }: { setCurrentPage: (page: string) => void }) {
   return (
     <section className="kids-banner-section">
-      <div className="kids-banner-container">
-        
-        {/* Section Heading */}
-        <div className="kids-section-header">
-          <span className="kids-section-subtitle">
-            Little Steps & Style
-          </span>
-          <h2 className="kids-section-title">
-            Explore Kids Collection
-          </h2>
-          <div className="kids-title-underline"></div>
+      {/* Full Screen Width Editorial Banner Card */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="kids-editorial-card group"
+        onClick={() => {
+          setCurrentPage('kids');
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        }}
+        style={{ backgroundImage: `url('/assets/kidsbanner.jpg')` }}
+      >
+        {/* Dark cinematic overlay for maximum clarity and contrast */}
+        <div className="kids-editorial-overlay"></div>
+
+        <div className="kids-editorial-content">
+          <motion.span 
+            className="kids-editorial-subtitle"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Bright New Arrivals
+          </motion.span>
+
+          <motion.h2 
+            className="kids-editorial-title"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            Kids' Favorites
+          </motion.h2>
+
+          <motion.p 
+            className="kids-editorial-desc"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            Fun styles for little feet.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <button 
+              className="kids-shop-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentPage('kids');
+                window.scrollTo({ top: 0, behavior: 'instant' });
+              }}
+            >
+              <span>Shop Kids</span>
+              <ArrowRight size={16} />
+            </button>
+          </motion.div>
         </div>
 
-        <div className="kids-banner-grid">
-          
-          {/* Left Side: Text & Description Banner (8 columns on desktop) */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="kids-text-card group"
-          >
-            <div className="kids-card-inner">
-              <div className="kids-badge-tag">
-                <Sparkles size={16} className="text-purple-600 animate-pulse" />
-                <span>New Season Kids Footwear</span>
-              </div>
-              
-              <h3 className="kids-card-heading">
-                Playful Comfort<br />For Little Explorers
-              </h3>
-              
-              <p className="kids-card-desc">
-                Designed for everyday adventures. Explore our exclusive range of durable, flexible, and trendy shoes crafted specifically for growing feet.
-              </p>
-
-              <button 
-                onClick={() => setCurrentPage('kids')}
-                style={{ backgroundColor: '#9b4de0' }}
-                className="kids-shop-btn"
-              >
-                <span>Shop Kids Collection</span>
-                <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-          </motion.div>
-
-          {/* Right Side: Kids Collection Promotional Visual Banner (4 columns on desktop) */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="kids-visual-card group"
-            onClick={() => setCurrentPage('kids')}
-          >
-            <div className="kids-visual-bg">
-              <img 
-                src="/assets/kids.webp" 
-                alt="Kids Collection Banner" 
-                className="kids-visual-img"
-                onError={(e) => {
-                  e.currentTarget.src = '/logo_main.png'; 
-                }}
-              />
-              <div className="kids-visual-overlay"></div>
-            </div>
-
-            <div className="kids-visual-content">
-              <span className="kids-visual-tag">
-                Trendy & Durable
-              </span>
-              <h3 className="kids-visual-heading">
-                Designed For Kids
-              </h3>
-              <span className="kids-visual-link">
-                Discover More &rarr;
-              </span>
-            </div>
-          </motion.div>
-
-        </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

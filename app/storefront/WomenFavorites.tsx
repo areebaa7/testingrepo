@@ -14,7 +14,7 @@ const fallbackWomenProducts = [
   { id: 5, title: 'Relaxed Casual Slide', price: '1,250', image: '/assets/openAndpay.jpeg', badge: 'HOT' },
 ];
 
-export default function WomenFavorites({ setCurrentPage }) {
+export default function WomenFavorites({ setCurrentPage }: { setCurrentPage: (page: string) => void }) {
   const [products, setProducts] = useState(fallbackWomenProducts);
 
   // Fetch products from admin panel API and filter for Women category
@@ -48,7 +48,7 @@ export default function WomenFavorites({ setCurrentPage }) {
     fetchWomenProducts();
   }, []);
 
-  const formatPrice = (val) => Number(val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const formatPrice = (val: string | number) => Number(val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   // Duplicate the product array to create a seamless infinite loop animation track
   const loopingProducts = [...products, ...products, ...products];

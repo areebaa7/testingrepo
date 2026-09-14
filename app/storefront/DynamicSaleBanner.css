@@ -1,4 +1,8 @@
 /* DynamicSaleBanner.css */
+.flash-sale-section {
+  position: relative;
+}
+
 .group {
   will-change: transform;
 }
@@ -7,7 +11,47 @@
   backface-visibility: hidden;
 }
 
-/* Subtle glow effect on hover for cards */
+/* Luxurious Card Glow on Hover */
 .group:hover {
-  box-shadow: 0 20px 30px -10px rgba(168, 85, 247, 0.12);
+  border-color: #9b4de0;
+  box-shadow: 0 25px 35px -12px rgba(155, 77, 224, 0.15);
+}
+
+/* Infinite Auto-Scrolling Trust Ticker Styles */
+.trust-ticker-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+
+.trust-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: trustTickerScroll 30s linear infinite;
+  will-change: transform;
+}
+
+.trust-ticker-container:hover .trust-ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes trustTickerScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+
+/* Mobile Responsiveness for Trust Banner */
+@media (max-width: 768px) {
+  .trust-ticker-track {
+    animation-duration: 22s;
+  }
+  
+  .trust-ticker-item {
+    padding: 0 1rem;
+  }
 }

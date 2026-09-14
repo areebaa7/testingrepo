@@ -3,12 +3,15 @@
   background-color: #FFFFFF;
   color: #1A1A1A;
   font-family: system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
 }
 
 .container {
   max-width: 1300px;
   margin: 0 auto;
   padding: 0 2rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Asymmetric Hero Section */
@@ -17,6 +20,7 @@
   background-color: #FFFFFF;
   padding: 5rem 2rem;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .hero-asymmetric-wrapper {
@@ -25,6 +29,8 @@
   display: flex;
   align-items: center;
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .hero-image-box {
@@ -54,6 +60,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .hero-badge {
@@ -86,6 +93,7 @@
   display: flex;
   align-items: center;
   gap: 3rem;
+  flex-wrap: wrap;
 }
 
 .btn-apply-now {
@@ -130,6 +138,7 @@
   padding: 6rem 0;
   background-color: #FFFFFF;
   color: #1A1A1A;
+  box-sizing: border-box;
 }
 
 .affiliate-section.dark-section,
@@ -243,6 +252,7 @@
   min-height: 260px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .tier-card:hover {
@@ -328,6 +338,7 @@
   padding: 2.2rem;
   border-radius: 20px;
   border: 1px solid rgba(155, 77, 224, 0.3);
+  box-sizing: border-box;
 }
 
 .stat-box {
@@ -370,6 +381,7 @@
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
 .step-card:hover {
@@ -421,6 +433,7 @@
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
 .benefit-card:hover {
@@ -485,6 +498,7 @@
   border: 2px solid #9b4de0;
   border-top: 6px solid #9b4de0;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
 
 .rules-box-wrapper h3 {
@@ -512,6 +526,7 @@
 
 .rules-checks svg {
   color: #9b4de0;
+  flex-shrink: 0;
 }
 
 /* Rules Split */
@@ -530,6 +545,7 @@
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
 .rule-column:hover {
@@ -591,6 +607,7 @@
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
 .payout-card:hover {
@@ -665,6 +682,7 @@
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
 .support-card:hover {
@@ -775,6 +793,7 @@
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
 .tip-card:hover {
@@ -930,7 +949,10 @@
   background-color: #E5E7EB;
 }
 
-/* Responsive */
+/* =========================================
+   MEDIA QUERIES FOR MOBILE RESPONSIVENESS
+   ========================================= */
+
 @media (max-width: 1024px) {
   .hero-asymmetric-wrapper {
     flex-direction: column;
@@ -948,10 +970,76 @@
   .tiers-grid {
     grid-template-columns: 1fr;
   }
-  .tiers-grid, .quick-stats-row, .steps-grid, .benefits-grid, .rules-split, .payout-grid, .support-grid, .tips-grid {
+  .steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .benefits-grid, .payout-grid, .tips-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .rules-split, .support-grid {
     grid-template-columns: 1fr;
   }
-  .rules-checks {
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .affiliate-hero-section {
+    padding: 3rem 1rem;
+  }
+
+  .hero-purple-card {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-cta-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .affiliate-section {
+    padding: 4rem 0;
+  }
+
+  .welcome-section-black {
+    padding: 4rem 1.5rem;
+  }
+
+  .section-header-left h2, .section-header-center h2 {
+    font-size: 1.9rem;
+  }
+
+  .quick-stats-row {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .steps-grid, .benefits-grid, .payout-grid, .tips-grid, .rules-checks {
+    grid-template-columns: 1fr;
+  }
+
+  .rules-box-wrapper {
+    padding: 1.5rem;
+  }
+
+  .affiliate-modal-content {
+    padding: 1.75rem 1.25rem;
+    margin: 1rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-submit-app, .btn-cancel-app {
+    width: 100%;
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React from 'react';
@@ -6,78 +7,53 @@ import './AffiliateSection.css';
 
 export default function AffiliateSection({ setCurrentPage }) {
   return (
-    <section className="affiliate-section">
-      <div className="affiliate-container">
+    <section className="affiliate-section-split">
+      <div className="affiliate-split-container">
         
-        {/* Section Header Heading */}
-        <div className="affiliate-section-header">
-          <h2 className="affiliate-section-main-heading">Join Affiliate</h2>
-        </div>
-
-        {/* Full-width Luxury Card with Local Asset Background Image */}
+        {/* Left Content Box */}
         <motion.div 
-          className="affiliate-luxury-card"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65)), url('/assets/affiliate1.jpg')` }}
+          className="affiliate-left-content"
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          <div className="affiliate-card-overlay">
-            
-            <div className="affiliate-card-content">
-              
-              {/* Highlighted Commission Tag */}
-              <motion.div 
-                className="affiliate-highlight-tag"
-                initial={{ opacity: 0, y: -15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <span>Up To 15% Commission</span>
-              </motion.div>
+          <span className="affiliate-mini-tag">Create. Share. Earn.</span>
+          <h2 className="affiliate-main-heading">
+            Earn With <br />
+            <span>Step & Styl</span>
+          </h2>
+          <p className="affiliate-subtext">
+            Join our Affiliate Program and earn by sharing your favorite Step & Styl looks.
+          </p>
+          
+          <motion.button 
+            className="btn-join-affiliate"
+            onClick={() => {
+              setCurrentPage('affiliate');
+              window.scrollTo({ top: 0, behavior: 'instant' });
+            }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <span>JOIN AFFILIATE PROGRAM</span>
+          </motion.button>
+        </motion.div>
 
-              <motion.h3 
-                className="affiliate-title"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                Join the <br />
-                <span>Elite Affiliate</span> Network
-              </motion.h3>
-
-              <motion.p 
-                className="affiliate-description"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                Partner with Step & Styl and earn premium commissions on every sale you refer. High conversion rates & dedicated support.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                style={{ width: '100%' }}
-              >
-                <motion.button 
-                  className="btn-apply-now"
-                  onClick={() => setCurrentPage('affiliate')}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Apply Now
-                </motion.button>
-              </motion.div>
-
-            </div>
-
+        {/* Right Image Box */}
+        <motion.div 
+          className="affiliate-right-image"
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+        >
+          <div className="affiliate-image-wrapper">
+            <img 
+              src="/assets/affiliate1.jpg" 
+              alt="Earn With Step & Styl Affiliate" 
+              onError={(e) => { e.currentTarget.src = '/assets/shoe-8.jpg'; }}
+            />
           </div>
         </motion.div>
 

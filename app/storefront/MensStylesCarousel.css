@@ -1,0 +1,155 @@
+.mens-styles-section {
+  width: 100%;
+  padding: 4rem 1.5rem;
+  background-color: #FFFFFF;
+  overflow: hidden;
+}
+
+.mens-styles-container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.mens-styles-header {
+  margin-bottom: 2.5rem;
+}
+
+.mens-styles-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #9b4de0;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.mens-styles-title {
+  font-family: Georgia, serif;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 500;
+  color: #1F2937;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* Auto-Moving Infinite Ticker Container */
+.mens-carousel-container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.mens-carousel-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  padding: 1rem 0.25rem;
+}
+
+.mens-ticker-track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  animation: mensTickerScroll 35s linear infinite;
+  will-change: transform;
+}
+
+/* Pause animation on hover so users can browse/click products easily */
+.mens-carousel-container:hover .mens-ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes mensTickerScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-33.333% - 0.75rem));
+  }
+}
+
+/* Product Card Styling */
+.mens-category-card {
+  flex: 0 0 280px;
+  cursor: pointer;
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+}
+
+.mens-category-card:hover {
+  border-color: #9b4de0;
+  box-shadow: 0 12px 30px rgba(155, 77, 224, 0.12);
+}
+
+.mens-category-img-box {
+  width: 100%;
+  height: 320px;
+  background-color: #FAF8FC;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mens-category-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.mens-category-card:hover .mens-category-img {
+  transform: scale(1.05);
+}
+
+.mens-category-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 50%);
+}
+
+.mens-category-details {
+  padding: 1.25rem;
+  background-color: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mens-category-name {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.mens-category-count {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #9b4de0;
+}
+
+@media (max-width: 768px) {
+  .mens-category-card {
+    flex: 0 0 220px;
+  }
+  .mens-category-img-box {
+    height: 250px;
+  }
+  .mens-ticker-track {
+    animation-duration: 28s;
+  }
+}

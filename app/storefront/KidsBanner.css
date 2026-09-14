@@ -1,242 +1,138 @@
 .kids-banner-section {
-  width: 100%;
-  padding: 5rem 2rem;
-  background-color: #FFFFFF;
-  overflow: hidden;
-}
-
-.kids-banner-container {
-  max-width: 1600px;
-  margin: 0 auto;
-}
-
-/* Section Header Styles */
-.kids-section-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.kids-section-subtitle {
-  color: #7e22ce;
-  font-size: 0.75rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.kids-section-title {
-  font-family: Georgia, serif;
-  font-size: clamp(2rem, 3.5vw, 2.5rem);
-  color: #000000;
-  letter-spacing: 0.025em;
-  margin: 0;
-}
-
-.kids-title-underline {
-  width: 4rem;
-  height: 2px;
-  background-color: #9333ea;
-  margin: 0.75rem auto 0 auto;
-}
-
-/* Grid Layout */
-.kids-banner-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 2rem;
-  align-items: stretch;
-}
-
-/* Left Text Card (8 Columns) */
-.kids-text-card {
-  grid-column: span 8;
+  width: 100vw;
   position: relative;
-  background-color: #FAF5FF;
-  color: #000000;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 4rem;
-  min-height: 480px;
-  border: 1px solid #f3e8ff;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-}
-
-.kids-card-inner {
-  position: relative;
-  z-index: 10;
-  max-width: 550px;
-}
-
-.kids-badge-tag {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #7e22ce;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.kids-card-heading {
-  font-family: Georgia, serif;
-  font-size: clamp(2.2rem, 3.5vw, 3.2rem);
-  color: #000000;
-  margin-bottom: 1rem;
-  line-height: 1.15;
-}
-
-.kids-card-desc {
-  color: #4b5563;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-}
-
-.kids-shop-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  color: #FFFFFF;
-  padding: 1rem 2rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 10px 20px rgba(155, 77, 224, 0.2);
-  transition: all 0.3s ease;
-}
-
-.kids-shop-btn:hover {
-  background-color: #853bc7 !important;
-}
-
-/* Right Visual Card (4 Columns) */
-.kids-visual-card {
-  grid-column: span 4;
-  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 0;
   background-color: #000000;
-  color: #FFFFFF;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 2.5rem;
-  min-height: 480px;
-  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(88, 28, 135, 0.3);
-  cursor: pointer;
+  box-sizing: border-box;
   overflow: hidden;
 }
 
-.kids-visual-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.kids-visual-img {
+/* Editorial Full-Width Banner Card with increased height */
+.kids-editorial-card {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.9;
-  transition: transform 0.7s ease;
+  min-height: 560px; /* Increased desktop height */
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 0px;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-.kids-visual-card:hover .kids-visual-img {
-  transform: scale(1.05);
-}
-
-.kids-visual-overlay {
+/* Dark gradient overlay with no white tint */
+.kids-editorial-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 60%, transparent 100%);
+  z-index: 1;
 }
 
-.kids-visual-content {
+.kids-editorial-content {
   position: relative;
-  z-index: 10;
+  z-index: 2;
+  padding: 4rem 6rem;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
 }
 
-.kids-visual-tag {
-  color: #d8b4fe;
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.kids-visual-heading {
-  font-family: Georgia, serif;
-  font-size: 1.75rem;
-  font-weight: 300;
-  color: #FFFFFF;
-  margin-bottom: 1rem;
-}
-
-.kids-visual-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.kids-editorial-subtitle {
+  font-family: system-ui, -apple-system, sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.25em;
+  color: #e879f9;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.kids-editorial-title {
+  font-family: Georgia, serif;
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
+  font-weight: 500;
   color: #FFFFFF;
-  border-bottom: 1px solid #FFFFFF;
-  padding-bottom: 2px;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  line-height: 1.1;
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.01em;
 }
 
-.kids-visual-card:hover .kids-visual-link {
-  color: #d8b4fe;
-  border-color: #d8b4fe;
+.kids-editorial-desc {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 1.1rem;
+  color: #E5E7EB;
+  margin-bottom: 2rem;
+  line-height: 1.5;
 }
 
-/* Group interaction utility */
-.group {
-  will-change: transform;
+/* Fully Square Action Button */
+.kids-shop-btn {
+  background-color: #9b4de0;
+  color: #FFFFFF;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  padding: 0.95rem 2.8rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0px; /* Perfectly square shape */
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transition: all 0.25s ease;
 }
 
-/* Mobile & Tablet Responsive Layout */
+.kids-shop-btn:hover {
+  background-color: #c026d3;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(155, 77, 224, 0.4);
+}
+
+/* Tablet & Mobile Responsiveness */
 @media (max-width: 1024px) {
-  .kids-banner-section {
-    padding: 3rem 1rem;
+  .kids-editorial-card {
+    min-height: 460px; /* Increased tablet height */
   }
 
-  .kids-banner-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  .kids-editorial-overlay {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 100%);
   }
 
-  .kids-text-card {
-    grid-column: span 1;
-    padding: 2.5rem 1.5rem;
-    min-height: auto;
+  .kids-editorial-content {
+    padding: 3rem 2rem;
+    align-items: center;
     text-align: center;
-    align-items: center;
+    max-width: 100%;
   }
 
-  .kids-card-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .kids-editorial-desc {
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .kids-editorial-card {
+    min-height: 400px; /* Increased mobile height */
   }
 
-  .kids-badge-tag {
+  .kids-editorial-content {
+    padding: 2.5rem 1.25rem;
+  }
+
+  .kids-shop-btn {
+    width: 100%;
+    max-width: 250px;
     justify-content: center;
-  }
-
-  .kids-visual-card {
-    grid-column: span 1;
-    min-height: 380px;
-    padding: 2rem;
   }
 }
