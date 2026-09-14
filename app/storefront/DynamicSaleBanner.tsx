@@ -3,29 +3,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, ShieldCheck, Truck, RefreshCw, CreditCard, Sparkles } from 'lucide-react';
+import { Heart, Sparkles } from 'lucide-react';
 import './DynamicSaleBanner.css';
 
 export default function DynamicSaleBanner({ setCurrentPage }: { setCurrentPage: (page: string) => void }) {
   const [products, setProducts] = useState<any[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
-  
-  // Live Countdown State (2 hours, 15 minutes, 42 seconds)
-  const [timeLeft, setTimeLeft] = useState(2 * 3600 + 15 * 60 + 42);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (seconds: number) => {
-    const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');
-    const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-    const secs = (seconds % 60).toString().padStart(2, '0');
-    return `${hrs} : ${mins} : ${secs}`;
-  };
 
   useEffect(() => {
     async function fetchProducts() {
@@ -42,43 +25,6 @@ export default function DynamicSaleBanner({ setCurrentPage }: { setCurrentPage: 
     fetchProducts();
   }, []);
 
-  const fallbackProducts = [
-    {
-      id: 'fb-1',
-      name: "Classic Women's Heel",
-      price: 4999,
-      salePrice: 3499,
-      image: '/assets/shoe-7.jpeg',
-      discount: '30% OFF'
-    },
-    {
-      id: 'fb-2',
-      name: "Urban Men's Oxford",
-      price: 6500,
-      salePrice: 4550,
-      image: '/assets/shoe-6.jpg',
-      discount: '30% OFF'
-    },
-    {
-      id: 'fb-3',
-      name: "Minimalist Leather Loafer",
-      price: 3999,
-      salePrice: 2999,
-      image: '/assets/sneaker-4.jpeg',
-      discount: '25% OFF'
-    },
-    {
-      id: 'fb-4',
-      name: "Velvet Strap Party Heel",
-      price: 5200,
-      salePrice: 3640,
-      image: '/assets/shoe-2.jpeg',
-      discount: '30% OFF'
-    }
-  ];
-
-  const activeProducts = products.length > 0 ? products : fallbackProducts;
-
   const toggleWishlist = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
     setWishlist(prev => 
@@ -86,63 +32,72 @@ export default function DynamicSaleBanner({ setCurrentPage }: { setCurrentPage: 
     );
   };
 
-  const formatPrice = (val: any) => Number(val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // Helper to reliably parse numeric prices from backend strings or numbers
+  const parsePrice = (val: any) => {
+    if (val === undefined || val === null) return 0;
+    const cleanStr = String(val).replace(/[^0-9.]/g, '');
+    const num = parseFloat(cleanStr);
+    return isNaN(num) ? 0 : num;
+  };
 
-  // Trust items list for the infinite auto-scrolling ticker
-  const trustItems = [
-    { icon: <CreditCard size={20} className="text-purple-300 shrink-0" />, text: "5% Discount on Bank Transfer" },
-    { icon: <ShieldCheck size={20} className="text-purple-300 shrink-0" />, text: "Check Before Payment" },
-    { icon: <RefreshCw size={20} className="text-purple-300 shrink-0" />, text: "7 Days Easy Return" },
-    { icon: <Truck size={20} className="text-purple-300 shrink-0" />, text: "Nationwide Fast Shipping" }
-  ];
-
-  // Tripled array to ensure seamless infinite looping without gaps
-  const loopingTrustItems = [...trustItems, ...trustItems, ...trustItems];
+  const formatPrice = (val: any) => Math.round(Number(val)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   return (
-    <>
-      {/* 8. Flash Sale Section */}
-      <section className="flash-sale-section pt-12 pb-8 px-4 md:px-12 bg-gradient-to-b from-white via-purple-50/20 to-white text-black overflow-hidden my-2">
-        <div className="max-w-[1600px] mx-auto">
-          
-          {/* Header with Title, Subtext, Countdown & VIEW ALL */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 pb-6 border-b border-purple-100 gap-4">
-            <div>
-              <div className="flex items-center gap-2 text-purple-700 text-xs tracking-[0.25em] uppercase font-bold mb-2">
-                <Sparkles size={14} className="animate-pulse" />
-                <span>Limited Stock Offer</span>
-              </div>
-              <div className="flex items-center gap-3 flex-wrap">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-black tracking-wide uppercase font-medium">
-                  Flash Sale
-                </h2>
-                {/* Live Ticking Countdown Timer Badge */}
-                <div className="bg-purple-900 text-white border border-purple-800 px-3 py-1 text-xs font-mono font-bold tracking-wider shadow-md">
-                  ⚡ {formatTime(timeLeft)}
-                </div>
-              </div>
-              <p className="text-xs tracking-wider text-gray-500 uppercase font-medium mt-2">
-                Exclusive limited-time styles curated for your wardrobe.
-              </p>
-            </div>
+    <section id="flash-sale-section" className="flash-sale-section pt-12 pb-8 px-4 md:px-12 bg-gradient-to-b from-white via-purple-50/20 to-white text-black overflow-hidden my-2">
+      <div className="max-w-[1600px] mx-auto">
+        
+        {/* Header */}
+        <div className="flex flex-col items-center text-center mb-10 pb-6 border-b border-purple-100 relative">
+          <div className="flex items-center gap-2 text-purple-700 text-xs tracking-[0.25em] uppercase font-bold mb-2">
+            <Sparkles size={14} className="animate-pulse" />
+            <span>Limited Stock Offer</span>
+          </div>
 
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-black tracking-wide uppercase font-bold mb-2">
+            Flash Sale
+          </h2>
+
+          <p className="text-xs sm:text-sm tracking-wider text-gray-500 uppercase font-medium max-w-md">
+            Exclusive limited-time styles curated for your wardrobe.
+          </p>
+
+          <div className="mt-4 md:absolute md:right-0 md:top-2">
             <button 
               onClick={() => setCurrentPage('shop')}
-              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] bg-black text-white px-6 py-3 rounded-none hover:bg-purple-800 transition-all shadow-lg w-full md:w-auto justify-center"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] bg-black text-white px-6 py-3 rounded-none hover:bg-purple-800 transition-all shadow-lg justify-center"
             >
               <span>View All</span>
               <span className="text-sm">&rarr;</span>
             </button>
           </div>
+        </div>
 
-          {/* Product Grid: Desktop 4 products per row */}
+        {/* Product Grid (Only renders real admin products) */}
+        {products.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {activeProducts.map((item, index) => {
+            {products.map((item, index) => {
               const name = item.name || item.title || 'Footwear Item';
-              const price = item.price || 4999;
-              const salePrice = item.salePrice || item.price * 0.7;
+              const price = parsePrice(item.price || item.regularPrice || 0);
               
-              const discountPercent = item.discount || (salePrice < price ? `${Math.round(((price - salePrice) / price) * 100)}% OFF` : 'SPECIAL');
+              let salePrice = parsePrice(
+                item.salePrice || 
+                item.discountPrice || 
+                item.discounted_price || 
+                item.offerPrice || 
+                0
+              );
+
+              if (salePrice <= 0 || salePrice >= price) {
+                if (item.discountPercent) {
+                  salePrice = price * (1 - parsePrice(item.discountPercent) / 100);
+                } else {
+                  salePrice = price * 0.7; // 30% default discount fallback if none provided
+                }
+              }
+
+              const discountPercent = item.discount || 
+                (item.discountPercent ? `${item.discountPercent}% OFF` : null) || 
+                `${Math.max(1, Math.round(((price - salePrice) / price) * 100))}% OFF`;
               
               let rawImage = item.image || item.imageUrl || '/logo_main.png';
               if (typeof rawImage === 'string') {
@@ -211,25 +166,9 @@ export default function DynamicSaleBanner({ setCurrentPage }: { setCurrentPage: 
               );
             })}
           </div>
+        )}
 
-        </div>
-      </section>
-
-      {/* 9. Second Trust Carousel (Infinite Auto-Moving Ticker, repositioned closer upward) */}
-      <section className="second-trust-section py-4 bg-purple-900 text-white overflow-hidden shadow-inner my-2">
-        <div className="trust-ticker-container">
-          <div className="trust-ticker-track">
-            {loopingTrustItems.map((item, idx) => (
-              <div key={idx} className="trust-ticker-item flex items-center gap-3 shrink-0 px-6">
-                {item.icon}
-                <span className="text-xs font-semibold uppercase tracking-[0.15em] text-purple-100 whitespace-nowrap">
-                  {item.text}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

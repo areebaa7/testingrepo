@@ -1,50 +1,54 @@
+/* ==========================================
+   TRUST BENEFITS CAROUSEL STYLING
+   ========================================== */
+
 .trust-benefits-hero-section {
   width: 100%;
-  padding: 2.5rem 1.5rem;
+  padding: 0 1.5rem 3rem 1.5rem;
   background-color: #FFFFFF;
-  display: flex;
-  justify-content: center;
+  box-sizing: border-box;
 }
 
 .trust-hero-carousel-container {
-  max-width: 1400px;
-  width: 100%;
-  height: 500px;
-  background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%);
-  border-radius: 16px;
+  max-width: 1600px;
+  margin: 0 auto;
   position: relative;
+  background: linear-gradient(135deg, #FAF8FC 0%, #F3E8FF 100%);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 15px 35px rgba(155, 77, 224, 0.1);
-  border: 1px solid rgba(192, 132, 252, 0.2);
+  box-shadow: 0 10px 30px rgba(155, 77, 224, 0.08);
+  border: 1px solid rgba(155, 77, 224, 0.12);
 }
 
 .trust-hero-slide {
   display: flex;
-  width: 100%;
-  height: 100%;
   align-items: center;
   justify-content: space-between;
+  min-height: 480px;
+  padding: 3rem 4rem 4rem 4rem;
+  gap: 3rem;
+  box-sizing: border-box;
 }
 
-/* Left Content Styles */
+/* Left Content Area */
 .trust-hero-content {
   flex: 1;
-  padding: 0 4rem;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  z-index: 2;
 }
 
+/* Badge Pill styled in solid purple with white text */
 .trust-hero-badge-tag {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background-color: #9b4de0;
-  color: #FFFFFF;
-  padding: 5px 14px;
-  border-radius: 30px;
-  font-size: 0.7rem;
+  gap: 10px;
+  background-color: #9b4de0; /* Solid purple pill background */
+  color: #FFFFFF;              /* Crisp white text & icons */
+  padding: 0.45rem 1.1rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -56,141 +60,153 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #FFFFFF; /* White icon to match */
 }
 
 .trust-hero-title {
   font-family: Georgia, serif;
-  font-size: 2.8rem;
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
   font-weight: 600;
-  color: #1F2937;
+  color: #111111;
   line-height: 1.15;
-  margin-bottom: 0.8rem;
+  margin: 0 0 1rem 0;
 }
 
 .trust-hero-subtitle {
   font-family: system-ui, -apple-system, sans-serif;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #4B5563;
   line-height: 1.6;
-  max-width: 480px;
-  margin-bottom: 1.8rem;
+  margin-bottom: 2rem;
 }
 
 .trust-hero-btn {
-  background-color: #1F2937;
+  background-color: #111111;
   color: #FFFFFF;
+  font-family: system-ui, -apple-system, sans-serif;
   font-weight: 700;
-  padding: 0.85rem 2.4rem;
+  padding: 0.9rem 2.4rem;
   font-size: 0.75rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
   border: none;
-  border-radius: 4px;
+  border-radius: 0px;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   transition: all 0.25s ease;
 }
 
 .trust-hero-btn:hover {
   background-color: #9b4de0;
   transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(155, 77, 224, 0.4);
 }
 
-/* Right Image Styles */
+/* Right Image Area */
 .trust-hero-image-wrapper {
   flex: 1;
-  height: 100%;
-  position: relative;
+  height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+  background-color: #FFFFFF;
 }
 
 .trust-hero-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.06));
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 0.6s ease;
 }
 
-/* Dots Indicator */
+.trust-hero-image-wrapper:hover .trust-hero-img {
+  transform: scale(1.06);
+}
+
+/* Pagination Indicator Dots */
 .trust-carousel-dots {
   position: absolute;
-  bottom: 20px;
+  bottom: 1.2rem;
   left: 4rem;
+  z-index: 10;
   display: flex;
   gap: 8px;
-  z-index: 10;
 }
 
 .trust-dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background-color: rgba(155, 77, 224, 0.3);
-  border: none;
+  border: 1px solid #9b4de0;
+  background-color: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
+  padding: 0;
 }
 
 .trust-dot.active {
-  width: 24px;
-  border-radius: 4px;
   background-color: #9b4de0;
+  width: 28px;
+  border-radius: 5px;
 }
 
-/* Responsive & Mobile Optimization Layout */
+/* ==========================================
+   TABLET & MOBILE RESPONSIVENESS
+   ========================================== */
+
 @media (max-width: 1024px) {
-  .trust-benefits-hero-section {
-    padding: 1.5rem 1rem;
-  }
-
-  .trust-hero-carousel-container {
-    height: auto;
-    border-radius: 12px;
-  }
-
   .trust-hero-slide {
-    flex-direction: column-reverse;
+    flex-direction: column;
+    padding: 2.5rem 2rem 3.5rem 2rem;
+    gap: 2rem;
   }
 
   .trust-hero-content {
-    padding: 2rem 1.5rem 3.5rem 1.5rem;
+    max-width: 100%;
     align-items: center;
     text-align: center;
-    width: 100%;
-  }
-
-  .trust-hero-badge-tag {
-    margin-bottom: 1rem;
-  }
-
-  .trust-hero-title {
-    font-size: 1.9rem;
-    margin-bottom: 0.6rem;
   }
 
   .trust-hero-subtitle {
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .trust-hero-image-wrapper {
+    width: 100%;
+    height: 300px;
+  }
+
+  .trust-carousel-dots {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .trust-benefits-hero-section {
+    padding: 0 0.5rem 2rem 0.5rem;
+  }
+
+  .trust-hero-carousel-container {
+    border-radius: 0px;
+  }
+
+  .trust-hero-slide {
+    padding: 2rem 1.25rem 3rem 1.25rem;
+  }
+
+  .trust-hero-image-wrapper {
+    height: 240px;
   }
 
   .trust-hero-btn {
     width: 100%;
     max-width: 260px;
-    padding: 0.8rem 1.5rem;
-  }
-
-  .trust-hero-image-wrapper {
-    width: 100%;
-    height: 240px;
-    padding: 1.2rem 1.2rem 0.5rem 1.2rem;
-  }
-
-  .trust-carousel-dots {
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
   }
 }

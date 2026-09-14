@@ -1,3 +1,7 @@
+/* ==========================================
+   KIDS BANNER STYLING (PURPLE SUBTITLE)
+   ========================================== */
+
 .kids-banner-section {
   width: 100vw;
   position: relative;
@@ -11,10 +15,10 @@
   overflow: hidden;
 }
 
-/* Editorial Full-Width Banner Card with increased height */
+/* Editorial Full-Width Banner Card */
 .kids-editorial-card {
   width: 100%;
-  min-height: 560px; /* Increased desktop height */
+  min-height: 560px;
   background-size: cover;
   background-position: center;
   position: relative;
@@ -25,12 +29,9 @@
   cursor: pointer;
 }
 
-/* Dark gradient overlay with no white tint */
+/* Gradient overlay completely removed */
 .kids-editorial-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 60%, transparent 100%);
-  z-index: 1;
+  display: none;
 }
 
 .kids-editorial-content {
@@ -50,16 +51,17 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.25em;
-  color: #e879f9;
+  color: #9b4de0; /* Signature brand purple */
   margin-bottom: 0.75rem;
   display: block;
 }
 
+/* Bold and Black Title */
 .kids-editorial-title {
   font-family: Georgia, serif;
   font-size: clamp(2.8rem, 5vw, 4.8rem);
-  font-weight: 500;
-  color: #FFFFFF;
+  font-weight: 800;
+  color: #000000;
   line-height: 1.1;
   margin: 0 0 1rem 0;
   letter-spacing: 0.01em;
@@ -68,15 +70,16 @@
 .kids-editorial-desc {
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 1.1rem;
-  color: #E5E7EB;
+  color: #FFFFFF;
   margin-bottom: 2rem;
   line-height: 1.5;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
-/* Fully Square Action Button */
+/* Square Action Button (White by default, Purple on hover) */
 .kids-shop-btn {
-  background-color: #9b4de0;
-  color: #FFFFFF;
+  background-color: #FFFFFF;
+  color: #000000;
   font-family: system-ui, -apple-system, sans-serif;
   font-weight: 700;
   padding: 0.95rem 2.8rem;
@@ -84,17 +87,18 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   border: none;
-  border-radius: 0px; /* Perfectly square shape */
+  border-radius: 0px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
   transition: all 0.25s ease;
 }
 
 .kids-shop-btn:hover {
-  background-color: #c026d3;
+  background-color: #9b4de0;
+  color: #FFFFFF;
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(155, 77, 224, 0.4);
 }
@@ -102,11 +106,7 @@
 /* Tablet & Mobile Responsiveness */
 @media (max-width: 1024px) {
   .kids-editorial-card {
-    min-height: 460px; /* Increased tablet height */
-  }
-
-  .kids-editorial-overlay {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 100%);
+    min-height: 460px;
   }
 
   .kids-editorial-content {
@@ -116,14 +116,15 @@
     max-width: 100%;
   }
 
-  .kids-editorial-desc {
+  .kids-editorial-desc,
+  .kids-editorial-subtitle {
     text-align: center;
   }
 }
 
 @media (max-width: 768px) {
   .kids-editorial-card {
-    min-height: 400px; /* Increased mobile height */
+    min-height: 400px;
   }
 
   .kids-editorial-content {

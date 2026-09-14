@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, User, Heart, ShoppingBag, Menu, X } from 'lucide-react';
+import { Search, User, Heart, ShoppingBag, Menu, X, ChevronRight, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Navbar.css';
 
@@ -23,12 +23,13 @@ export default function Navbar({
     setMobileMenuOpen(false);
 
     if (sectionId) {
+      // Increased timeout slightly to ensure DOM renders the home page elements first if coming from another page
       setTimeout(() => {
         const element = document.getElementById(sectionId);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-      }, 100);
+      }, 250);
     }
   };
 
@@ -81,7 +82,7 @@ export default function Navbar({
             <button onClick={() => handleNavClick('men')} className="nav-link-btn">Men</button>
             <button onClick={() => handleNavClick('kids')} className="nav-link-btn">Kids</button>
             <button onClick={() => handleNavClick('home', 'new-arrivals-section')} className="nav-link-btn">New Arrivals</button>
-            <button onClick={() => handleNavClick('home', 'best-sellers-section')} className="sale-link">Sale</button>
+            <button onClick={() => handleNavClick('home', 'flash-sale-section')} className="sale-link">Sale</button>
           </div>
 
           {/* RIGHT: Search, Account, Wishlist, Cart Icons */}
@@ -137,22 +138,65 @@ export default function Navbar({
           {mobileMenuOpen && (
             <motion.div 
               className="mobile-menu-drawer"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
+              initial={{ opacity: 0, x: '-100%' }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: '-100%' }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              <div className="mobile-category-group">
-                <button onClick={() => handleNavClick('women')} className="mobile-main-link">Women</button>
-                <button onClick={() => handleNavClick('men')} className="mobile-main-link">Men</button>
-                <button onClick={() => handleNavClick('kids')} className="mobile-main-link">Kids</button>
+              {/* Top Drawer Header with Close Button */}
+              <div className="mobile-drawer-header">
+                <button 
+                  onClick={() => setMobileMenuOpen(false)} 
+                  className="mobile-close-icon-btn"
+                  aria-label="Close Menu"
+                >
+                  <X size={24} />
+                </button>
               </div>
-              <button onClick={() => handleNavClick('home', 'new-arrivals-section')} className="mobile-item">New Arrivals</button>
-              <button onClick={() => handleNavClick('home', 'best-sellers-section')} className="mobile-item sale-mobile">Sale</button>
-              
-              <div className="mobile-auth-group">
-                <button onClick={() => { onOpenAuthModal('login'); setMobileMenuOpen(false); }} className="mobile-auth-btn">
-                  Login / Account
+
+              {/* Navigation Links List */}
+              <div className="mobile-drawer-links">
+                <button onClick={() => handleNavClick('home', 'new-arrivals-section')} className="mobile-drawer-row">
+                  <span>New Arrivals</span>
+                  <ChevronRight size={18} className="text-gray-400" />
+                </button>
+                
+                <button onClick={() => handleNavClick('men')} className="mobile-drawer-row">
+                  <span>Men</span>
+                  <ChevronRight size={18} className="text-gray-400" />
+                </button>
+
+                <button onClick={() => handleNavClick('women')} className="mobile-drawer-row">
+                  <span>Women</span>
+                  <ChevronRight size={18} className="text-gray-400" />
+                </button>
+
+                <button onClick={() => handleNavClick('kids')} className="mobile-drawer-row">
+                  <span>Kids</span>
+                  <ChevronRight size={18} className="text-gray-400" />
+                </button>
+
+                {/* Sale link jumping directly to flash-sale-section */}
+                <button onClick={() => handleNavClick('home', 'flash-sale-section')} className="mobile-drawer-row sale-row">
+                  <span>Sale</span>
+                  <ChevronRight size={18} className="text-red-400" />
+                </button>
+
+                {/* Added Affiliate Option */}
+                <button onClick={() => handleNavClick('affiliate')} className="mobile-drawer-row">
+                  <span>Affiliate Program</span>
+                  <ChevronRight size={18} className="text-gray-400" />
+                </button>
+              </div>
+
+              {/* Bottom Footer Login Link */}
+              <div className="mobile-drawer-footer">
+                <button 
+                  onClick={() => { onOpenAuthModal('login'); setMobileMenuOpen(false); }} 
+                  className="mobile-drawer-login-btn"
+                >
+                  <User size={18} />
+                  <span>Login</span>
                 </button>
               </div>
             </motion.div>

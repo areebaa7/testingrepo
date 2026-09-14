@@ -17,27 +17,65 @@ const fallbackWomenProducts = [
 export default function WomenFavorites({ setCurrentPage }: { setCurrentPage: (page: string) => void }) {
   const [products, setProducts] = useState(fallbackWomenProducts);
 
-  // Fetch products from admin panel API and filter for Women category
+  // Fetch products from admin panel API and dynamically filter for Women category
   useEffect(() => {
     async function fetchWomenProducts() {
       try {
         const res = await fetch('/api/products');
         const json = await res.json();
+        
         if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          // Flexible filter for women products from admin database
           const womenItems = json.data.filter((item: any) => {
             const cat = (item.category || item.tag || '').toLowerCase();
             const name = (item.name || item.title || '').toLowerCase();
-            return cat.includes('women') || name.includes('women') || name.includes('heel') || name.includes('sandal') || name.includes('flat');
+            const gender = (item.gender || '').toLowerCase();
+            const desc = (item.description || '').toLowerCase();
+
+            // Exclude explicit men products first
+            const isMen = cat.includes('men') || gender.includes('men') || name.includes('men');
+            if (isMen && !cat.includes('women')) return false;
+
+            // Include if matches women indicators or general female footwear keywords
+            return (
+              cat.includes('women') || 
+              cat.includes('female') || 
+              cat.includes('ladies') || 
+              cat.includes('girl') || 
+              gender.includes('women') || 
+              gender.includes('female') ||
+              name.includes('women') || 
+              name.includes('ladies') || 
+              name.includes('heel') || 
+              name.includes('sandal') || 
+              name.includes('flat') ||
+              name.includes('women')
+            );
           });
 
-          if (womenItems.length > 0) {
-            const formatted = womenItems.map((item: any) => ({
-              id: item.id,
-              title: item.name || item.title || 'Women Footwear',
-              price: item.salePrice || item.price || '0',
-              image: item.image || item.imageUrl || '/logo_main.png',
-              badge: item.badge || 'POPULAR'
-            }));
+          // If admin has matching women items, use them; otherwise fallback gracefully or use all active items if appropriate
+          const displayItems = womenItems.length > 0 ? womenItems : json.data;
+
+          if (displayItems.length > 0) {
+            const formatted = displayItems.map((item: any) => {
+              let rawImage = item.image || item.imageUrl || '/logo_main.png';
+              if (typeof rawImage === 'string') {
+                rawImage = rawImage.replace(/\\/g, '/');
+                if (rawImage.includes('placeholder') || rawImage.trim() === '') {
+                  rawImage = '/logo_main.png';
+                } else if (!rawImage.startsWith('http') && !rawImage.startsWith('/')) {
+                  rawImage = '/' + rawImage;
+                }
+              }
+
+              return {
+                id: item.id,
+                title: item.name || item.title || 'Women Footwear',
+                price: item.salePrice || item.price || '0',
+                image: rawImage,
+                badge: item.badge || 'POPULAR'
+              };
+            });
             setProducts(formatted);
           }
         }

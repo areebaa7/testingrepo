@@ -23,7 +23,7 @@ export default function MensStylesCarousel({ setCurrentPage }: { setCurrentPage:
         const json = await res.json();
         
         if (json.success && Array.isArray(json.data) && json.data.length > 0) {
-          // Strict and precise filter to ensure only Men's products are included
+          // Precise filter to capture Men's products from the admin panel database
           const menItems = json.data.filter((item: any) => {
             const cat = (item.category || item.tag || '').toLowerCase();
             const name = (item.name || item.title || '').toLowerCase();
@@ -43,7 +43,7 @@ export default function MensStylesCarousel({ setCurrentPage }: { setCurrentPage:
 
             if (isWomenProduct) return false;
 
-            // Must match explicit men indicators or general neutral footwear styles
+            // Match explicit men indicators or general footwear styles
             const isMenProduct = 
               cat.includes('men') || 
               gender.includes('men') || 
@@ -51,13 +51,18 @@ export default function MensStylesCarousel({ setCurrentPage }: { setCurrentPage:
               cat.includes('gents') ||
               cat.includes('oxford') || 
               cat.includes('derby') || 
-              cat.includes('loafer');
+              cat.includes('loafer') ||
+              cat.includes('sneaker') ||
+              cat.includes('formal');
 
             return isMenProduct;
           });
 
-          if (menItems.length > 0) {
-            const formatted = menItems.map((item: any) => {
+          // Use filtered items if available, otherwise display active products cleanly
+          const displayItems = menItems.length > 0 ? menItems : json.data;
+
+          if (displayItems.length > 0) {
+            const formatted = displayItems.map((item: any) => {
               let rawImage = item.image || item.imageUrl || '/logo_main.png';
               if (typeof rawImage === 'string') {
                 rawImage = rawImage.replace(/\\/g, '/');

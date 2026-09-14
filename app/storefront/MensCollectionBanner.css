@@ -1,6 +1,6 @@
 .mens-banner-section {
   width: 100%;
-  padding: 3rem 1rem;
+  padding: 0 1rem 3rem 1rem; /* Top padding is set to 0 */
   background-color: #FFFFFF;
 }
 
@@ -117,7 +117,7 @@
 /* Mobile Devices Optimization */
 @media (max-width: 768px) {
   .mens-banner-section {
-    padding: 1rem 0.5rem;
+    padding: 0 0.5rem 1.5rem 0.5rem; /* Top padding is 0 here as well */
   }
   
   .mens-banner-container {
