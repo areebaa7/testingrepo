@@ -42,8 +42,9 @@ export default function CheckoutPage({ cartItems = [], setCurrentPage, onOrderSu
     return acc + cleanPrice * (Number(item.quantity) || 1);
   }, 0);
 
-  const shippingCost = 350.00; // Standard Delivery fee
-  const total = subtotal + shippingCost;
+  const discountAmount = formData.paymentMethod === 'ONLINE' ? (subtotal * 0.05) : 0;
+  const shippingCost = formData.paymentMethod === 'ONLINE' ? 0 : 350.00; // Free shipping + 5% off for online
+  const total = Math.max(0, subtotal - discountAmount) + shippingCost;
 
   const handleSubmitOrder = async (e) => {
     e.preventDefault();
@@ -280,7 +281,7 @@ export default function CheckoutPage({ cartItems = [], setCurrentPage, onOrderSu
               <p className="payment-secure-note">All transactions are secure and encrypted.</p>
               
               <div className="payment-options-group">
-                <label className={`payment-option-card ${formData.paymentMethod === 'COD' ? 'active' : ''}`}>
+                <div className={`payment-option-card ${formData.paymentMethod === 'COD' ? 'active' : ''}`} onClick={() => setFormData({...formData, paymentMethod: 'COD'})} style={{ cursor: 'pointer' }}>
                   <div className="radio-flex">
                     <input 
                       type="radio" 
@@ -291,9 +292,9 @@ export default function CheckoutPage({ cartItems = [], setCurrentPage, onOrderSu
                     <span>Cash on Delivery</span>
                   </div>
                   <p className="payment-subtext">Please have the exact amount ready. Open parcel check allowed before paying.</p>
-                </label>
+                </div>
 
-                <label className={`payment-option-card ${formData.paymentMethod === 'ONLINE' ? 'active' : ''}`}>
+                <div className={`payment-option-card ${formData.paymentMethod === 'ONLINE' ? 'active' : ''}`} onClick={() => setFormData({...formData, paymentMethod: 'ONLINE'})} style={{ cursor: 'pointer' }}>
                   <div className="radio-flex">
                     <input 
                       type="radio" 
@@ -305,7 +306,7 @@ export default function CheckoutPage({ cartItems = [], setCurrentPage, onOrderSu
                   </div>
                   
                   {formData.paymentMethod === 'ONLINE' && (
-                    <div className="manual-payment-details">
+                    <div className="manual-payment-details" onClick={(e) => e.stopPropagation()}>
                       <div className="bank-info-box">
                         <h4>Meezan Bank</h4>
                         <p><strong>Title:</strong> ANISA SHAHID</p>
@@ -329,7 +330,7 @@ export default function CheckoutPage({ cartItems = [], setCurrentPage, onOrderSu
                       </div>
                     </div>
                   )}
-                </label>
+                </div>
               </div>
             </div>
 
@@ -372,7 +373,16 @@ export default function CheckoutPage({ cartItems = [], setCurrentPage, onOrderSu
 
             <div className="summary-totals-breakdown">
               <div className="line"><span>Subtotal</span> <span>Rs.{subtotal.toLocaleString()}</span></div>
-              <div className="line"><span>Shipping</span> <span>Rs.{shippingCost.toLocaleString()}</span></div>
+              {formData.paymentMethod === 'ONLINE' && (
+                <div className="line" style={{ color: '#059669', fontWeight: '600' }}>
+                  <span>Online Discount (5%)</span> 
+                  <span>- Rs.{discountAmount.toLocaleString()}</span>
+                </div>
+              )}
+              <div className="line">
+                <span>Shipping</span> 
+                <span>{shippingCost === 0 ? 'Free' : `Rs.${shippingCost.toLocaleString()}`}</span>
+              </div>
               <div className="line total-row"><span>Total</span> <span className="grand-total">Rs.{total.toLocaleString()}</span></div>
             </div>
 

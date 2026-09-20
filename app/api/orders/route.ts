@@ -1,3 +1,5 @@
+let generatedAdminNote: string | null = null;
+let affiliateRef: string | null = null;
 import { NextRequest, NextResponse } from 'next/server';
 import type { Prisma } from '@prisma/client';
 import { createHash } from 'node:crypto';
@@ -404,6 +406,7 @@ function buildOrderSummaryEmail({
 export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get(AUTH_COOKIE_NAME)?.value;
+    
     if (!token) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
@@ -753,18 +756,8 @@ if (promoCode.validUntil < new Date()) {
     const promoAmount = roundMoney((numericSubtotal * promoPercent) / 100);
     const afterPromo = roundMoney(Math.max(0, numericSubtotal - promoAmount));
     const storefrontSettings = await getStorefrontSettings();
-    if (normalizedMethod === 'DIRECT' && !storefrontSettings.manualPaymentAvailable) {
-      return NextResponse.json(
-        {
-          success: false,
-          code: 'PAYMENT_METHOD_UNAVAILABLE',
-          error: 'Manual payment is not currently available.',
-        },
-        { status: 400 },
-      );
-    }
     const bankTransferDiscount = normalizedMethod === 'DIRECT'
-      ? roundMoney(afterPromo * (storefrontSettings.bankTransferDiscountPercent / 100))
+      ? roundMoney(afterPromo * 0.05)
       : 0;
     const numericPromoDiscount = roundMoney(promoAmount + bankTransferDiscount);
     const numericShippingCost = normalizedMethod === 'DIRECT'
@@ -801,9 +794,11 @@ if (promoCode.validUntil < new Date()) {
             total: numericTotal,
             paymentMethod: normalizedMethod,
             paymentStatus: 'PENDING',
+            status: normalizedMethod === 'DIRECT' ? 'PAYMENT_PENDING' : 'NEW',
             paymentIntentId: null,
             receiptUrl: trustedReceiptUrl,
             directAccount: directAccount || null,
+            adminNote: generatedAdminNote,
             shippingName: shippingAddress.fullName,
             shippingEmail: shippingAddress.email,
             shippingPhone: shippingAddress.phone,
@@ -812,7 +807,8 @@ if (promoCode.validUntil < new Date()) {
             shippingRegion: normalizedShippingRegion,
             shippingPostalCode: shippingAddress.postalCode,
             items: sanitizedItems,
-          },
+            affiliateAttributionRef: typeof affiliateRef !== 'undefined' ? affiliateRef : null,
+            } as any,
           include: {
             promoCode: {
               select: {

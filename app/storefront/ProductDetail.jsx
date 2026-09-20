@@ -33,8 +33,11 @@ export default function ProductDetail({ product, onBack, onAddToCart }) {
   const [showSizeChart, setShowSizeChart] = useState(false);
   const [addedNotification, setAddedNotification] = useState(false);
 
-  // Pop-up modal state for 5% Bank Transfer offer upon opening product page and adding to cart
+  // Pop-up modal state for 5% Bank Transfer offer upon opening product page
   const [showBankOfferModal, setShowBankOfferModal] = useState(false);
+
+  // Fly-to-cart animation state
+  const [flyingImage, setFlyingImage] = useState(null);
 
   useEffect(() => {
     // Show bank offer popup automatically when product page mounts
@@ -62,10 +65,35 @@ export default function ProductDetail({ product, onBack, onAddToCart }) {
     setActiveImageIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
     if (!selectedSize) {
       alert('Please select a size before adding to cart.');
       return;
+    }
+
+    // Safely calculate fly-to-cart trajectory coordinates with mobile fallback selectors
+    const imgElement = document.querySelector('.pdp-main-image') || document.querySelector('.pdp-main-image-wrapper img');
+    const cartIcon = document.getElementById('cart-icon');
+
+    if (imgElement && cartIcon) {
+      const imgRect = imgElement.getBoundingClientRect();
+      const cartRect = cartIcon.getBoundingClientRect();
+
+      if (imgRect.width > 0 && cartRect.width > 0) {
+        const startX = imgRect.left + imgRect.width / 2;
+        const startY = imgRect.top + imgRect.height / 2;
+        const endX = cartRect.left + cartRect.width / 2;
+        const endY = cartRect.top + cartRect.height / 2;
+
+        setFlyingImage({
+          id: Date.now(),
+          src: images[activeImageIndex],
+          x: startX,
+          y: startY,
+          targetX: endX - startX,
+          targetY: endY - startY,
+        });
+      }
     }
 
     const chosenColor = (product.colors && product.colors.length > 0) 
@@ -85,8 +113,6 @@ export default function ProductDetail({ product, onBack, onAddToCart }) {
     });
 
     setAddedNotification(true);
-    // Show popup again when item is added to cart to remind about bank transfer savings
-    setShowBankOfferModal(true);
     setTimeout(() => setAddedNotification(false), 2500);
   };
 
@@ -219,6 +245,42 @@ export default function ProductDetail({ product, onBack, onAddToCart }) {
           <button className="pdp-add-to-cart-btn" onClick={handleAddToCart}>
             <ShoppingBag size={18} /> Add to Cart
           </button>
+
+          {/* Mobile-Optimized Smooth Curved Fly-to-Cart Animation Overlay */}
+          <AnimatePresence>
+            {flyingImage && (
+              <motion.img
+                key={flyingImage.id}
+                src={flyingImage.src}
+                initial={{
+                  position: 'fixed',
+                  top: flyingImage.y - 35,
+                  left: flyingImage.x - 35,
+                  width: 70,
+                  height: 70,
+                  opacity: 1,
+                  scale: 1,
+                  zIndex: 99999,
+                  pointerEvents: 'none',
+                  borderRadius: '12px',
+                }}
+                animate={{
+                  x: [0, flyingImage.targetX * 0.45, flyingImage.targetX],
+                  y: [0, flyingImage.targetY * 0.25 - 80, flyingImage.targetY],
+                  scale: [1, 0.7, 0.1],
+                  opacity: [1, 0.95, 0.15],
+                  rotate: [0, 10, 360],
+                }}
+                transition={{
+                  duration: 1.0,
+                  ease: [0.16, 1, 0.3, 1],
+                  times: [0, 0.45, 1],
+                }}
+                onAnimationComplete={() => setFlyingImage(null)}
+                className="object-cover shadow-2xl border-2 border-purple-400 bg-white"
+              />
+            )}
+          </AnimatePresence>
 
           {addedNotification && (
             <motion.p className="pdp-success-alert" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>

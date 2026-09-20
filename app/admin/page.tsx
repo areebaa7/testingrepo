@@ -5,7 +5,7 @@ import Link from 'next/link';
 import PromoUsersManagement from './components/PromoUsersManagement';
 import AdminOrdersPanel from './components/AdminOrdersPanel';
 import AdminAnalyticsPanel from './components/AdminAnalyticsPanel';
-import AffiliateApplicationsPanel from './components/AffiliateApplicationsPanel';
+import AdminAffiliateDashboard from './components/AdminAffiliateDashboard';
 import AdminProductsPanel from './components/AdminProductsPanel';
 import AdminCollectionsPanel from './components/AdminCollectionsPanel';
 import AdminShippingPanel from './components/AdminShippingPanel';
@@ -275,7 +275,7 @@ export default function AdminDashboard() {
               { id: 'collections', label: 'Collections' }, { id: 'shipping', label: 'Shipping' }, { id: 'orders', label: 'Orders' },
               { id: 'customers', label: 'Customers' },
               { id: 'promo-users', label: 'Promo Users' },
-              { id: 'affiliate-applications', label: 'Affiliate Applications' },
+              { id: 'affiliate-dashboard', label: 'Affiliate Program' },
               { id: 'affiliate-rules', label: 'Affiliate Rules' },
               { id: 'analytics', label: 'Analytics' },
               { id: 'marketing', label: 'Conversion Tracking' },
@@ -616,8 +616,8 @@ export default function AdminDashboard() {
             <PromoUsersManagement />
           )}
 
-          {activeTab === 'affiliate-applications' && (
-            <AffiliateApplicationsPanel />
+          {activeTab === 'affiliate-dashboard' && (
+            <AdminAffiliateDashboard />
           )}
 
           {activeTab === 'affiliate-rules' && <AdminAffiliateRulesPanel />}

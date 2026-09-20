@@ -225,7 +225,7 @@ function CheckoutContent() {
 
     let bDiscount = 0;
     if (paymentMethod === 'direct') {
-      bDiscount = afterPromo * (conversionSettings.bankTransferDiscountPercent / 100);
+      bDiscount = afterPromo * 0.05;
       sCost = 0; // Free delivery
     }
 
@@ -659,8 +659,7 @@ function CheckoutContent() {
                 </div>
               </label>
 
-              {conversionSettings.manualPaymentAvailable && (
-                <>
+              <>
                   <div className="border-t border-gray-200"></div>
 
                   <label className={`flex flex-col gap-4 p-5 cursor-pointer transition-colors ${paymentMethod === 'direct' ? 'bg-purple-50/30' : 'hover:bg-gray-50'}`}>
@@ -674,15 +673,13 @@ function CheckoutContent() {
                         className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-600"
                       />
                       <div>
-                        <p className="text-sm font-medium text-gray-900">Bank / Mobile Wallet Transfer</p>
-                        <p className="text-xs text-gray-500">Pay using {manualPaymentLabels.join(', ')}.</p>
+                        <p className="text-sm font-medium text-gray-900">Online Payment (Bank Transfer / Easy Paisa / Jazz Cash)</p>
+                        <p className="text-xs text-gray-500">Save 5% on your total order by paying online.</p>
                       </div>
                     </div>
-                  </label>
-                </>
-              )}
+                  </label>\n                </>
 
-              {paymentMethod === 'direct' && conversionSettings.manualPaymentAvailable && (
+              {paymentMethod === 'direct' && (
                 <div className="px-5 pb-5 pt-2 sm:ml-8 space-y-4">
                   <div className="bg-white p-4 rounded-lg border border-gray-100 space-y-3">
                     <p className="text-sm font-bold text-gray-900">Transfer details</p>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { AUTH_COOKIE_NAME, verifyAuthToken } from '@/lib/auth';
+import { sendOrderApprovedEmail, sendOrderRejectedEmail } from '@/lib/email';
 
 export async function PATCH(
   request: NextRequest,
@@ -56,7 +57,7 @@ export async function PATCH(
 
     const existingOrder = await prisma.order.findUnique({
       where: { id: orderId },
-      select: { id: true },
+      select: { id: true, status: true, shippingEmail: true, shippingName: true },
     });
 
     if (!existingOrder) {
@@ -65,7 +66,7 @@ export async function PATCH(
 
     const updateData: Record<string, any> = {};
 
-    const validOrderStatuses = ['PENDING', 'PAID', 'SHIPPED', 'COMPLETED', 'CANCELLED'];
+    const validOrderStatuses = ['NEW', 'PAYMENT_PENDING', 'PAYMENT_VERIFIED', 'PROCESSING', 'PACKED', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'RETURNED', 'REFUNDED', 'REJECTED_FAILED', 'PENDING', 'PAID', 'COMPLETED'];
     const validPaymentStatuses = ['PENDING', 'APPROVED', 'DISAPPROVED'];
 
     if (cleanStatus && validOrderStatuses.includes(cleanStatus)) {
@@ -98,6 +99,25 @@ export async function PATCH(
       data: updateData,
     });
 
+    // Trigger emails ONLY if status changed
+    if (updateData.status && updateData.status !== existingOrder.status && existingOrder.shippingEmail) {
+      const newStatus = updateData.status;
+      const approvalStatuses = ['PAID', 'PROCESSING', 'PAYMENT_VERIFIED'];
+      const rejectionStatuses = ['CANCELLED', 'REJECTED_FAILED'];
+      
+      try {
+        if (approvalStatuses.includes(newStatus)) {
+          await sendOrderApprovedEmail(existingOrder.shippingEmail, existingOrder.shippingName || 'Customer', orderId);
+          console.log(`Approval email sent to ${existingOrder.shippingEmail}`);
+        } else if (rejectionStatuses.includes(newStatus)) {
+          await sendOrderRejectedEmail(existingOrder.shippingEmail, existingOrder.shippingName || 'Customer', orderId);
+          console.log(`Rejection email sent to ${existingOrder.shippingEmail}`);
+        }
+      } catch (emailErr) {
+        console.error('Failed to send status update email:', emailErr);
+      }
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Order updated successfully.',
@@ -122,4 +142,56 @@ export async function PUT(
   context: { params: Promise<{ id: string }> | { id: string } }
 ) {
   return PATCH(request, context);
+}
+
+export async function DELETE(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> | { id: string } }
+) {
+  try {
+    const token = request.cookies.get(AUTH_COOKIE_NAME)?.value;
+    if (!token) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const payload = await verifyAuthToken(token);
+    if (!payload || payload.role !== 'ADMIN') {
+      return NextResponse.json({ success: false, error: 'Admin access required.' }, { status: 403 });
+    }
+
+    const resolvedParams = context.params instanceof Promise ? await context.params : context.params;
+    const orderId = resolvedParams?.id;
+    
+    if (!orderId) {
+      return NextResponse.json({ success: false, error: 'Order ID is missing.' }, { status: 400 });
+    }
+
+    const existingOrder = await prisma.order.findUnique({
+      where: { id: orderId },
+    });
+
+    if (!existingOrder) {
+      return NextResponse.json({ success: false, error: 'Order not found.' }, { status: 404 });
+    }
+
+    // Delete related OrderItem records first if they aren't cascading
+    // Assuming cascading is on, but just to be safe:
+    try {
+      // Assuming prisma schema defines order items as OrderItem
+      // if it fails we catch and ignore because cascade deletion might be on.
+      if ((prisma as any).orderItem) { await (prisma as any).orderItem.deleteMany({ where: { orderId } }); }
+    } catch(e) {}
+
+    await prisma.order.delete({
+      where: { id: orderId },
+    });
+
+    return NextResponse.json({ success: true, message: 'Order deleted successfully' });
+  } catch (error: any) {
+    console.error('Order deletion error:', error);
+    return NextResponse.json(
+      { success: false, error: error?.message || 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
 }

@@ -21,10 +21,21 @@ import './AffiliatePage.css';
 
 export default function AffiliatePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [channel1, setChannel1] = useState('');
-  const [channel2, setChannel2] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    mobileNumber: '',
+    channel1: '',
+    channel2: ''
+  });
+  
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleOpenModal = (e) => {
@@ -33,9 +44,15 @@ export default function AffiliatePage() {
     setIsModalOpen(true);
   };
 
-  const handleSubmitApplication = async (e) => {
+    const handleSubmitApplication = async (e) => {
     e.preventDefault();
     setError('');
+    
+    if (!formData.email || !formData.mobileNumber || !formData.channel1) {
+      setError('Please fill in all required fields.');
+      return;
+    }
+    
     setLoading(true);
 
     try {
@@ -43,9 +60,10 @@ export default function AffiliatePage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: email,
-          channelLink1: channel1,
-          channelLink2: channel2 || null,
+          email: formData.email,
+          mobileNumber: formData.mobileNumber,
+          channelLink1: formData.channel1,
+          channelLink2: formData.channel2 || null
         }),
       });
 
@@ -463,35 +481,20 @@ export default function AffiliatePage() {
               <form onSubmit={handleSubmitApplication} className="affiliate-form">
                 <div className="form-group">
                   <label>Email Address *</label>
-                  <input 
-                    type="email" 
-                    required 
-                    placeholder="name@example.com" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
+                  <input type="email" name="email" required placeholder="name@example.com" value={formData.email} onChange={handleInputChange} />
                 </div>
-
+                <div className="form-group">
+                  <label>Mobile Number *</label>
+                  <input type="tel" name="mobileNumber" required placeholder="03001234567" value={formData.mobileNumber} onChange={handleInputChange} />
+                </div>
                 <div className="form-group">
                   <label>Channel Link 1 (Mandatory) *</label>
                   <span className="form-hint">Instagram, TikTok, YouTube, or other channel</span>
-                  <input 
-                    type="url" 
-                    required 
-                    placeholder="https://instagram.com/yourhandle" 
-                    value={channel1}
-                    onChange={(e) => setChannel1(e.target.value)}
-                  />
+                  <input type="url" name="channel1" required placeholder="https://instagram.com/yourhandle" value={formData.channel1} onChange={handleInputChange} />
                 </div>
-
                 <div className="form-group">
                   <label>Channel Link 2 (Optional)</label>
-                  <input 
-                    type="url" 
-                    placeholder="https://tiktok.com/@yourhandle" 
-                    value={channel2}
-                    onChange={(e) => setChannel2(e.target.value)}
-                  />
+                  <input type="url" name="channel2" placeholder="https://tiktok.com/@yourhandle" value={formData.channel2} onChange={handleInputChange} />
                 </div>
 
                 <div className="form-actions">

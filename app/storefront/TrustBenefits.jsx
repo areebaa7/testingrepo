@@ -19,7 +19,7 @@ const trustBenefitsSlides = [
     badge: 'HASSLE-FREE',
     title: '7 Days Easy Return',
     subtitle: 'Not quite right? Enjoy smooth, straightforward returns within 7 days.',
-    image: '/assets/returnpolicy.png',
+    image: '/assets/returnpolicy.jpg',
     icon: <RefreshCcw size={28} />,
   },
   {
@@ -35,7 +35,7 @@ const trustBenefitsSlides = [
     badge: 'NATIONWIDE SERVICE',
     title: 'Fast Delivery Across Pakistan',
     subtitle: 'Swift, reliable doorstep shipping to any city nationwide.',
-    image: '/assets/shipping.jpg',
+    image: '/assets/shipping.jpeg',
     icon: <Truck size={28} />,
   },
 ];

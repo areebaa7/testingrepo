@@ -55,27 +55,21 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-33.333%); /* Perfect seamless loop alignment for tripled arrays */
   }
 }
 
-/* Mobile responsiveness: turn into a smooth touch-scrolling banner */
+/* Mobile responsiveness: Keep smooth continuous animation active on mobile as well */
 @media (max-width: 768px) {
   .trust-badge-wrapper {
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  
-  .trust-badge-wrapper::-webkit-scrollbar {
-    display: none;
+    overflow: hidden;
   }
 
   .trust-badge-track {
-    animation: none;
     display: flex;
     gap: 2rem;
-    padding: 0 1rem;
+    padding: 0;
     width: max-content;
+    animation: badgeTicker 20s linear infinite; /* Slightly faster ticker for compact mobile view */
   }
 }

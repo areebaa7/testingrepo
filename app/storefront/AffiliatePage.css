@@ -895,6 +895,7 @@
 }
 
 .affiliate-form input[type="email"],
+.affiliate-form input[type="tel"],
 .affiliate-form input[type="url"] {
   padding: 11px 14px;
   border: 1px solid #D1D5DB;

@@ -39,7 +39,10 @@ export async function POST(request: NextRequest, context: RouteContext) {
       let user = await transaction.user.findUnique({ where: { email: application.email } });
 
       if (user && user.role !== 'INFLUENCER') {
-        throw new Error('EMAIL_BELONGS_TO_ANOTHER_ROLE');
+        user = await transaction.user.update({
+          where: { id: user.id },
+          data: { role: 'INFLUENCER' }
+        });
       }
 
       if (!user) {

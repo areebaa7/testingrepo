@@ -97,7 +97,9 @@ export default function Navbar({
               <Heart size={20} />
               {wishlistCount > 0 && <span className="badge">{wishlistCount}</span>}
             </button>
-            <button className="icon-btn cart-wrapper" aria-label="Cart" onClick={onOpenCart} title="Cart">
+            
+            {/* Added id="cart-icon" here for the fly-to-cart target tracking */}
+            <button id="cart-icon" className="icon-btn cart-wrapper" aria-label="Cart" onClick={onOpenCart} title="Cart">
               <ShoppingBag size={20} />
               {cartCount > 0 && <span className="badge">{cartCount}</span>}
             </button>

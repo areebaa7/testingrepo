@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getStorefrontSettings } from '@/lib/storefrontSettings.server';
-import { sendEmail } from '@/lib/email';
+import { hash } from 'bcryptjs';
+import { sendAffiliateApplicationReceivedEmail } from '@/lib/email';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function normalizeChannelUrl(value: unknown) {
   if (typeof value !== 'string' || value.length > 500) return null;
-
   try {
     const url = new URL(value.trim());
     return ['http:', 'https:'].includes(url.protocol) ? url.toString() : null;
@@ -19,94 +19,129 @@ function normalizeChannelUrl(value: unknown) {
 export async function POST(request: NextRequest) {
   try {
     const storefrontSettings = await getStorefrontSettings();
-    if (!storefrontSettings.affiliateProgram.enabled) {
-      return NextResponse.json({ error: 'New affiliate applications are currently paused.' }, { status: 503 });
-    }
 
     const body = await request.json();
     const email = typeof body?.email === 'string' ? body.email.trim().toLowerCase() : '';
+    const mobileNumber = typeof body?.mobileNumber === 'string' ? body.mobileNumber.trim() : '';
     const channelLink1 = normalizeChannelUrl(body?.channelLink1);
-    const channelLink2 = body?.channelLink2 ? normalizeChannelUrl(body.channelLink2) : null;
+    const channelLink2 = normalizeChannelUrl(body?.channelLink2);
 
     if (!emailRegex.test(email)) {
       return NextResponse.json({ error: 'Please provide a valid email address.' }, { status: 400 });
     }
+    
+    if (!mobileNumber || !channelLink1) {
+      return NextResponse.json({ error: 'Please fill in all required fields.' }, { status: 400 });
+    }
 
-    if (!channelLink1 || (body?.channelLink2 && !channelLink2)) {
+    // Default dummy values for Prisma schema fields the user removed from the frontend
+    const fullName = email.split('@')[0];
+    const city = 'Not Provided';
+    const socialPlatform = 'Other';
+    const socialProfileUrl = channelLink1;
+    const followerCount = 0;
+    const contentCategory = channelLink2 || 'Not Provided';
+    const paymentInformation = {};
+
+    let user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      const temporaryPassword = await hash(Math.random().toString(36).slice(-10), 10);
+      user = await prisma.user.create({
+        data: {
+          email,
+          name: fullName,
+          password: temporaryPassword,
+          role: 'USER',
+        },
+      });
+    }
+
+    const existingProfile = await prisma.affiliateProfile.findUnique({
+      where: { creatorId: user.id },
+    });
+
+    if (existingProfile && ['Pending', 'Under Review', 'Approved'].includes(existingProfile.status)) {
       return NextResponse.json(
-        { error: 'Channel links must be valid HTTP or HTTPS URLs.' },
+        { error: 'You already have an active or pending affiliate profile.' },
         { status: 400 },
       );
     }
 
-    const [existingUser, existingApplication] = await Promise.all([
-      prisma.user.findUnique({ where: { email } }),
-      prisma.affiliateApplication.findFirst({
-        where: { email },
-        orderBy: { createdAt: 'desc' },
-      }),
-    ]);
-
-    if (existingApplication?.status === 'PENDING') {
-      return NextResponse.json({ error: 'You already have a pending application.' }, { status: 409 });
+    let profile;
+    if (existingProfile) {
+      profile = await prisma.affiliateProfile.update({
+        where: { creatorId: user.id },
+        data: {
+          fullName,
+          mobileNumber,
+          email,
+          city,
+          socialPlatform,
+          socialProfileUrl,
+          followerCount,
+          contentCategory,
+          paymentInformation,
+          status: 'Pending',
+        },
+      });
+    } else {
+      profile = await prisma.affiliateProfile.create({
+        data: {
+          creatorId: user.id,
+          fullName,
+          mobileNumber,
+          email,
+          city,
+          socialPlatform,
+          socialProfileUrl,
+          followerCount,
+          contentCategory,
+          paymentInformation,
+          status: 'Pending',
+        },
+      });
     }
 
-    if (existingApplication?.status === 'APPROVED') {
-      return NextResponse.json({ error: 'This email already has an approved affiliate account.' }, { status: 409 });
+    // Create or update the legacy AffiliateApplication record for the Admin Panel
+    const existingApp = await prisma.affiliateApplication.findFirst({ where: { email } });
+    if (existingApp) {
+      await prisma.affiliateApplication.update({
+        where: { id: existingApp.id },
+        data: {
+          channelLink1,
+          channelLink2: channelLink2 || null,
+          status: 'PENDING',
+        }
+      });
+    } else {
+      await prisma.affiliateApplication.create({
+        data: {
+          email,
+          channelLink1,
+          channelLink2: channelLink2 || null,
+          status: 'PENDING',
+        },
+      });
     }
 
-    if (existingUser && !existingApplication) {
-      return NextResponse.json(
-        { error: 'An account with this email already exists. Please sign in or contact support.' },
-        { status: 409 },
-      );
+    try {
+      // Fire automated welcome email synchronously but catch errors so DB transaction isn't rolled back
+      await sendAffiliateApplicationReceivedEmail(email, fullName);
+      console.log(`Successfully sent affiliate welcome email to ${email}`);
+    } catch (emailError) {
+      console.error('Failed to send affiliate welcome email (SMTP error or config missing):', emailError);
+      // We continue since the DB save was successful!
     }
-
-    if (existingUser && existingUser.role !== 'INFLUENCER') {
-      return NextResponse.json(
-        { error: 'An account with this email already exists. Please contact support to apply.' },
-        { status: 409 },
-      );
-    }
-
-    const application = existingApplication?.status === 'REJECTED'
-      ? await prisma.affiliateApplication.update({
-          where: { id: existingApplication.id },
-          data: {
-            channelLink1,
-            channelLink2,
-            status: 'PENDING',
-            reviewedBy: null,
-            reviewedAt: null,
-            notes: null,
-          },
-        })
-      : await prisma.affiliateApplication.create({
-          data: { email, channelLink1, channelLink2 },
-        });
-
-    await sendEmail({
-      to: email,
-      subject: 'Step & Styl affiliate application received',
-      html: `
-        <div style="font-family:Arial,sans-serif;line-height:1.6;max-width:600px;margin:auto">
-          <h2>Application received</h2>
-          <p>Thank you for applying to the Step & Styl affiliate program.</p>
-          <p>Your application is pending admin review. No account or promo code is active yet.</p>
-        </div>
-      `,
-    }).catch((error) => console.error('Affiliate application email failed:', error));
 
     return NextResponse.json({
       success: true,
-      application: {
-        id: application.id,
-        email: application.email,
-        status: application.status,
-      },
+      message: 'Your application has been received and is currently pending review.',
     });
   } catch (error) {
-    console.error('Error creating affiliate application:', error);
-    return NextResponse.json({ error: 'Failed to submit application.' }, { status: 500 });
+    console.error('Affiliate application database or schema validation error:', error);
+    return NextResponse.json(
+      { error: 'An unexpected error occurred processing your application.' },
+      { status: 500 },
+    );
   }
 }

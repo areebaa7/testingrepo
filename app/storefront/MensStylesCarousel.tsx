@@ -5,16 +5,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './MensStylesCarousel.css';
 
-const fallbackMenProducts = [
-  { id: 1, title: 'Urban Leather Oxford', price: '4,550', image: '/assets/shoe-6.jpg' },
-  { id: 2, title: 'Classic Minimalist Sneaker', price: '2,999', image: '/assets/sneaker-4.jpeg' },
-  { id: 3, title: 'Formal Derby Shoe', price: '5,200', image: '/assets/shoe-7.jpeg' },
-  { id: 4, title: 'Relaxed Casual Slide', price: '1,499', image: '/assets/openAndpay.jpeg' },
-  { id: 5, title: 'Double-Buckle Sandal', price: '3,200', image: '/assets/shoe-2.jpeg' }
-];
-
 export default function MensStylesCarousel({ setCurrentPage }: { setCurrentPage: (page: string) => void }) {
-  const [products, setProducts] = useState(fallbackMenProducts);
+  const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
     async function fetchMenProducts() {
@@ -58,11 +50,8 @@ export default function MensStylesCarousel({ setCurrentPage }: { setCurrentPage:
             return isMenProduct;
           });
 
-          // Use filtered items if available, otherwise display active products cleanly
-          const displayItems = menItems.length > 0 ? menItems : json.data;
-
-          if (displayItems.length > 0) {
-            const formatted = displayItems.map((item: any) => {
+          if (menItems.length > 0) {
+            const formatted = menItems.map((item: any) => {
               let rawImage = item.image || item.imageUrl || '/logo_main.png';
               if (typeof rawImage === 'string') {
                 rawImage = rawImage.replace(/\\/g, '/');
@@ -84,7 +73,7 @@ export default function MensStylesCarousel({ setCurrentPage }: { setCurrentPage:
           }
         }
       } catch (err) {
-        console.error('Failed to load products for Men styles carousel, using fallback:', err);
+        console.error('Failed to load products for Men styles carousel:', err);
       }
     }
     fetchMenProducts();
@@ -92,8 +81,8 @@ export default function MensStylesCarousel({ setCurrentPage }: { setCurrentPage:
 
   const formatPrice = (val: string | number) => Number(val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  // Triple the array to create a smooth, seamless infinite loop animation track
-  const loopingProducts = [...products, ...products, ...products];
+  // Triple the array to create a smooth, seamless infinite loop animation track only if products exist
+  const loopingProducts = products.length > 0 ? [...products, ...products, ...products] : [];
 
   return (
     <section className="mens-styles-section">
@@ -107,36 +96,38 @@ export default function MensStylesCarousel({ setCurrentPage }: { setCurrentPage:
           </div>
         </div>
 
-        {/* Auto-Moving Infinite Carousel Track */}
-        <div className="mens-carousel-container">
-          <div className="mens-carousel-wrapper">
-            <div className="mens-ticker-track">
-              {loopingProducts.map((item, index) => (
-                <motion.div 
-                  key={`${item.id}-${index}`} 
-                  className="mens-category-card"
-                  onClick={() => setCurrentPage('men')}
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className="mens-category-img-box">
-                    <img 
-                      src={item.image} 
-                      alt={item.title} 
-                      className="mens-category-img"
-                      onError={(e) => { e.currentTarget.src = '/logo_main.png'; }}
-                    />
-                    <div className="mens-category-overlay"></div>
-                  </div>
-                  <div className="mens-category-details">
-                    <h3 className="mens-category-name">{item.title}</h3>
-                    <span className="mens-category-count">Rs. {formatPrice(item.price)}</span>
-                  </div>
-                </motion.div>
-              ))}
+        {/* Auto-Moving Infinite Carousel Track (Only renders if products exist) */}
+        {products.length > 0 && (
+          <div className="mens-carousel-container">
+            <div className="mens-carousel-wrapper">
+              <div className="mens-ticker-track">
+                {loopingProducts.map((item, index) => (
+                  <motion.div 
+                    key={`${item.id}-${index}`} 
+                    className="mens-category-card"
+                    onClick={() => setCurrentPage('men')}
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="mens-category-img-box">
+                      <img 
+                        src={item.image} 
+                        alt={item.title} 
+                        className="mens-category-img"
+                        onError={(e) => { e.currentTarget.src = '/logo_main.png'; }}
+                      />
+                      <div className="mens-category-overlay"></div>
+                    </div>
+                    <div className="mens-category-details">
+                      <h3 className="mens-category-name">{item.title}</h3>
+                      <span className="mens-category-count">Rs. {formatPrice(item.price)}</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
       </div>
     </section>

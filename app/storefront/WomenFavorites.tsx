@@ -6,16 +6,8 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import './WomenFavorites.css';
 
-const fallbackWomenProducts = [
-  { id: 1, title: 'Classic Urban Heel', price: '2,499', image: '/assets/shoe-7.jpeg', badge: 'POPULAR' },
-  { id: 2, title: 'Minimalist Summer Sandal', price: '1,899', image: '/assets/shoe-6.jpg', badge: 'NEW' },
-  { id: 3, title: 'Everyday Comfort Flat', price: '1,399', image: '/assets/sneaker-4.jpeg', badge: 'TRENDING' },
-  { id: 4, title: 'Evening Party Wear', price: '3,200', image: '/assets/shoe-2.jpeg', badge: 'EXCLUSIVE' },
-  { id: 5, title: 'Relaxed Casual Slide', price: '1,250', image: '/assets/openAndpay.jpeg', badge: 'HOT' },
-];
-
 export default function WomenFavorites({ setCurrentPage }: { setCurrentPage: (page: string) => void }) {
-  const [products, setProducts] = useState(fallbackWomenProducts);
+  const [products, setProducts] = useState<any[]>([]);
 
   // Fetch products from admin panel API and dynamically filter for Women category
   useEffect(() => {
@@ -30,7 +22,6 @@ export default function WomenFavorites({ setCurrentPage }: { setCurrentPage: (pa
             const cat = (item.category || item.tag || '').toLowerCase();
             const name = (item.name || item.title || '').toLowerCase();
             const gender = (item.gender || '').toLowerCase();
-            const desc = (item.description || '').toLowerCase();
 
             // Exclude explicit men products first
             const isMen = cat.includes('men') || gender.includes('men') || name.includes('men');
@@ -48,39 +39,36 @@ export default function WomenFavorites({ setCurrentPage }: { setCurrentPage: (pa
               name.includes('ladies') || 
               name.includes('heel') || 
               name.includes('sandal') || 
-              name.includes('flat') ||
-              name.includes('women')
+              name.includes('flat')
             );
           });
 
-          // If admin has matching women items, use them; otherwise fallback gracefully or use all active items if appropriate
+          // Use filtered women items, or if none explicitly tagged, use all available items instead of dummy placeholders
           const displayItems = womenItems.length > 0 ? womenItems : json.data;
 
-          if (displayItems.length > 0) {
-            const formatted = displayItems.map((item: any) => {
-              let rawImage = item.image || item.imageUrl || '/logo_main.png';
-              if (typeof rawImage === 'string') {
-                rawImage = rawImage.replace(/\\/g, '/');
-                if (rawImage.includes('placeholder') || rawImage.trim() === '') {
-                  rawImage = '/logo_main.png';
-                } else if (!rawImage.startsWith('http') && !rawImage.startsWith('/')) {
-                  rawImage = '/' + rawImage;
-                }
+          const formatted = displayItems.map((item: any) => {
+            let rawImage = item.image || item.imageUrl || '/logo_main.png';
+            if (typeof rawImage === 'string') {
+              rawImage = rawImage.replace(/\\/g, '/');
+              if (rawImage.includes('placeholder') || rawImage.trim() === '') {
+                rawImage = '/logo_main.png';
+              } else if (!rawImage.startsWith('http') && !rawImage.startsWith('/')) {
+                rawImage = '/' + rawImage;
               }
+            }
 
-              return {
-                id: item.id,
-                title: item.name || item.title || 'Women Footwear',
-                price: item.salePrice || item.price || '0',
-                image: rawImage,
-                badge: item.badge || 'POPULAR'
-              };
-            });
-            setProducts(formatted);
-          }
+            return {
+              id: item.id,
+              title: item.name || item.title || 'Women Footwear',
+              price: item.salePrice || item.price || '0',
+              image: rawImage,
+              badge: item.badge || 'POPULAR'
+            };
+          });
+          setProducts(formatted);
         }
       } catch (err) {
-        console.error('Failed to load admin products for Women Favorites, using fallback:', err);
+        console.error('Failed to load admin products for Women Favorites:', err);
       }
     }
     fetchWomenProducts();
@@ -88,8 +76,8 @@ export default function WomenFavorites({ setCurrentPage }: { setCurrentPage: (pa
 
   const formatPrice = (val: string | number) => Number(val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  // Duplicate the product array to create a seamless infinite loop animation track
-  const loopingProducts = [...products, ...products, ...products];
+  // Duplicate the product array to create a seamless infinite loop animation track only if products exist
+  const loopingProducts = products.length > 0 ? [...products, ...products, ...products] : [];
 
   return (
     <section className="women-favorites-section">
@@ -123,38 +111,40 @@ export default function WomenFavorites({ setCurrentPage }: { setCurrentPage: (pa
             </div>
           </motion.div>
 
-          {/* Right Side: Auto-Scrolling Infinite Product Ticker */}
+          {/* Right Side: Auto-Scrolling Infinite Product Ticker (Only renders when admin products load) */}
           <div className="women-fav-carousel-container">
-            <div className="women-fav-carousel-wrapper">
-              <div className="women-ticker-track">
-                {loopingProducts.map((item, index) => (
-                  <motion.div 
-                    key={`${item.id}-${index}`} 
-                    className="women-product-card"
-                    onClick={() => setCurrentPage('women')}
-                    whileHover={{ y: -5 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {item.badge && <span className="women-product-badge">{item.badge}</span>}
-                    <div className="women-product-img-wrap">
-                      <img 
-                        src={item.image} 
-                        alt={item.title} 
-                        className="women-product-img"
-                        onError={(e) => {
-                          e.currentTarget.src = '/logo_main.png';
-                        }}
-                      />
-                    </div>
-                    <div className="women-product-details">
-                      <h3 className="women-product-title">{item.title}</h3>
-                      <p className="women-product-price">Rs. {formatPrice(item.price)}</p>
-                      <span className="women-product-link">View Collection &rarr;</span>
-                    </div>
-                  </motion.div>
-                ))}
+            {products.length > 0 && (
+              <div className="women-fav-carousel-wrapper">
+                <div className="women-ticker-track">
+                  {loopingProducts.map((item, index) => (
+                    <motion.div 
+                      key={`${item.id}-${index}`} 
+                      className="women-product-card"
+                      onClick={() => setCurrentPage('women')}
+                      whileHover={{ y: -5 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {item.badge && <span className="women-product-badge">{item.badge}</span>}
+                      <div className="women-product-img-wrap">
+                        <img 
+                          src={item.image} 
+                          alt={item.title} 
+                          className="women-product-img"
+                          onError={(e) => {
+                            e.currentTarget.src = '/logo_main.png';
+                          }}
+                        />
+                      </div>
+                      <div className="women-product-details">
+                        <h3 className="women-product-title">{item.title}</h3>
+                        <p className="women-product-price">Rs. {formatPrice(item.price)}</p>
+                        <span className="women-product-link">View Collection &rarr;</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
         </div>

@@ -24,6 +24,7 @@ model User {
   savedAddresses    SavedAddress[]
   customerCart      CustomerCart?
   customerWishlist  CustomerWishlist?
+  affiliateProfile  AffiliateProfile?
   reviews           Review[]
 }
 
@@ -138,8 +139,14 @@ model Order {
   disapprovedAt      DateTime?
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
-  user               User?         @relation(fields: [userId], references: [id])
-  promoCode          PromoCode?    @relation(fields: [promoCodeId], references: [id])
+
+  paymentProofScreenshotUrl String?
+  auditTrailLogs            Json?
+  affiliateAttributionRef   String?
+  affiliateProfile          AffiliateProfile? @relation(fields: [affiliateAttributionRef], references: [assignedAffiliateLinkRef])
+
+  user      User?      @relation(fields: [userId], references: [id])
+  promoCode PromoCode? @relation(fields: [promoCodeId], references: [id])
 }
 
 model OrderIdempotency {
@@ -185,11 +192,20 @@ enum InfluencerStatus {
 }
 
 enum OrderStatus {
+  NEW
+  PAYMENT_PENDING
+  PAYMENT_VERIFIED
+  PROCESSING
+  PACKED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  RETURNED
+  REFUNDED
+  REJECTED_FAILED
   PENDING
   PAID
-  SHIPPED
   COMPLETED
-  CANCELLED
 }
 
 enum Gender {
@@ -501,15 +517,88 @@ enum NewsletterSyncStatus {
 }
 
 model AbandonedCart {
-  id              String    @id @default(cuid())
-  userId          String    @unique
-  email           String
-  items           Json
-  subtotal        Float
-  status          String
-  recoveredAt     DateTime?
-  recoverySentAt  DateTime?
-  lastActivity    DateTime  @default(now())
+  id             String    @id @default(cuid())
+  userId         String    @unique
+  email          String
+  items          Json
+  subtotal       Float
+  status         String
+  recoveredAt    DateTime?
+  recoverySentAt DateTime?
+  lastActivity   DateTime  @default(now())
 
   @@map("AbandonedCarts")
+}
+
+model AffiliateProfile {
+  id                       String                @id @default(cuid())
+  creatorId                String                @unique // Reference to User
+  fullName                 String
+  mobileNumber             String
+  email                    String
+  city                     String
+  socialPlatform           String
+  socialProfileUrl         String
+  followerCount            Int
+  contentCategory          String
+  paymentInformation       Json?
+  status                   String                @default("Pending") // Pending, Under Review, Approved, Rejected, Suspended
+  assignedPromoCode        String?               @unique
+  assignedAffiliateLinkRef String?               @unique
+  promos                   AffiliatePromo[]
+  trackings                AffiliateTracking[]
+  withdrawals              AffiliateWithdrawal[]
+  createdAt                DateTime              @default(now())
+  updatedAt                DateTime              @updatedAt
+  user                     User                  @relation(fields: [creatorId], references: [id])
+  orders                   Order[]
+}
+
+model AffiliatePromo {
+  id                   String           @id @default(cuid())
+  code                 String           @unique
+  creatorId            String
+  discountPercentage   Float
+  commissionPercentage Float
+  startDate            DateTime
+  expiryDate           DateTime
+  minimumOrderValue    Float
+  maximumUsage         Int
+  usageCount           Int              @default(0)
+  applicableProducts   Json?
+  isActive             Boolean          @default(true)
+  creator              AffiliateProfile @relation(fields: [creatorId], references: [id])
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+}
+
+model AffiliateTracking {
+  id                String           @id @default(cuid())
+  trackingId        String           @unique
+  creatorId         String
+  orderId           String?          @unique
+  clicksCount       Int              @default(0)
+  sessionsCount     Int              @default(0)
+  orderRevenue      Float            @default(0)
+  commissionAmount  Float            @default(0)
+  status            String           @default("Pending") // Pending, Approved, Rejected, Paid, Reversed
+  holdingPeriodDays Int              @default(14)
+  creator           AffiliateProfile @relation(fields: [creatorId], references: [id])
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+}
+
+model AffiliateWithdrawal {
+  id             String           @id @default(cuid())
+  withdrawalId   String           @unique
+  creatorId      String
+  amount         Float
+  requestDate    DateTime         @default(now())
+  paymentMethod  String
+  paymentDetails Json
+  status         String           @default("Pending") // Pending, Approved, Paid, Rejected
+  auditTrail     Json?
+  creator        AffiliateProfile @relation(fields: [creatorId], references: [id])
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 }

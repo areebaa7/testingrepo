@@ -117,35 +117,35 @@ export default function Home() {
             {/* Trust Benefits Hero Carousel */}
             <TrustBenefits setCurrentPage={setCurrentPage} />
 
-            {/* Affiliate Section placed right after the trust banners */}
+            {/* Affiliate Section placed after trust banners */}
             <AffiliateSection setCurrentPage={setCurrentPage} />
 
-            {/* 1. New Arrivals Section */}
+            {/* New Arrivals Section */}
             <div id="new-arrivals-section">
               <NewArrivals setCurrentPage={setCurrentPage} />
             </div>
 
-            {/* 2. Kids Collection Section Banner */}
-            <KidsBanner setCurrentPage={setCurrentPage} />
-            
-            {/* 3. Women's Favorites Carousel Section */}
-            <WomenFavorites setCurrentPage={setCurrentPage} />
-
-            {/* 4. Flash Sale & Second Trust Carousel */}
-            <DynamicSaleBanner setCurrentPage={setCurrentPage} />
-
-            {/* 5. Men's Editorial Banner & Categories Carousel */}
+            {/* Men's Editorial Banner & Categories Carousel */}
             <MensCollectionBanner setCurrentPage={setCurrentPage} />
             <MensStylesCarousel setCurrentPage={setCurrentPage} />
 
-            {/* 6. Why Step & Styl Black Compact Layout */}
+            {/* Women's Favorites Carousel Section */}
+            <WomenFavorites setCurrentPage={setCurrentPage} />
+
+            {/* Why Step & Styl Black Compact Layout */}
             <WhyStepAndStyl />
 
-            {/* 7. Customer Reviews & Discover More */}
+            {/* Kids Collection Section Banner */}
+            <KidsBanner setCurrentPage={setCurrentPage} />
+
+            {/* Flash Sale & Second Trust Carousel */}
+            <DynamicSaleBanner setCurrentPage={setCurrentPage} />
+
+            {/* Customer Reviews & Discover More */}
             <CustomerReviews />
             <DiscoverMore setCurrentPage={setCurrentPage} />
 
-            {/* 8. Follow Us on Socials / Instagram Section */}
+            {/* Follow Us on Socials / Instagram Section */}
             <FollowUsSection />
           </>
         ) : currentPage === 'shop' ? (

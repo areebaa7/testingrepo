@@ -130,3 +130,74 @@ export async function sendMarketingEmails({
     }));
   }
 }
+
+export async function sendPaymentProofReceivedEmail(to: string, orderId: string) {
+  const subject = 'Payment Proof Received - Step & Styl';
+  const html = `<div style="font-family: Arial, sans-serif;">
+      <h2>Payment Proof Received</h2>
+      <p>Thanks for choosing Step & Styl. Your payment proof for Order #${orderId} has been received.</p>
+      <p>Your order will be confirmed and processed soon after verification.</p>
+    </div>`;
+  return sendEmail({ to, subject, html });
+}
+
+export async function sendPaymentVerifiedEmail(to: string, orderId: string) {
+  const subject = 'Payment Verified - Step & Styl';
+  const html = `<div style="font-family: Arial, sans-serif;">
+      <h2>Payment Verified</h2>
+      <p>Great news! Your payment for Order #${orderId} has been successfully verified.</p>
+      <p>We are now processing your order and will update you once it's shipped.</p>
+    </div>`;
+  return sendEmail({ to, subject, html });
+}
+
+export async function sendAffiliateApprovalEmail(to: string, name: string) {
+  const subject = 'Welcome to the Step & Styl Creator Program!';
+  const html = `<div style="font-family: Arial, sans-serif;">
+      <h2>Congratulations, ${name}!</h2>
+      <p>Your application to the Step & Styl Creator Program has been approved.</p>
+      <p>You can now log in to your dashboard to view your tracking links, promo codes, and commissions.</p>
+    </div>`;
+  return sendEmail({ to, subject, html });
+}
+
+export async function sendAffiliateRejectionEmail(to: string, name: string) {
+  const subject = 'Step & Styl Creator Program Application Update';
+  const html = `<div style="font-family: Arial, sans-serif;">
+      <h2>Hi ${name},</h2>
+      <p>Thank you for applying to the Step & Styl Creator Program.</p>
+      <p>After careful consideration, we are unable to approve your application at this time.</p>
+    </div>`;
+  return sendEmail({ to, subject, html });
+}
+
+export async function sendAffiliateApplicationReceivedEmail(to: string, name: string) {
+  const subject = 'Application Received - Step & Styl Creator Program';
+  const html = `<div style="font-family: Arial, sans-serif;">
+      <h2>Hi ${name},</h2>
+      <p>Thank you for applying to the Step & Styl Creator Program!</p>
+      <p>We have successfully received your application. Our team will review your channel(s) and get back to you within 24-48 hours.</p>
+    </div>`;
+  return sendEmail({ to, subject, html });
+}
+
+export async function sendOrderApprovedEmail(to: string, name: string, orderId: string) {
+  const subject = 'Order Approved - Step & Styl';
+  const html = `<div style="font-family: Arial, sans-serif;">
+      <h2>Hi ${name || 'Customer'},</h2>
+      <p>Great news! Your order <strong>#${orderId}</strong> has been approved and is now being processed.</p>
+      <p>Your items will be packed and dispatched shortly. You can expect delivery within 3 to 5 working days.</p>
+      <p>Thank you for shopping with Step & Styl!</p>
+    </div>`;
+  return sendEmail({ to, subject, html });
+}
+
+export async function sendOrderRejectedEmail(to: string, name: string, orderId: string) {
+  const subject = 'Order Update - Step & Styl';
+  const html = `<div style="font-family: Arial, sans-serif;">
+      <h2>Hi ${name || 'Customer'},</h2>
+      <p>We are writing to inform you that your order <strong>#${orderId}</strong> has been cancelled or rejected.</p>
+      <p>If you believe this was an error, or if you need assistance, please contact our support team.</p>
+    </div>`;
+  return sendEmail({ to, subject, html });
+}

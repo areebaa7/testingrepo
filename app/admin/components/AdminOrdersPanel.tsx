@@ -32,7 +32,9 @@ interface AdminOrder {
   shippingPostalCode: string;
   paymentMethod: PaymentMethod;
   paymentStatus: PaymentStatus;
-  status: 'PENDING' | 'PAID' | 'SHIPPED' | 'COMPLETED' | 'CANCELLED';
+  status: 'NEW' | 'PAYMENT_PENDING' | 'PAYMENT_VERIFIED' | 'PROCESSING' | 'PACKED' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED' | 'RETURNED' | 'REFUNDED' | 'REJECTED_FAILED' | 'PENDING' | 'PAID' | 'COMPLETED';
+  paymentProofScreenshotUrl?: string | null;
+  affiliateAttributionRef?: string | null;
   paymentIntentId?: string | null;
   receiptUrl?: string | null;
   directAccount?: string | null;
@@ -356,6 +358,23 @@ export default function AdminOrdersPanel() {
     }
   };
 
+  const handleDeleteOrder = async (id: string) => {
+    try {
+      setIsUpdating(true);
+      const res = await fetch(`/api/orders/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to delete order');
+      
+      setOrders(prev => prev.filter(o => o.id !== id));
+      if (selectedOrderId === id) setSelectedOrderId(null);
+      setActionStatus({ type: 'success', message: 'Order deleted successfully.' });
+    } catch (err: any) {
+      setActionStatus({ type: 'error', message: err.message });
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   const handleOrderAction = async (action: 'CONFIRM' | 'SHIP' | 'DELIVER' | 'CANCEL') => {
     if (!selectedOrder) return;
     if (action === 'CANCEL' && !note.trim()) {
@@ -482,13 +501,14 @@ export default function AdminOrdersPanel() {
                 <th className="px-4 py-3 text-left font-semibold text-gray-600">Payment</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-600">Total</th>
                 <th className="px-4 py-3 text-left font-semibold text-gray-600">Payment Status</th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-600">Delivery</th>
-              </tr>
+                                <th className="px-4 py-3 text-left font-semibold text-gray-600">Delivery</th>
+                <th className="px-4 py-3 text-left font-semibold text-gray-600">Actions</th>
+                </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-6 text-center text-gray-500">
+                  <td colSpan={7} className="px-4 py-6 text-center text-gray-500">
                     No orders match the selected filters.
                   </td>
                 </tr>
@@ -536,7 +556,21 @@ export default function AdminOrdersPanel() {
                         {getOrderStatusLabel(order.status)}
                       </span>
                     </td>
-                  </tr>
+                      <td className="px-4 py-3">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (window.confirm('Are you sure you want to permanently delete this order?')) {
+                              handleDeleteOrder(order.id);
+                            }
+                          }}
+                          className="text-red-500 hover:text-red-700 transition"
+                          title="Delete Order"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </button>
+                      </td>
+                    </tr>
                 ))
               )}
             </tbody>
@@ -639,7 +673,7 @@ export default function AdminOrdersPanel() {
 
             {selectedOrder.receiptUrl && (
               <section>
-                <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-2">Payment Receipt</h4>
+                <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-2">Payment Receipt (Initial)</h4>
                 <div className="relative h-64 rounded-xl border border-gray-200 overflow-hidden cursor-pointer" onClick={() => setFullscreenImage(selectedOrder.receiptUrl || null)}>
                   <Image
                     src={selectedOrder.receiptUrl}
@@ -649,14 +683,28 @@ export default function AdminOrdersPanel() {
                     className="object-contain hover:opacity-90 transition-opacity"
                   />
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setFullscreenImage(selectedOrder.receiptUrl || null)}
-                  className="text-sm text-purple-600 hover:text-purple-700 font-semibold mt-2 inline-block cursor-pointer"
-                >
-                  View full receipt
-                </button>
               </section>
+            )}
+            
+            {selectedOrder.paymentProofScreenshotUrl && (
+              <section className="mt-4">
+                <h4 className="text-sm font-semibold text-purple-700 uppercase tracking-wide mb-2">Bank Transfer Proof</h4>
+                <div className="relative h-64 rounded-xl border border-purple-200 overflow-hidden cursor-pointer" onClick={() => setFullscreenImage(selectedOrder.paymentProofScreenshotUrl || null)}>
+                  <Image
+                    src={selectedOrder.paymentProofScreenshotUrl}
+                    alt="Bank Transfer Proof"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 448px"
+                    className="object-contain hover:opacity-90 transition-opacity"
+                  />
+                </div>
+              </section>
+            )}
+            
+            {selectedOrder.affiliateAttributionRef && (
+              <div className="mt-4 bg-purple-50 text-purple-800 p-3 rounded-lg border border-purple-200">
+                <span className="font-semibold">Affiliate Referral:</span> {selectedOrder.affiliateAttributionRef}
+              </div>
             )}
 
             <section>
