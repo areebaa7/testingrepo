@@ -66,7 +66,7 @@ export async function PATCH(
 
     const updateData: Record<string, any> = {};
 
-    const validOrderStatuses = ['NEW', 'PAYMENT_PENDING', 'PAYMENT_VERIFIED', 'PROCESSING', 'PACKED', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'RETURNED', 'REFUNDED', 'REJECTED_FAILED', 'PENDING', 'PAID', 'COMPLETED'];
+    const validOrderStatuses = ['NEW', 'PAYMENT_PENDING', 'PAYMENT_VERIFIED', 'PROCESSING', 'PACKED', 'SHIPPED', 'OUT_FOR_DELIVERY', 'DELIVERED', 'CANCELLED', 'RETURNED', 'REFUNDED', 'REJECTED_FAILED', 'PENDING', 'PAID', 'COMPLETED', 'APPROVED', 'DISAPPROVED'];
     const validPaymentStatuses = ['PENDING', 'APPROVED', 'DISAPPROVED'];
 
     if (cleanStatus && validOrderStatuses.includes(cleanStatus)) {

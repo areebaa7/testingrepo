@@ -15,7 +15,7 @@ import WomenFavorites from './storefront/WomenFavorites';
 import DynamicSaleBanner from './storefront/DynamicSaleBanner';
 import MensCollectionBanner from './storefront/MensCollectionBanner';
 import MensStylesCarousel from './storefront/MensStylesCarousel';
-import WhyStepAndStyl from './storefront/WhyStepAndStyl';
+// import WhyStepAndStyl from './storefront/WhyStepAndStyl';
 import DiscoverMore from './storefront/DiscoverMore';
 import CustomerReviews from './storefront/CustomerReviews';
 import FollowUsSection from './storefront/FollowUsSection';
@@ -133,23 +133,23 @@ export default function Home() {
             {/* 6. Flash sale */}
             <DynamicSaleBanner setCurrentPage={setCurrentPage} />
 
-            {/* 7. Trust carousel restored after flash sale */}
+            {/* 7. Kids favorite placed right after Flash Sale */}
+            <KidsBanner setCurrentPage={setCurrentPage} />
+
+            {/* 8. Trust carousel restored after flash sale / kids */}
             <TrustBenefits setCurrentPage={setCurrentPage} />
 
-            {/* 8. Men Collection & As ka sath nichy carousal */}
+            {/* 9. Men Collection & As ka sath nichy carousal */}
             <MensCollectionBanner setCurrentPage={setCurrentPage} />
             <MensStylesCarousel setCurrentPage={setCurrentPage} />
 
-            {/* 9. High demand products */}
+            {/* 10. High demand products */}
             <div id="new-arrivals-section">
               <NewArrivals setCurrentPage={setCurrentPage} />
             </div>
 
-            {/* 10. Why step and style */}
-            <WhyStepAndStyl />
-
-            {/* 11. Kid favorite */}
-            <KidsBanner setCurrentPage={setCurrentPage} />
+            {/* 11. Why step and style (Commented out per request) */}
+            {/* <WhyStepAndStyl /> */}
 
             {/* 12. Costumer review */}
             <CustomerReviews />

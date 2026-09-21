@@ -24,12 +24,23 @@
   box-sizing: border-box;
 }
 
+/* Base slideshow background styles */
 .mens-banner-bg {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   z-index: 1;
+}
+
+/* Desktop vs Mobile background image toggling */
+.desktop-banner-bg {
+  display: block;
+}
+
+.mobile-banner-bg {
+  display: none;
 }
 
 .mens-banner-content {
@@ -136,6 +147,15 @@
 }
 
 @media (max-width: 768px) {
+  /* Switch to mobile background images */
+  .desktop-banner-bg {
+    display: none !important;
+  }
+
+  .mobile-banner-bg {
+    display: block !important;
+  }
+
   .mens-banner-section {
     padding: 0 0.5rem 1.5rem 0.5rem;
   }

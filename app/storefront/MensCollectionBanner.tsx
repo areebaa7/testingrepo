@@ -19,7 +19,7 @@ const menSlides = [
   },
   {
     id: 3,
-    image: '/assets/mens-banner2.jpg',
+    image: '/assets/mens-banner3.jpg',
     mobileImage: '/assets/men-collection3.jpg',
   }
 ];

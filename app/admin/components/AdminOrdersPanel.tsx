@@ -376,9 +376,18 @@ export default function AdminOrdersPanel() {
   };
 
   const handleOrderAction = async (action: 'CONFIRM' | 'SHIP' | 'DELIVER' | 'CANCEL') => {
+    let newStatus = '';
+    if (action === 'CONFIRM') newStatus = 'PAID';
+    if (action === 'SHIP') newStatus = 'SHIPPED';
+    if (action === 'DELIVER') newStatus = 'DELIVERED';
+    if (action === 'CANCEL') newStatus = 'CANCELLED';
+    await handleLifecycleUpdate(newStatus);
+  };
+
+  const handleLifecycleUpdate = async (newStatus: string) => {
     if (!selectedOrder) return;
-    if (action === 'CANCEL' && !note.trim()) {
-      setActionStatus({ type: 'error', message: 'Please provide a cancellation reason in the admin note.' });
+    if ((newStatus === 'CANCELLED' || newStatus === 'DISAPPROVED') && !note.trim()) {
+      setActionStatus({ type: 'error', message: 'Please provide a reason in the admin note.' });
       return;
     }
 
@@ -389,7 +398,7 @@ export default function AdminOrdersPanel() {
       const response = await fetch(`/api/orders/${selectedOrder.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action, adminNote: note.trim() }),
+        body: JSON.stringify({ status: newStatus, adminNote: note.trim() }),
       });
 
       const data = await response.json();
@@ -404,15 +413,11 @@ export default function AdminOrdersPanel() {
             : order,
         ),
       );
+      
+      const newLabel = newStatus.charAt(0) + newStatus.slice(1).toLowerCase().replace(/_/g, ' ');
       setActionStatus({
         type: 'success',
-        message: `${action === 'CONFIRM'
-          ? 'Order confirmed successfully.'
-          : action === 'SHIP'
-            ? 'Order marked as shipped.'
-            : action === 'DELIVER'
-              ? 'Order marked as delivered.'
-              : 'Order cancelled successfully.'}${data.warning ? ` ${data.warning}` : ''}`,
+        message: `Order status updated to ${newLabel}.${data.warning ? ` ${data.warning}` : ''}`,
       });
       setNote('');
     } catch (error) {

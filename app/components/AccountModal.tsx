@@ -11,7 +11,7 @@ export type AuthUser = {
   emailVerified?: boolean;
 };
 
-export type AuthMode = 'login' | 'register';
+export type AuthMode = 'login' | 'register' | 'admin';
 
 interface AccountModalProps {
   isOpen: boolean;
@@ -28,7 +28,7 @@ export default function AccountModal({ isOpen, mode, onClose, onModeChange, onAu
     email: '',
     password: '',
     confirmPassword: '',
-    wantsAdmin: false,
+    
     wantsInfluencer: false,
     adminKey: '',
     defaultPrefix: '',
@@ -41,7 +41,7 @@ export default function AccountModal({ isOpen, mode, onClose, onModeChange, onAu
       setFormValues((prev) => ({
         ...prev,
         wantsInfluencer: true,
-        wantsAdmin: false,
+        
         defaultPrefix: 'STYLE_A',
       }));
     } else if (isOpen && !preSelectInfluencer) {
@@ -65,7 +65,7 @@ export default function AccountModal({ isOpen, mode, onClose, onModeChange, onAu
       email: '',
       password: '',
       confirmPassword: '',
-      wantsAdmin: false,
+      
       wantsInfluencer: false,
       adminKey: '',
       defaultPrefix: '',
@@ -102,7 +102,7 @@ export default function AccountModal({ isOpen, mode, onClose, onModeChange, onAu
               email: formValues.email,
               password: formValues.password,
               name: formValues.name,
-              wantsAdmin: formValues.wantsAdmin,
+              
               wantsInfluencer: formValues.wantsInfluencer,
               adminKey: formValues.adminKey,
               defaultPrefix: formValues.defaultPrefix,
@@ -140,24 +140,32 @@ export default function AccountModal({ isOpen, mode, onClose, onModeChange, onAu
         </button>
 
         <div className="p-6 overflow-y-auto flex-1">
-          <div className="flex justify-center mb-4 space-x-3">
-            <button
-              className={`px-5 py-1.5 rounded-full text-sm font-semibold transition-all ${
-                mode === 'login' ? 'bg-[#A855F7] text-white shadow-lg' : 'bg-gray-100 text-gray-600'
-              }`}
-              onClick={() => onModeChange('login')}
-            >
-              Login
-            </button>
-            <button
-              className={`px-5 py-1.5 rounded-full text-sm font-semibold transition-all ${
-                mode === 'register' ? 'bg-[#A855F7] text-white shadow-lg' : 'bg-gray-100 text-gray-600'
-              }`}
-              onClick={() => onModeChange('register')}
-            >
-              Sign Up
-            </button>
-          </div>
+          <div className="flex justify-center mb-4 space-x-2">
+              <button
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                  mode === 'login' ? 'bg-[#A855F7] text-white shadow-lg' : 'bg-gray-100 text-gray-600'
+                }`}
+                onClick={() => onModeChange('login')}
+              >
+                Customer Login
+              </button>
+              <button
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                  mode === 'register' ? 'bg-[#A855F7] text-white shadow-lg' : 'bg-gray-100 text-gray-600'
+                }`}
+                onClick={() => onModeChange('register')}
+              >
+                Sign Up
+              </button>
+              <button
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                  mode === 'admin' ? 'bg-red-500 text-white shadow-lg' : 'bg-gray-100 text-gray-600'
+                }`}
+                onClick={() => onModeChange('admin')}
+              >
+                Admin Login
+              </button>
+            </div>
 
           <form className="space-y-3" onSubmit={handleSubmit}>
             {mode === 'register' && (
@@ -224,7 +232,7 @@ export default function AccountModal({ isOpen, mode, onClose, onModeChange, onAu
                     onChange={(e) => {
                       handleChange('wantsInfluencer', e.target.checked);
                       if (e.target.checked) {
-                        handleChange('wantsAdmin', false);
+                        
                       }
                     }}
                     className="w-3.5 h-3.5 text-[#A855F7] rounded border-gray-300 focus:ring-[#A855F7]"
@@ -250,38 +258,7 @@ export default function AccountModal({ isOpen, mode, onClose, onModeChange, onAu
               </div>
             )}
 
-            {mode === 'register' && (
-              <div className="space-y-2 rounded-lg border border-[#A855F7]/20 p-2.5 bg-[#A855F7]/5">
-                <label className="flex items-center space-x-2 text-xs text-gray-700">
-                  <input
-                    type="checkbox"
-                    checked={formValues.wantsAdmin}
-                    onChange={(e) => {
-                      handleChange('wantsAdmin', e.target.checked);
-                      if (e.target.checked) {
-                        handleChange('wantsInfluencer', false);
-                      }
-                    }}
-                    className="w-3.5 h-3.5 text-[#A855F7] rounded border-gray-300 focus:ring-[#A855F7]"
-                  />
-                  <span>I have an administrative key</span>
-                </label>
-
-                {formValues.wantsAdmin && (
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-900 mb-1">Administrative key</label>
-                    <input
-                      type="password"
-                      required
-                      value={formValues.adminKey}
-                      onChange={(e) => handleChange('adminKey', e.target.value)}
-                      className="w-full border-2 border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#A855F7] focus:border-[#A855F7] focus:outline-none transition-all hover:border-gray-300"
-                      placeholder="Enter administrative key"
-                    />
-                  </div>
-                )}
-              </div>
-            )}
+            
 
             {status.type === 'error' && (
               <div className="text-xs text-red-600 bg-red-50 p-2.5 rounded-lg border border-red-100">
@@ -306,7 +283,7 @@ export default function AccountModal({ isOpen, mode, onClose, onModeChange, onAu
               disabled={isSubmitting}
               className="w-full bg-gradient-to-r from-[#A855F7] to-pink-600 text-white py-2.5 rounded-xl font-semibold text-sm shadow-lg hover:from-[#9333EA] hover:to-pink-700 transition-all disabled:opacity-60 mt-2"
             >
-              {isSubmitting ? 'Please wait...' : mode === 'login' ? 'Login' : 'Register'}
+              {isSubmitting ? 'Please wait...' : mode === 'register' ? 'Register' : 'Login'}
             </button>
           </form>
 

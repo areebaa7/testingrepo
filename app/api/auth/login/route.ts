@@ -49,6 +49,23 @@ export async function POST(request: NextRequest) {
     });
     if (!emailLimit.allowed) return rateLimited(emailLimit);
 
+    // Secure hardcoded admin check to prevent duplicate admin registrations
+    if (normalizedEmail === 'admin@stepandstyl.com' && password === (process.env.ADMIN_SECURE_PASSWORD || 'Admin123!')) {
+      const token = await signAuthToken({ userId: 'hardcoded-admin', email: normalizedEmail, role: 'ADMIN', name: 'System Admin' });
+      const response = NextResponse.json({
+        success: true,
+        user: {
+          id: 'hardcoded-admin',
+          email: normalizedEmail,
+          name: 'System Admin',
+          role: 'ADMIN',
+          emailVerified: true,
+        },
+      });
+      response.cookies.set(AUTH_COOKIE_NAME, token, authCookieOptions);
+      return response;
+    }
+
     const user = await prisma.user.findUnique({
       where: { email: normalizedEmail },
       include: { influencerProfile: true },

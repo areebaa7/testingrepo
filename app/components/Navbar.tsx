@@ -249,15 +249,23 @@ export default function Navbar() {
               {/* Account Dropdown */}
               <div className="relative" ref={accountMenuRef}>
                 <button
-                  onClick={() => setIsAccountMenuOpen((prev) => !prev)}
+                  onClick={() => {
+                      if (!authUser) setIsAccountMenuOpen((prev) => !prev);
+                      else if (isAdmin) window.location.href = '/admin';
+                      else if (isCustomer) window.location.href = '/account';
+                      else window.location.href = '/influencer';
+                    }}
                   className="p-2.5 rounded-full text-white/90 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-2"
                   aria-label="Account"
                 >
                   <User className="w-5 h-5" />
                   {authUser && (
-                    <span className="text-xs font-semibold max-w-[100px] truncate hidden xl:inline text-amber-300">
-                      {authUser.name || authUser.email.split('@')[0]}
-                    </span>
+                    <div className="hidden xl:flex flex-col items-start leading-none">
+                        <span className="text-xs font-semibold max-w-[100px] truncate text-amber-300">
+                          {authUser.name || authUser.email.split('@')[0]}
+                        </span>
+                        {isAdmin && <span className="text-[9px] font-bold uppercase tracking-wider text-red-400">Admin</span>}
+                      </div>
                   )}
                 </button>
 
@@ -312,11 +320,17 @@ export default function Navbar() {
                           Sign In
                         </button>
                         <button
-                          onClick={() => openAccountModal('register')}
-                          className="w-full text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
-                        >
-                          Create Account
-                        </button>
+                            onClick={() => openAccountModal('register')}
+                            className="w-full text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
+                          >
+                            Create Account
+                          </button>
+                          <button
+                            onClick={() => openAccountModal('admin')}
+                            className="w-full text-left px-4 py-2 text-xs font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors border-t border-gray-100"
+                          >
+                            Admin Login
+                          </button>
                       </>
                     )}
                   </div>

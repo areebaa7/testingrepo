@@ -192,6 +192,7 @@ enum InfluencerStatus {
 }
 
 enum OrderStatus {
+  OUT_FOR_DELIVERY
   NEW
   PAYMENT_PENDING
   PAYMENT_VERIFIED
