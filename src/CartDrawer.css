@@ -245,3 +245,113 @@
 .cart-checkout-btn:hover {
   background-color: #893cd0;
 }
+
+/* ==========================================
+   BANK TRANSFER OFFER POPUP STYLING
+   ========================================== */
+
+.bank-offer-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.bank-offer-modal-content {
+  background-color: #FFFFFF;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 12px;
+  padding: 2.5rem 2rem 2rem 2rem;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.bank-offer-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6B7280;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.bank-offer-close-btn:hover {
+  color: #111827;
+}
+
+.bank-offer-icon-box {
+  width: 64px;
+  height: 64px;
+  background-color: #F7F5FC;
+  color: #9b4de0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem auto;
+}
+
+.bank-offer-badge {
+  display: inline-block;
+  background-color: #F7F5FC;
+  color: #9b4de0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.bank-offer-modal-content h3 {
+  font-family: Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0 0 0.75rem 0;
+}
+
+.bank-offer-modal-content p {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #4B5563;
+  margin: 0 0 1.75rem 0;
+}
+
+.bank-offer-cta-btn {
+  width: 100%;
+  background-color: #9b4de0;
+  color: #FFFFFF;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  padding: 0.9rem 1rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  box-shadow: 0 4px 12px rgba(155, 77, 224, 0.25);
+}
+
+.bank-offer-cta-btn:hover {
+  background-color: #8439cc;
+  transform: translateY(-1px);
+}

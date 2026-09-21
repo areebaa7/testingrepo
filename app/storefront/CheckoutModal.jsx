@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState } from 'react';
-import { X, CheckCircle } from 'lucide-react';
+import { X, CheckCircle, CreditCard, Percent } from 'lucide-react';
 import './CheckoutModal.css';
 
 export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderSuccess }) {
@@ -12,7 +13,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderSucce
     city: '',
     region: '',
     postalCode: '',
-    paymentMethod: 'COD', // Cash on Delivery / Open Parcel
+    paymentMethod: 'COD', // 'COD' or 'BANK'
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -26,7 +27,11 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderSucce
   }, 0);
 
   const shippingCost = 0; // Free delivery
-  const total = subtotal + shippingCost;
+
+  // Apply 5% discount if Bank Transfer is selected
+  const isBankTransfer = formData.paymentMethod === 'BANK';
+  const discountAmount = isBankTransfer ? subtotal * 0.05 : 0;
+  const total = subtotal - discountAmount + shippingCost;
 
   const handleCheckoutSubmit = async (e) => {
     e.preventDefault();
@@ -45,6 +50,8 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderSucce
           region: formData.region,
           postalCode: formData.postalCode,
           paymentMethod: formData.paymentMethod,
+          discountApplied: discountAmount,
+          totalAmount: total,
           items: cartItems.map(item => ({
             productId: item.id,
             name: item.title,
@@ -131,17 +138,48 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderSucce
               />
             </div>
 
-            <div className="checkout-summary-box">
-              <div className="summary-line"><span>Subtotal:</span> <span>Rs.{subtotal.toLocaleString()}</span></div>
-              <div className="summary-line"><span>Shipping:</span> <span className="free-text">FREE</span></div>
-              <div className="summary-line total"><span>Total Amount:</span> <span>Rs.{total.toLocaleString()}</span></div>
+            {/* Payment Method Selector with 5% Discount Option */}
+            <div className="payment-methods-selection">
+              <label className={`payment-method-card ${formData.paymentMethod === 'COD' ? 'selected' : ''}`}>
+                <input 
+                  type="radio" 
+                  name="paymentMethod" 
+                  checked={formData.paymentMethod === 'COD'}
+                  onChange={() => setFormData({...formData, paymentMethod: 'COD'})}
+                />
+                <div className="payment-method-info">
+                  <strong>Cash on Delivery (Open Parcel)</strong>
+                  <span>Inspect order before paying</span>
+                </div>
+              </label>
+
+              <label className={`payment-method-card bank-transfer-card ${formData.paymentMethod === 'BANK' ? 'selected' : ''}`}>
+                <input 
+                  type="radio" 
+                  name="paymentMethod" 
+                  checked={formData.paymentMethod === 'BANK'}
+                  onChange={() => setFormData({...formData, paymentMethod: 'BANK'})}
+                />
+                <div className="payment-method-info">
+                  <div className="bank-title-row">
+                    <strong>Direct Bank Transfer</strong>
+                    <span className="bank-discount-badge"><Percent size={12} /> 5% OFF</span>
+                  </div>
+                  <span>Get extra discount on direct payment</span>
+                </div>
+              </label>
             </div>
 
-            <div className="payment-method-box">
-              <label>
-                <input type="radio" checked readOnly /> 
-                <span>Cash on Delivery (Open Parcel Inspection Allowed)</span>
-              </label>
+            <div className="checkout-summary-box">
+              <div className="summary-line"><span>Subtotal:</span> <span>Rs.{subtotal.toLocaleString()}</span></div>
+              {isBankTransfer && (
+                <div className="summary-line discount-line">
+                  <span>Bank Transfer Discount (5%):</span> 
+                  <span className="discount-val">-Rs.{discountAmount.toLocaleString()}</span>
+                </div>
+              )}
+              <div className="summary-line"><span>Shipping:</span> <span className="free-text">FREE</span></div>
+              <div className="summary-line total"><span>Total Amount:</span> <span>Rs.{total.toLocaleString()}</span></div>
             </div>
 
             <button type="submit" className="place-order-btn" disabled={loading}>

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Minus, Plus, ShoppingBag, 
-  Truck, ShieldCheck, RefreshCw, X, Ruler, Percent, CheckCircle2, Sparkles, CreditCard 
+  Truck, ShieldCheck, RefreshCw, X, Ruler, Percent, CheckCircle2 
 } from 'lucide-react';
 import './ProductDetail.css';
 
@@ -33,19 +33,8 @@ export default function ProductDetail({ product, onBack, onAddToCart }) {
   const [showSizeChart, setShowSizeChart] = useState(false);
   const [addedNotification, setAddedNotification] = useState(false);
 
-  // Pop-up modal state for 5% Bank Transfer offer upon opening product page
-  const [showBankOfferModal, setShowBankOfferModal] = useState(false);
-
   // Fly-to-cart animation state
   const [flyingImage, setFlyingImage] = useState(null);
-
-  useEffect(() => {
-    // Show bank offer popup automatically when product page mounts
-    const timer = setTimeout(() => {
-      setShowBankOfferModal(true);
-    }, 400);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Accordion Toggle State for Product Details (Open by default)
   const [productDetailsOpen, setProductDetailsOpen] = useState(true);
@@ -358,45 +347,6 @@ export default function ProductDetail({ product, onBack, onAddToCart }) {
 
         </div>
       </div>
-
-      {/* ========================================== */}
-      {/* 5% OFF BANK TRANSFER AUTO POP-UP MODAL     */}
-      {/* ========================================== */}
-      <AnimatePresence>
-        {showBankOfferModal && (
-          <div className="bank-offer-modal-overlay" onClick={() => setShowBankOfferModal(false)}>
-            <motion.div 
-              className="bank-offer-modal-content"
-              onClick={(e) => e.stopPropagation()}
-              initial={{ opacity: 0, scale: 0.85, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.85, y: 20 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-            >
-              <button className="bank-offer-close-btn" onClick={() => setShowBankOfferModal(false)}>
-                <X size={20} />
-              </button>
-
-              <div className="bank-offer-icon-box">
-                <CreditCard size={32} />
-              </div>
-
-              <span className="bank-offer-badge">Limited Time Savings</span>
-              <h3>Get 5% OFF on Bank Transfer!</h3>
-              <p>
-                Enjoy an instant <strong>5% extra discount</strong> automatically applied when you choose direct Bank Transfer at checkout.
-              </p>
-
-              <button 
-                className="bank-offer-cta-btn" 
-                onClick={() => setShowBankOfferModal(false)}
-              >
-                Got It, Thanks!
-              </button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
       {/* Size Chart Modal */}
       <AnimatePresence>

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { CheckCircle, ArrowLeft, ShieldCheck, Truck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle, ArrowLeft, ShieldCheck, Truck, CreditCard, X, Percent } from 'lucide-react';
 import './CheckoutPage.css';
 
 const regionsList = [
@@ -35,6 +36,16 @@ export default function CheckoutPage({ cartItems = [], setCurrentPage, onOrderSu
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successOrder, setSuccessOrder] = useState(null);
+  const [showBankOfferModal, setShowBankOfferModal] = useState(false);
+  const [uploadingReceipt, setUploadingReceipt] = useState(false);
+
+  // Show the 5% bank transfer offer popup automatically when loading checkout
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowBankOfferModal(true);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Dynamic cart calculations
   const subtotal = cartItems.reduce((acc, item) => {
@@ -109,8 +120,6 @@ export default function CheckoutPage({ cartItems = [], setCurrentPage, onOrderSu
       setLoading(false);
     }
   };
-
-  const [uploadingReceipt, setUploadingReceipt] = useState(false);
 
   const handleReceiptUpload = async (e) => {
     const file = e.target.files?.[0];
@@ -271,7 +280,9 @@ export default function CheckoutPage({ cartItems = [], setCurrentPage, onOrderSu
                     <p>Usually 3-5 business days (Open Parcel Inspection)</p>
                   </div>
                 </div>
-                <span className="method-price">Rs.350.00</span>
+                <span className="method-price">
+                  {formData.paymentMethod === 'ONLINE' ? 'Free' : 'Rs.350.00'}
+                </span>
               </div>
             </div>
 
@@ -295,14 +306,19 @@ export default function CheckoutPage({ cartItems = [], setCurrentPage, onOrderSu
                 </div>
 
                 <div className={`payment-option-card ${formData.paymentMethod === 'ONLINE' ? 'active' : ''}`} onClick={() => setFormData({...formData, paymentMethod: 'ONLINE'})} style={{ cursor: 'pointer' }}>
-                  <div className="radio-flex">
-                    <input 
-                      type="radio" 
-                      name="payment" 
-                      checked={formData.paymentMethod === 'ONLINE'}
-                      onChange={() => setFormData({...formData, paymentMethod: 'ONLINE'})}
-                    />
-                    <span>Online Payment (Bank Transfer / Easy Paisa / Jazz Cash)</span>
+                  <div className="radio-flex" style={{ justifyContent: 'space-between', width: '100%' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                      <input 
+                        type="radio" 
+                        name="payment" 
+                        checked={formData.paymentMethod === 'ONLINE'}
+                        onChange={() => setFormData({...formData, paymentMethod: 'ONLINE'})}
+                      />
+                      <span>Online Payment (Bank Transfer / Easy Paisa / Jazz Cash)</span>
+                    </div>
+                    <span className="bank-discount-badge" style={{ backgroundColor: '#7C3AED', color: '#fff', fontSize: '0.65rem', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>
+                      <Percent size={10} style={{ display: 'inline' }} /> 5% OFF & FREE SHIPPING
+                    </span>
                   </div>
                   
                   {formData.paymentMethod === 'ONLINE' && (
@@ -393,6 +409,46 @@ export default function CheckoutPage({ cartItems = [], setCurrentPage, onOrderSu
           </div>
         </div>
       </div>
+
+      {/* 5% Bank Transfer Popup Modal */}
+      <AnimatePresence>
+        {showBankOfferModal && (
+          <div className="bank-offer-modal-overlay" onClick={() => setShowBankOfferModal(false)}>
+            <motion.div 
+              className="bank-offer-modal-content"
+              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, scale: 0.85, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.85, y: 20 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            >
+              <button className="bank-offer-close-btn" onClick={() => setShowBankOfferModal(false)}>
+                <X size={20} />
+              </button>
+
+              <div className="bank-offer-icon-box">
+                <CreditCard size={32} />
+              </div>
+
+              <span className="bank-offer-badge">Special Checkout Offer</span>
+              <h3>Get 5% OFF & Free Shipping!</h3>
+              <p>
+                Select <strong>Online Payment (Bank Transfer / Easy Paisa / Jazz Cash)</strong> to instantly save <strong>5% extra</strong> and unlock <strong>Free Delivery</strong> on your order.
+              </p>
+
+              <button 
+                className="bank-offer-cta-btn" 
+                onClick={() => {
+                  setFormData(prev => ({ ...prev, paymentMethod: 'ONLINE' }));
+                  setShowBankOfferModal(false);
+                }}
+              >
+                Apply 5% Off Now
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
