@@ -66,7 +66,6 @@ export async function GET(request: NextRequest) {
       where.collectionId = collectionId;
     }
     
-    // Handled dynamically below or via database flag
     if (inStock === 'true') {
       where.inStock = true;
     } else if (inStock === 'false') {
@@ -166,14 +165,12 @@ export async function GET(request: NextRequest) {
       include: { collection: true },
     });
 
-    // Format products and dynamically sync stock status based on variants
     const formattedData = products.map((product) => {
       const baseSerialized = serializeProduct(product);
       
       const variants = Array.isArray(product.variants) ? (product.variants as any[]) : [];
       const totalStock = variants.reduce((sum, v) => sum + Math.max(0, Number(v.stock) || 0), 0);
       
-      // If variants exist and total stock is 0, force inStock to false
       const computedInStock = variants.length > 0 ? totalStock > 0 : product.inStock;
 
       let parsedSizes = (product as any).sizes;

@@ -256,7 +256,7 @@ export default function Navbar() {
                   <User className="w-5 h-5" />
                   {authUser && (
                     <span className="text-xs font-semibold max-w-[100px] truncate hidden xl:inline text-amber-300">
-                      {authUser.name}
+                      {authUser.name || authUser.email.split('@')[0]}
                     </span>
                   )}
                 </button>
@@ -266,7 +266,7 @@ export default function Navbar() {
                     {authUser ? (
                       <>
                         <div className="px-4 py-2 border-b border-gray-100">
-                          <p className="text-xs font-bold text-gray-900 truncate">{authUser.name}</p>
+                          <p className="text-xs font-bold text-gray-900 truncate">{authUser.name || authUser.email.split('@')[0]}</p>
                           <p className="text-[10px] text-gray-500 truncate">{authUser.email}</p>
                         </div>
                         {isAdmin && (

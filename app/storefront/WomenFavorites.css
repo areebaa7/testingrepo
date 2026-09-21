@@ -1,97 +1,37 @@
 .women-favorites-section {
   width: 100%;
-  padding: 5rem 1.5rem;
+  padding: 4rem 1.5rem;
   background-color: #FFFFFF;
   overflow: hidden;
 }
 
 .women-favorites-container {
-  max-width: 1600px;
+  max-width: 1750px;
   margin: 0 auto;
-}
-
-/* Split Grid Layout */
-.women-favorites-grid {
-  display: grid;
-  grid-template-columns: 380px 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 2.5rem;
-  align-items: center;
 }
 
-/* Left Banner Styles */
+/* Full-Width Promotional Banner Styles (Text Removed) */
 .women-fav-banner {
   width: 100%;
   height: 520px;
   background-size: cover;
   background-position: center;
-  border-radius: 0px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 3rem;
+  border-radius: 12px;
   position: relative;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-}
-
-.women-banner-eyebrow {
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  color: #d8b4fe;
-  display: block;
-  margin-bottom: 0.75rem;
-}
-
-.women-fav-title {
-  font-family: Georgia, serif;
-  font-size: clamp(2rem, 3vw, 2.8rem);
-  font-weight: 500;
-  color: #FFFFFF;
-  margin: 0 0 0.75rem 0;
-  letter-spacing: 0.02em;
-  line-height: 1.15;
-  text-transform: uppercase;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
-}
-
-.women-fav-subtitle {
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 0.95rem;
-  color: #E5E7EB;
-  margin: 0 0 2rem 0;
-  line-height: 1.5;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
-}
-
-.btn-explore-favorites {
-  background-color: #FFFFFF;
-  color: #1F2937;
-  font-family: system-ui, -apple-system, sans-serif;
-  font-weight: 700;
-  padding: 0.9rem 2.5rem;
-  letter-spacing: 0.15em;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  border: none;
-  border-radius: 0px;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  transition: all 0.25s ease;
-  width: fit-content;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  transition: transform 0.5s ease;
 }
 
-.btn-explore-favorites:hover {
-  background-color: #9b4de0;
-  color: #FFFFFF;
-  transform: translateY(-2px);
+.women-fav-banner:hover {
+  transform: scale(1.01);
 }
 
-/* Right Auto-Scrolling Ticker Styles */
+/* Auto-Scrolling Ticker Styles */
 .women-fav-carousel-container {
   width: 100%;
   position: relative;
@@ -114,7 +54,6 @@
   animation: womenTickerScroll 45s linear infinite;
 }
 
-/* Pause running animation on hover so users can click products */
 .women-fav-carousel-container:hover .women-ticker-track {
   animation-play-state: paused;
 }
@@ -223,13 +162,9 @@
 
 /* Responsive Media Queries for Mobile & Tablet */
 @media (max-width: 1024px) {
-  .women-favorites-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
   .women-fav-banner {
     height: 380px;
-    padding: 2rem;
+    border-radius: 8px;
   }
   .women-product-card {
     flex: 0 0 230px;
@@ -241,11 +176,11 @@
 
 @media (max-width: 640px) {
   .women-favorites-section {
-    padding: 3rem 1rem;
+    padding: 2.5rem 1rem;
   }
   .women-fav-banner {
-    height: 320px;
-    padding: 1.5rem;
+    height: 230px; /* Fully optimized compact mobile banner view */
+    border-radius: 0px;
   }
   .women-product-card {
     flex: 0 0 190px;
@@ -255,6 +190,6 @@
   }
   .women-ticker-track {
     gap: 1rem;
-    animation-duration: 35s; /* Slightly faster smooth scroll for small screens */
+    animation-duration: 35s;
   }
 }

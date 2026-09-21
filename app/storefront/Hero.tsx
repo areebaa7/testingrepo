@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import './Hero.css';
 
 const heroMedia = [
   {
-    type: 'video',
-    url: '/assets/shoe-add.mp4',
+    type: 'image',
+    url: '/assets/banner.jpg',
+    mobileUrl: '/assets/mobile-banner1.jpg',
     title: 'UP TO 50% OFF',
     subtitle: 'ON EVERYTHING',
     tagline1: 'SEASON END SALE',
@@ -15,23 +17,21 @@ const heroMedia = [
   },
   {
     type: 'image',
-    url: '/assets/women-shoes2.jpg',
-    title: 'THE ART OF WALKING',
-    subtitle: 'LUXURY COLLECTION',
-    tagline1: 'TIMELESS ELEGANCE',
-    tagline2: 'CRAFTED FOR PERFECTION',
+    url: '/assets/mens-banner.jpg',
+    mobileUrl: '/assets/mens-mobile.jpg',
   },
   {
     type: 'image',
-    url: '/assets/women-shoes1.jpg',
-    title: 'STEP INTO ELEGANCE',
-    subtitle: 'EXCLUSIVE FOOTWEAR',
-    tagline1: 'BOLD DESIGNS',
-    tagline2: 'LIMITED EDITION',
+    url: '/assets/women-banner.jpg',
+    mobileUrl: '/assets/mobile-banner2.jpg',
   },
 ];
 
-export default function Hero({ setCurrentPage }) {
+interface HeroProps {
+  setCurrentPage: (page: string) => void;
+}
+
+export default function Hero({ setCurrentPage }: HeroProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -52,36 +52,17 @@ export default function Hero({ setCurrentPage }) {
             Your browser does not support the video tag.
           </video>
         ) : (
-          <img src={currentMedia.url} alt={currentMedia.title} className="hero-media" />
+          <>
+            {/* Desktop Banner Image */}
+            <img src={currentMedia.url} alt="Hero Banner Desktop" className="hero-media desktop-banner" />
+            {/* Dedicated Mobile Banner Image */}
+            <img src={currentMedia.mobileUrl || currentMedia.url} alt="Hero Banner Mobile" className="hero-media mobile-banner" />
+          </>
         )}
 
         <div className="hero-overlay">
           <div className="hero-content">
             <div className="hero-text-group">
-              
-              {/* Framer Motion Animated Text Sequence */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentIndex}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.7, ease: "easeOut" }}
-                  style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-                >
-                  <h1 className="hero-title">
-                    {currentMedia.title} <br />
-                    <span className="hero-subtitle-text">{currentMedia.subtitle}</span>
-                  </h1>
-
-                  <div className="hero-editorial-tags">
-                    <span>{currentMedia.tagline1}</span>
-                    <span className="dot-separator">•</span>
-                    <span>{currentMedia.tagline2}</span>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-
               <div className="hero-buttons">
                 <motion.button 
                   className="btn-shop-now" 
@@ -92,7 +73,6 @@ export default function Hero({ setCurrentPage }) {
                   SHOP NOW
                 </motion.button>
               </div>
-
             </div>
           </div>
         </div>

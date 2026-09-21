@@ -1,0 +1,142 @@
+/* ==========================================
+   TRUST BENEFITS SECTION STYLING
+   ========================================== */
+
+.trust-benefits-section {
+  width: 100%;
+  padding: 2.5rem 1.5rem;
+  background-color: #FAFAFA;
+  border-top: 1px solid #E5E7EB;
+  border-bottom: 1px solid #E5E7EB;
+  cursor: pointer;
+}
+
+.trust-benefits-container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Desktop: 4 Equal Columns Grid */
+.trust-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  align-items: center;
+}
+
+.trust-benefit-card {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  background-color: #FFFFFF;
+  padding: 1.5rem;
+  border: 1px solid #EEEDEC;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.trust-benefit-card:hover {
+  border-color: #9b4de0;
+  box-shadow: 0 8px 20px rgba(155, 77, 224, 0.08);
+}
+
+.trust-benefit-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  background-color: #F7F5FC;
+  color: #9b4de0;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.trust-benefit-card:hover .trust-benefit-icon-wrap {
+  background-color: #9b4de0;
+  color: #FFFFFF;
+}
+
+.trust-benefit-line-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.trust-benefit-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.trust-benefit-title {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.trust-benefit-desc {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.78rem;
+  color: #6B7280;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ==========================================
+   MOBILE & TABLET RESPONSIVE STYLING
+   ========================================== */
+
+@media (max-width: 1024px) {
+  .trust-benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .trust-benefits-section {
+    padding: 1.5rem 0.75rem;
+  }
+
+  /* Mobile: Horizontal Scrolling Carousel Track */
+  .trust-benefits-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none; /* Hide scrollbar for clean UI */
+  }
+
+  .trust-benefits-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .trust-benefit-card {
+    flex: 0 0 260px;
+    scroll-snap-align: start;
+    padding: 1.1rem;
+    gap: 1rem;
+  }
+
+  .trust-benefit-icon-wrap {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+  }
+
+  .trust-benefit-title {
+    font-size: 0.85rem;
+  }
+
+  .trust-benefit-desc {
+    font-size: 0.72rem;
+  }
+}

@@ -1,4 +1,8 @@
-.affiliate-section-split {
+/* ==========================================
+   AFFILIATE FULL-WIDTH BANNER STYLING
+   ========================================== */
+
+.affiliate-section-full {
   width: 100%;
   padding: 0;
   background-color: #000000;
@@ -8,140 +12,89 @@
   overflow: hidden;
 }
 
-.affiliate-split-container {
-  max-width: 1600px;
+.affiliate-banner-container {
+  max-width: 1750px;
   width: 100%;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: stretch; /* Forces both columns to match height perfectly */
-  background-color: #111111;
-  border-radius: 0px;
+  position: relative;
+  height: 520px; /* Fixed cinematic height for desktop */
+  background-color: #000000;
   overflow: hidden;
+  border-radius: 0px;
 }
 
-/* Left Content Area */
-.affiliate-left-content {
-  padding: 4.5rem 4rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  box-sizing: border-box;
+.affiliate-banner-image-wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
 }
 
-.affiliate-mini-tag {
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: #c084fc;
-  margin-bottom: 1.2rem;
+.affiliate-banner-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   display: block;
+  filter: brightness(0.75); /* Darkens slightly for optimal button visibility */
 }
 
-.affiliate-main-heading {
-  font-family: Georgia, serif;
-  font-size: clamp(2.2rem, 3.8vw, 3.6rem);
-  font-weight: 500;
-  color: #FFFFFF;
-  line-height: 1.15;
-  margin: 0 0 1.5rem 0;
-  letter-spacing: 0.01em;
+/* Overlay to anchor the button at the bottom center or desired position */
+.affiliate-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2); /* Subtle dark gradient vignette */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 3.5rem;
 }
 
-.affiliate-main-heading span {
-  color: #c084fc;
-}
-
-.affiliate-subtext {
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #D1D5DB;
-  margin-bottom: 2.5rem;
-  max-width: 480px;
-}
-
-/* Brand Button */
+/* Brand Button (Square corners with 0px radius) */
 .btn-join-affiliate {
-  background-color: #9b4de0;
-  color: #FFFFFF;
+  background-color: #FFFFFF;
+  color: #1F2937;
   font-family: system-ui, -apple-system, sans-serif;
   font-weight: 700;
-  padding: 0.95rem 2.4rem;
+  padding: 0.9rem 3rem;
   font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   border: none;
-  border-radius: 4px;
+  border-radius: 0px; /* Perfect square corners */
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(155, 77, 224, 0.3);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   transition: all 0.25s ease;
 }
 
 .btn-join-affiliate:hover {
-  background-color: #c084fc;
-  color: #000000;
+  background-color: #9b4de0;
+  color: #FFFFFF;
   transform: translateY(-2px);
 }
 
-/* Right Image Area - Fills height dynamically with no black bars */
-.affiliate-right-image {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  position: relative;
-  overflow: hidden;
-}
+/* ==========================================
+   TABLET & MOBILE RESPONSIVE OPTIMIZATIONS
+   ========================================== */
 
-.affiliate-image-wrapper {
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
-
-.affiliate-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Automatically fills the container without letterboxing */
-  object-position: center;
-  display: block;
-}
-
-/* Tablet & Mobile Responsive */
 @media (max-width: 1024px) {
-  .affiliate-split-container {
-    grid-template-columns: 1fr;
-  }
-  
-  .affiliate-left-content {
-    padding: 3rem 1.5rem;
-    align-items: center;
-    text-align: center;
-  }
-
-  .affiliate-subtext {
-    text-align: center;
-  }
-
-  .affiliate-right-image {
-    height: 320px;
+  .affiliate-banner-container {
+    height: 380px;
   }
 }
 
 @media (max-width: 768px) {
-  .affiliate-left-content {
-    padding: 2.2rem 1.25rem;
+  .affiliate-banner-container {
+    height: 260px; /* Optimized mobile height */
+  }
+
+  .affiliate-banner-overlay {
+    padding-bottom: 2rem;
   }
 
   .btn-join-affiliate {
-    width: 100%;
-    max-width: 280px;
-  }
-
-  .affiliate-right-image {
-    height: 260px;
+    padding: 0.65rem 2rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
   }
 }

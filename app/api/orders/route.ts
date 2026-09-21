@@ -388,7 +388,7 @@ function buildOrderSummaryEmail({
         ${order.items
       .map(
         (item: EmailItem) =>
-          `<li>${item.name}${item.size ? ` (Size: ${item.size})` : ''}${item.color ? ` (Color: ${item.color})` : ''} × ${item.quantity} — Rs. ${(item.price * item.quantity).toFixed(2)}</li>`,
+          `<li>${item.name}${item.size ? ` (Size: ${item.size})` : ''}${item.color ? ` (Color: ${item.color})` : ''} × ${item.quantity} — Rs.${(item.price * item.quantity).toFixed(2)}</li>`,
       )
       .join('')}
       </ul>
@@ -731,7 +731,7 @@ export async function POST(request: NextRequest) {
       if (!promoCode) {
         return NextResponse.json({ success: false, error: 'Invalid promo code.' }, { status: 400 });
       }
-if (promoCode.validUntil < new Date()) {
+      if (promoCode.validUntil < new Date()) {
         return NextResponse.json({ success: false, error: 'Promo code has expired.' }, { status: 400 });
       }
       if (promoCode.usageLimit !== null && promoCode.usageCount >= promoCode.usageLimit) {
@@ -784,31 +784,44 @@ if (promoCode.validUntil < new Date()) {
           await verifyLegacyProductAvailability(tx, productId, productName);
         }
 
+        const orderData: any = {
+          subtotal: numericSubtotal,
+          discountAmount: numericPromoDiscount,
+          shippingCost: numericShippingCost,
+          total: numericTotal,
+          paymentMethod: normalizedMethod,
+          paymentStatus: 'PENDING',
+          status: normalizedMethod === 'DIRECT' ? 'PAYMENT_PENDING' : 'NEW',
+          paymentIntentId: null,
+          receiptUrl: trustedReceiptUrl,
+          directAccount: directAccount || null,
+          adminNote: generatedAdminNote,
+          shippingName: shippingAddress.fullName,
+          shippingEmail: shippingAddress.email,
+          shippingPhone: shippingAddress.phone,
+          shippingAddress: shippingAddress.address,
+          shippingCity: normalizedShippingCity,
+          shippingRegion: normalizedShippingRegion,
+          shippingPostalCode: shippingAddress.postalCode,
+          items: sanitizedItems,
+          affiliateAttributionRef: typeof affiliateRef !== 'undefined' ? affiliateRef : null,
+        };
+
+        if (payload?.userId) {
+          const existingUser = await tx.user.findUnique({
+            where: { id: payload.userId },
+            select: { id: true },
+          });
+          if (existingUser) {
+            orderData.userId = existingUser.id;
+          }
+        }
+        if (promoCodeId) {
+          orderData.promoCodeId = promoCodeId;
+        }
+
         const createdOrder = await tx.order.create({
-          data: {
-            user: payload?.userId ? { connect: { id: payload.userId } } : undefined,
-            promoCode: promoCodeId ? { connect: { id: promoCodeId } } : undefined,
-            subtotal: numericSubtotal,
-            discountAmount: numericPromoDiscount,
-            shippingCost: numericShippingCost,
-            total: numericTotal,
-            paymentMethod: normalizedMethod,
-            paymentStatus: 'PENDING',
-            status: normalizedMethod === 'DIRECT' ? 'PAYMENT_PENDING' : 'NEW',
-            paymentIntentId: null,
-            receiptUrl: trustedReceiptUrl,
-            directAccount: directAccount || null,
-            adminNote: generatedAdminNote,
-            shippingName: shippingAddress.fullName,
-            shippingEmail: shippingAddress.email,
-            shippingPhone: shippingAddress.phone,
-            shippingAddress: shippingAddress.address,
-            shippingCity: normalizedShippingCity,
-            shippingRegion: normalizedShippingRegion,
-            shippingPostalCode: shippingAddress.postalCode,
-            items: sanitizedItems,
-            affiliateAttributionRef: typeof affiliateRef !== 'undefined' ? affiliateRef : null,
-            } as any,
+          data: orderData,
           include: {
             promoCode: {
               select: {
@@ -855,6 +868,7 @@ if (promoCode.validUntil < new Date()) {
         return createdOrder;
       });
     } catch (error) {
+      console.error('Prisma Order Creation/Transaction Error Details:', error);
       if (isUniqueConstraintError(error)) {
         const duplicateResponse = await replayIdempotentOrder(idempotencyKey, requestHash);
         if (duplicateResponse) return duplicateResponse;

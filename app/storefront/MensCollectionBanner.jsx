@@ -9,24 +9,18 @@ import './MensCollectionBanner.css';
 const menSlides = [
   {
     id: 1,
-    eyebrow: 'Editorial Collection',
-    title: "Men's Collection",
-    subtitle: 'Everyday footwear. Modern comfort. Timeless style.',
-    image: '/assets/men-shoe-care-guide.png'
+   
+    image: '/assets/mens-shoes.jpg'
   },
   {
     id: 2,
-    eyebrow: 'New Urban Series',
-    title: 'Performance & Luxury',
-    subtitle: 'Engineered for the modern stride. Built to last.',
-    image: '/assets/mens-collection.jpg'
+    
+    image: '/assets/mens-banner3.jpg'
   },
   {
     id: 3,
-    eyebrow: 'Formal & Occasion',
-    title: 'Sophisticated Strides',
-    subtitle: 'Classic oxfords and refined leathers for every milestone.',
-    image: '/assets/men_mobile.png'
+ 
+    image: '/assets/mens-banner2.jpg'
   }
 ];
 
@@ -57,7 +51,7 @@ export default function MensCollectionBanner({ setCurrentPage }) {
             transition={{ duration: 0.8 }}
             className="mens-banner-bg"
             style={{ 
-              backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.45) 70%, rgba(0, 0, 0, 0.2) 100%), url('${slide.image}')` 
+              backgroundImage: `url('${slide.image}')` 
             }}
           />
         </AnimatePresence>

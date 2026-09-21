@@ -20,47 +20,17 @@ export default function KidsBanner({ setCurrentPage }: { setCurrentPage: (page: 
           setCurrentPage('kids');
           window.scrollTo({ top: 0, behavior: 'instant' });
         }}
-        style={{ backgroundImage: `url('/assets/kidsbanner.jpg')` }}
+        style={{ backgroundImage: `url('/assets/kids-banner.jpg')` }}
       >
         {/* Dark cinematic overlay for maximum clarity and contrast */}
         <div className="kids-editorial-overlay"></div>
 
         <div className="kids-editorial-content">
-          <motion.span 
-            className="kids-editorial-subtitle"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            Bright New Arrivals
-          </motion.span>
-
-          <motion.h2 
-            className="kids-editorial-title"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            Kids' Favorites
-          </motion.h2>
-
-          <motion.p 
-            className="kids-editorial-desc"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            Fun styles for little feet.
-          </motion.p>
-
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
             <button 
               className="kids-shop-btn"

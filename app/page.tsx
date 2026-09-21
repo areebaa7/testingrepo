@@ -12,7 +12,6 @@ import TrustBadge from './storefront/TrustBadge';
 import KidsBanner from './storefront/KidsBanner';
 import NewArrivals from './storefront/NewArrivals';
 import WomenFavorites from './storefront/WomenFavorites';
-import ForHerForHim from './storefront/ForHerForHim';
 import DynamicSaleBanner from './storefront/DynamicSaleBanner';
 import MensCollectionBanner from './storefront/MensCollectionBanner';
 import MensStylesCarousel from './storefront/MensStylesCarousel';
@@ -36,6 +35,14 @@ import ReturnsExchangesPage from './storefront/ReturnsExchangesPage';
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState('home');
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const view = searchParams.get('view');
+    if (view && ['home', 'shop', 'women', 'men', 'kids', 'checkout', 'affiliate', 'shipping-delivery', 'returns-exchanges'].includes(view)) {
+      setCurrentPage(view);
+    }
+  }, []);
   const [showSplash, setShowSplash] = useState(true);
   
   const { items: cartItems, addItem, removeItem, updateQuantity, clearCart, isCartOpen, setIsCartOpen } = useCart();
@@ -96,6 +103,7 @@ export default function Home() {
         {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
       </AnimatePresence>
 
+      {/* Top announcement bar & Nav bar sequence */}
       <Navbar 
         setCurrentPage={setCurrentPage} 
         cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)} 
@@ -107,45 +115,47 @@ export default function Home() {
       <main className="flex flex-col">
         {currentPage === 'home' ? (
           <>
+            {/* 1. Hero section */}
             <Hero setCurrentPage={setCurrentPage} />
             
-            <ForHerForHim setCurrentPage={setCurrentPage} />
-            
-            {/* Trust Badge Banner Strip */}
+            {/* 2. Trust badge */}
             <TrustBadge />
 
-            {/* Trust Benefits Hero Carousel */}
+            {/* 3. Trust carousel immediately below trust badge */}
             <TrustBenefits setCurrentPage={setCurrentPage} />
 
-            {/* Affiliate Section placed after trust banners */}
+            {/* 4. Women favorite */}
+            <WomenFavorites setCurrentPage={setCurrentPage} />
+
+            {/* 5. Affiliate program */}
             <AffiliateSection setCurrentPage={setCurrentPage} />
 
-            {/* New Arrivals Section */}
+            {/* 6. Flash sale */}
+            <DynamicSaleBanner setCurrentPage={setCurrentPage} />
+
+            {/* 7. Trust carousel restored after flash sale */}
+            <TrustBenefits setCurrentPage={setCurrentPage} />
+
+            {/* 8. Men Collection & As ka sath nichy carousal */}
+            <MensCollectionBanner setCurrentPage={setCurrentPage} />
+            <MensStylesCarousel setCurrentPage={setCurrentPage} />
+
+            {/* 9. High demand products */}
             <div id="new-arrivals-section">
               <NewArrivals setCurrentPage={setCurrentPage} />
             </div>
 
-            {/* Men's Editorial Banner & Categories Carousel */}
-            <MensCollectionBanner setCurrentPage={setCurrentPage} />
-            <MensStylesCarousel setCurrentPage={setCurrentPage} />
-
-            {/* Women's Favorites Carousel Section */}
-            <WomenFavorites setCurrentPage={setCurrentPage} />
-
-            {/* Why Step & Styl Black Compact Layout */}
+            {/* 10. Why step and style */}
             <WhyStepAndStyl />
 
-            {/* Kids Collection Section Banner */}
+            {/* 11. Kid favorite */}
             <KidsBanner setCurrentPage={setCurrentPage} />
 
-            {/* Flash Sale & Second Trust Carousel */}
-            <DynamicSaleBanner setCurrentPage={setCurrentPage} />
-
-            {/* Customer Reviews & Discover More */}
+            {/* 12. Costumer review */}
             <CustomerReviews />
             <DiscoverMore setCurrentPage={setCurrentPage} />
 
-            {/* Follow Us on Socials / Instagram Section */}
+            {/* 13. Follow us */}
             <FollowUsSection />
           </>
         ) : currentPage === 'shop' ? (
@@ -199,6 +209,7 @@ export default function Home() {
       {/* WhatsApp button only renders when splash screen is done */}
       {!showSplash && <WhatsAppButton />}
 
+      {/* 14. Footers */}
       <Footer setCurrentPage={setCurrentPage} />
     </div>
   );

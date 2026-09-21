@@ -274,7 +274,7 @@ export default function CustomerAccountPage() {
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-purple-600">Customer account</p>
-            <h1 className="mt-2 text-3xl font-semibold text-gray-950">Welcome, {customer.name || 'customer'}</h1>
+            <h1 className="mt-2 text-3xl font-semibold text-gray-950">Welcome, {customer.name || customer.email.split('@')[0]}</h1>
             <p className="mt-2 text-sm text-gray-500">{customer.email}</p>
           </div>
           <button onClick={logout} className="self-start rounded-full border border-red-200 px-5 py-2 text-sm font-semibold text-red-600 hover:bg-red-50">Sign out</button>
@@ -335,7 +335,7 @@ export default function CustomerAccountPage() {
                   ) : (
                     <div className="mt-5">
                       <p className="text-sm text-gray-500">You have not placed an account order yet.</p>
-                      <Link href="/products" className="mt-4 inline-flex rounded-full bg-purple-600 px-5 py-2 text-sm font-semibold text-white">Start shopping</Link>
+                      <Link href="/?view=shop" className="mt-4 inline-flex rounded-full bg-purple-600 px-5 py-2 text-sm font-semibold text-white">Start shopping</Link>
                     </div>
                   )}
                 </div>

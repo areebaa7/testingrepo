@@ -3,6 +3,7 @@
   top: 0;
   z-index: 1000;
   width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Enhanced subtle shadow for floating sticky depth */
 }
 
 .promo-ticker-strip {
@@ -35,7 +36,6 @@
 .navbar {
   background-color: #9b4de0; /* Brand Purple */
   color: #FFFFFF;
-  box-shadow: 0 4px 20px rgba(155, 77, 224, 0.25);
   width: 100%;
   position: relative;
 }

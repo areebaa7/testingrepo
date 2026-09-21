@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
 
     const existingUser = await prisma.user.findUnique({ where: { email: normalizedEmail } });
     if (existingUser) {
-      return NextResponse.json({ success: false, error: 'An account with this email already exists.' }, { status: 409 });
+      return NextResponse.json({ success: false, error: 'An account with this email already exists. Please log in instead.' }, { status: 400 });
     }
 
     // Use environment variable for admin key

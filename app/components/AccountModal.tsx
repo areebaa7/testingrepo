@@ -283,7 +283,22 @@ export default function AccountModal({ isOpen, mode, onClose, onModeChange, onAu
               </div>
             )}
 
-            {status.type === 'error' && <p className="text-xs text-red-600">{status.message}</p>}
+            {status.type === 'error' && (
+              <div className="text-xs text-red-600 bg-red-50 p-2.5 rounded-lg border border-red-100">
+                <p>{status.message}</p>
+                {status.message.includes('already exists') && (
+                  <p className="mt-1">
+                    <button type="button" onClick={() => onModeChange('login')} className="font-bold underline hover:text-red-800">
+                      Log in here
+                    </button>
+                    {' or '}
+                    <a href="/forgot-password" className="font-bold underline hover:text-red-800">
+                      reset your password
+                    </a>.
+                  </p>
+                )}
+              </div>
+            )}
             {status.type === 'success' && <p className="text-xs text-green-600">{status.message}</p>}
 
             <button

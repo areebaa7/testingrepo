@@ -63,7 +63,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
         if (data.user && data.user.role === 'ADMIN') {
           window.location.href = '/admin';
         } else {
-          window.location.reload();
+          window.location.href = '/account';
         }
       } else {
         // Call backend Registration API
@@ -95,7 +95,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
         if (hasAdminKey || (data.user && data.user.role === 'ADMIN')) {
           window.location.href = '/admin';
         } else {
-          window.location.reload();
+          window.location.href = '/account';
         }
       }
 
