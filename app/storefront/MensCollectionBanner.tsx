@@ -9,22 +9,26 @@ import './MensCollectionBanner.css';
 const menSlides = [
   {
     id: 1,
-   
-    image: '/assets/mens-shoes.jpg'
+    image: '/assets/mens-shoes.jpg',
+    mobileImage: '/assets/men-collection1.jpg',
   },
   {
     id: 2,
-    
-    image: '/assets/mens-banner3.jpg'
+    image: '/assets/mens-banner3.jpg',
+    mobileImage: '/assets/men-collection.jpg',
   },
   {
     id: 3,
- 
-    image: '/assets/mens-banner2.jpg'
+    image: '/assets/mens-banner2.jpg',
+    mobileImage: '/assets/men-collection3.jpg',
   }
 ];
 
-export default function MensCollectionBanner({ setCurrentPage }) {
+interface MensCollectionBannerProps {
+  setCurrentPage: (page: string) => void;
+}
+
+export default function MensCollectionBanner({ setCurrentPage }: MensCollectionBannerProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // Auto-slide effect every 4 seconds
@@ -49,9 +53,24 @@ export default function MensCollectionBanner({ setCurrentPage }) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8 }}
-            className="mens-banner-bg"
+            className="mens-banner-bg desktop-banner-bg"
             style={{ 
               backgroundImage: `url('${slide.image}')` 
+            }}
+          />
+        </AnimatePresence>
+
+        {/* Dedicated Mobile Background Image Slideshow */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`mobile-${slide.id}`}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="mens-banner-bg mobile-banner-bg"
+            style={{ 
+              backgroundImage: `url('${slide.mobileImage || slide.image}')` 
             }}
           />
         </AnimatePresence>
@@ -66,9 +85,9 @@ export default function MensCollectionBanner({ setCurrentPage }) {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <span className="mens-banner-eyebrow">{slide.eyebrow}</span>
-              <h2 className="mens-banner-title">{slide.title}</h2>
-              <p className="mens-banner-subtitle">{slide.subtitle}</p>
+              <span className="mens-banner-eyebrow">{(slide as any).eyebrow}</span>
+              <h2 className="mens-banner-title">{(slide as any).title}</h2>
+              <p className="mens-banner-subtitle">{(slide as any).subtitle}</p>
             </motion.div>
           </AnimatePresence>
           

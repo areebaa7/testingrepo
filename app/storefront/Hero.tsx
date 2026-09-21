@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import './Hero.css';
 
 const heroMedia = [
@@ -10,10 +10,6 @@ const heroMedia = [
     type: 'image',
     url: '/assets/banner.jpg',
     mobileUrl: '/assets/mobile-banner1.jpg',
-    title: 'UP TO 50% OFF',
-    subtitle: 'ON EVERYTHING',
-    tagline1: 'SEASON END SALE',
-    tagline2: 'IN-STORES & ONLINE',
   },
   {
     type: 'image',
@@ -34,6 +30,7 @@ interface HeroProps {
 export default function Hero({ setCurrentPage }: HeroProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Robust auto-slide timer that cycles through items seamlessly
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % heroMedia.length);
@@ -45,38 +42,39 @@ export default function Hero({ setCurrentPage }: HeroProps) {
 
   return (
     <section className="hero-section">
-      <div className="hero-slide active">
-        {currentMedia.type === 'video' ? (
-          <video autoPlay loop muted playsInline className="hero-media" key={currentMedia.url}>
-            <source src={currentMedia.url} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        ) : (
-          <>
-            {/* Desktop Banner Image */}
-            <img src={currentMedia.url} alt="Hero Banner Desktop" className="hero-media desktop-banner" />
-            {/* Dedicated Mobile Banner Image */}
-            <img src={currentMedia.mobileUrl || currentMedia.url} alt="Hero Banner Mobile" className="hero-media mobile-banner" />
-          </>
-        )}
+      <AnimatePresence mode="wait">
+        <motion.div 
+          key={currentIndex}
+          className="hero-slide active"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          {/* Desktop Banner Image */}
+          <img src={currentMedia.url} alt="Hero Banner Desktop" className="hero-media desktop-banner" />
+          
+          {/* Dedicated Mobile Banner Image */}
+          <img src={currentMedia.mobileUrl || currentMedia.url} alt="Hero Banner Mobile" className="hero-media mobile-banner" />
 
-        <div className="hero-overlay">
-          <div className="hero-content">
-            <div className="hero-text-group">
-              <div className="hero-buttons">
-                <motion.button 
-                  className="btn-shop-now" 
-                  onClick={() => setCurrentPage('shop')}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  SHOP NOW
-                </motion.button>
+          <div className="hero-overlay">
+            <div className="hero-content">
+              <div className="hero-text-group">
+                <div className="hero-buttons">
+                  <motion.button 
+                    className="btn-shop-now" 
+                    onClick={() => setCurrentPage('shop')}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    SHOP NOW
+                  </motion.button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </AnimatePresence>
 
       {/* Carousel Indicator Dots */}
       <div className="carousel-dots">

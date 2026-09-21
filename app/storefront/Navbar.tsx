@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, User, Heart, ShoppingBag, Menu, X, ChevronRight, Share2 } from 'lucide-react';
+import { Search, User, Heart, ShoppingBag, Menu, X, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Navbar.css';
 
@@ -13,17 +13,23 @@ export default function Navbar({
   onOpenCart, 
   onOpenAuthModal,
   onOpenSearch 
+}: {
+  setCurrentPage: (page: string) => void;
+  cartCount?: number;
+  wishlistCount?: number;
+  onOpenCart: () => void;
+  onOpenAuthModal: (tab: 'login' | 'signup') => void;
+  onOpenSearch?: () => void;
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleNavClick = (page, sectionId) => {
+  const handleNavClick = (page: string, sectionId?: string) => {
     setCurrentPage(page);
     setMobileMenuOpen(false);
 
     if (sectionId) {
-      // Increased timeout slightly to ensure DOM renders the home page elements first if coming from another page
       setTimeout(() => {
         const element = document.getElementById(sectionId);
         if (element) {
@@ -38,7 +44,7 @@ export default function Navbar({
     if (onOpenSearch) onOpenSearch();
   };
 
-  const handleSearchSubmit = (e) => {
+  const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       setCurrentPage('shop');
@@ -90,7 +96,7 @@ export default function Navbar({
             <button className="icon-btn" aria-label="Search" onClick={handleSearchToggle} title="Search">
               <Search size={20} />
             </button>
-            <button className="icon-btn desktop-only" aria-label="Account" onClick={() => onOpenAuthModal('login')} title="Account">
+            <button className="icon-btn" aria-label="Account" onClick={() => onOpenAuthModal('login')} title="Account">
               <User size={20} />
             </button>
             <button className="icon-btn" aria-label="Wishlist" onClick={() => handleNavClick('wishlist')} title="Wishlist">
@@ -98,7 +104,6 @@ export default function Navbar({
               {wishlistCount > 0 && <span className="badge">{wishlistCount}</span>}
             </button>
             
-            {/* Added id="cart-icon" here for the fly-to-cart target tracking */}
             <button id="cart-icon" className="icon-btn cart-wrapper" aria-label="Cart" onClick={onOpenCart} title="Cart">
               <ShoppingBag size={20} />
               {cartCount > 0 && <span className="badge">{cartCount}</span>}
@@ -178,13 +183,11 @@ export default function Navbar({
                   <ChevronRight size={18} className="text-gray-400" />
                 </button>
 
-                {/* Sale link jumping directly to flash-sale-section */}
                 <button onClick={() => handleNavClick('home', 'flash-sale-section')} className="mobile-drawer-row sale-row">
                   <span>Sale</span>
                   <ChevronRight size={18} className="text-red-400" />
                 </button>
 
-                {/* Added Affiliate Option */}
                 <button onClick={() => handleNavClick('affiliate')} className="mobile-drawer-row">
                   <span>Affiliate Program</span>
                   <ChevronRight size={18} className="text-gray-400" />

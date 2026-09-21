@@ -3,7 +3,7 @@
   top: 0;
   z-index: 1000;
   width: 100%;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Enhanced subtle shadow for floating sticky depth */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .promo-ticker-strip {
@@ -34,7 +34,7 @@
 }
 
 .navbar {
-  background-color: #9b4de0; /* Brand Purple */
+  background-color: #9b4de0;
   color: #FFFFFF;
   width: 100%;
   position: relative;
@@ -56,6 +56,7 @@
   align-items: center;
   gap: 0.75rem;
   justify-self: start;
+  min-width: 0;
 }
 
 .mobile-menu-toggle {
@@ -72,6 +73,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  min-width: 0;
 }
 
 .brand-logo-img {
@@ -230,7 +232,7 @@
 }
 
 /* ==========================================
-   MOBILE MENU DRAWER (SIGNATURE PURPLE THEME)
+   MOBILE MENU DRAWER
    ========================================== */
 
 .mobile-menu-drawer {
@@ -241,7 +243,7 @@
   width: 85%;
   max-width: 360px;
   height: 100vh;
-  background-color: #9b4de0; /* Signature Brand Purple background */
+  background-color: #9b4de0;
   color: #FFFFFF;
   flex-direction: column;
   justify-content: space-between;
@@ -250,7 +252,6 @@
   overflow-y: auto;
 }
 
-/* Header inside mobile drawer with close X button */
 .mobile-drawer-header {
   display: flex;
   align-items: center;
@@ -272,7 +273,6 @@
   opacity: 0.8;
 }
 
-/* Category links container */
 .mobile-drawer-links {
   display: flex;
   flex-direction: column;
@@ -304,12 +304,10 @@
   opacity: 0.8;
 }
 
-/* Sale row styled with light attention-grabbing yellow */
 .sale-row {
   color: #FACC15 !important; 
 }
 
-/* Bottom footer login button matching signature look */
 .mobile-drawer-footer {
   padding: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
@@ -342,33 +340,39 @@
   .navbar-container {
     display: flex;
     justify-content: space-between;
-    padding: 0 0.75rem;
+    padding: 0 0.5rem;
   }
   .mobile-menu-toggle {
     display: flex;
+    padding: 2px;
   }
   .desktop-nav {
-    display: none !important;
-  }
-  .desktop-only {
     display: none !important;
   }
   .mobile-menu-drawer {
     display: flex;
   }
   
-  /* Keep brand name visible with compact mobile sizing so it never overlaps with icons */
   .nav-left {
-    gap: 0.4rem;
+    gap: 0.25rem;
+    flex-shrink: 1;
+    overflow: hidden;
   }
   .brand-name {
-    font-size: 0.72rem;
-    letter-spacing: 0.03em;
+    font-size: 0.65rem;
+    letter-spacing: 0.02em;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .brand-logo-img {
-    height: 28px;
+    height: 24px;
+    flex-shrink: 0;
   }
   .nav-right {
-    gap: 0.5rem;
+    gap: 0.35rem;
+    flex-shrink: 0;
+  }
+  .icon-btn {
+    padding: 4px;
   }
 }
