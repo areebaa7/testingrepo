@@ -161,6 +161,17 @@ export default function Navbar({
                 </button>
               </div>
 
+              {/* Login Button Placed at the TOP of the Mobile Drawer */}
+              <div className="mobile-drawer-top-login">
+                <button 
+                  onClick={() => { onOpenAuthModal('login'); setMobileMenuOpen(false); }} 
+                  className="mobile-drawer-login-btn-top"
+                >
+                  <User size={18} />
+                  <span>Login / Register</span>
+                </button>
+              </div>
+
               {/* Navigation Links List */}
               <div className="mobile-drawer-links">
                 <button onClick={() => handleNavClick('home', 'new-arrivals-section')} className="mobile-drawer-row">
@@ -191,17 +202,6 @@ export default function Navbar({
                 <button onClick={() => handleNavClick('affiliate')} className="mobile-drawer-row">
                   <span>Affiliate Program</span>
                   <ChevronRight size={18} className="text-gray-400" />
-                </button>
-              </div>
-
-              {/* Bottom Footer Login Link */}
-              <div className="mobile-drawer-footer">
-                <button 
-                  onClick={() => { onOpenAuthModal('login'); setMobileMenuOpen(false); }} 
-                  className="mobile-drawer-login-btn"
-                >
-                  <User size={18} />
-                  <span>Login</span>
                 </button>
               </div>
             </motion.div>
