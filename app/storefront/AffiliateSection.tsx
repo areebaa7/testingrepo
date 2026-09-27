@@ -14,12 +14,21 @@ export default function AffiliateSection({ setCurrentPage }: AffiliateSectionPro
     <section className="affiliate-section-full">
       <div className="affiliate-banner-container">
         
-        {/* Full-Width Background Banner Image */}
-        <div className="affiliate-banner-image-wrapper">
+        {/* Desktop Background Image Wrapper */}
+        <div className="affiliate-banner-image-wrapper desktop-banner-bg">
           <img 
             src="/assets/affiliate.jpg" 
             alt="Earn With Step & Styl Affiliate" 
             onError={(e) => { e.currentTarget.src = '/assets/shoe-8.jpg'; }}
+          />
+        </div>
+
+        {/* Mobile Background Image Wrapper */}
+        <div className="affiliate-banner-image-wrapper mobile-banner-bg">
+          <img 
+            src="/assets/affiliate-mobile.jpg" 
+            alt="Earn With Step & Styl Affiliate" 
+            onError={(e) => { e.currentTarget.src = '/assets/affiliate-mobile.jpg'; }}
           />
         </div>
 

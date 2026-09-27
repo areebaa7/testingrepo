@@ -77,16 +77,26 @@ export default function WomenFavorites({ setCurrentPage }: { setCurrentPage: (pa
     <section className="women-favorites-section">
       <div className="women-favorites-container">
         
-        {/* Stacked Layout: 1. Full Banner (Text Removed) */}
+        {/* Stacked Layout: 1. Full Banner with separate Desktop and Mobile backgrounds */}
         <motion.div 
-          className="women-fav-banner"
+          className="women-fav-banner-wrap"
           onClick={() => setCurrentPage('women')}
-          style={{ backgroundImage: `url('/assets/womens-favorite.jpg')` }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-        />
+        >
+          {/* Desktop Banner Image */}
+          <div 
+            className="women-fav-banner desktop-banner-bg" 
+            style={{ backgroundImage: `url('/assets/women-desktop.jpg')` }}
+          />
+          {/* Mobile Banner Image (Change '/assets/womens-favorite-mobile.jpg' to your preferred mobile asset) */}
+          <div 
+            className="women-fav-banner mobile-banner-bg" 
+            style={{ backgroundImage: `url('/assets/women-mobile.jpg')` }}
+          />
+        </motion.div>
 
         {/* 2. Infinite Scrolling Product Carousel Underneath */}
         <div className="women-fav-carousel-container">

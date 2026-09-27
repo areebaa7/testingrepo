@@ -9,7 +9,7 @@ const heroMedia = [
   {
     type: 'image',
     url: '/assets/banner.jpg',
-    mobileUrl: '/assets/mobile-banner1.jpg',
+    mobileUrl: '/assets/mobile-banner.jpg',
   },
   {
     type: 'image',

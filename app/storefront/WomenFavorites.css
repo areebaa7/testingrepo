@@ -1,6 +1,6 @@
 .women-favorites-section {
   width: 100%;
-  padding: 4rem 1.5rem;
+  padding: 0.5rem 1.5rem 4rem 1.5rem; /* Minimized top padding to the absolute minimum */
   background-color: #FFFFFF;
   overflow: hidden;
 }
@@ -176,10 +176,10 @@
 
 @media (max-width: 640px) {
   .women-favorites-section {
-    padding: 2.5rem 1rem;
+    padding: 0.25rem 1rem 2rem 1.rem; /* Minimized top padding on mobile */
   }
   .women-fav-banner {
-    height: 230px; /* Fully optimized compact mobile banner view */
+    height: 230px;
     border-radius: 0px;
   }
   .women-product-card {

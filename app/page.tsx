@@ -7,8 +7,8 @@ import { AnimatePresence } from 'framer-motion';
 import Navbar from './storefront/Navbar';
 import SplashScreen from './storefront/SplashScreen';
 import Hero from './storefront/Hero';
-import TrustBenefits from './storefront/TrustBenefits';
 import TrustBadge from './storefront/TrustBadge';
+import TrustBenefits from './storefront/TrustBenefits';
 import KidsBanner from './storefront/KidsBanner';
 import NewArrivals from './storefront/NewArrivals';
 import WomenFavorites from './storefront/WomenFavorites';
@@ -118,44 +118,40 @@ export default function Home() {
             {/* 1. Hero section */}
             <Hero setCurrentPage={setCurrentPage} />
             
-            {/* 2. Trust badge */}
+            {/* 2. Trust badge (purple ticker) */}
             <TrustBadge />
 
-            {/* 3. Trust carousel immediately below trust badge */}
-            <TrustBenefits setCurrentPage={setCurrentPage} />
-
-            {/* 4. Women favorite */}
+            {/* 3. Women favorite */}
             <WomenFavorites setCurrentPage={setCurrentPage} />
 
-            {/* 5. Affiliate program */}
+            {/* 4. Affiliate program */}
             <AffiliateSection setCurrentPage={setCurrentPage} />
 
-            {/* 6. Flash sale */}
+            {/* 5. Flash sale */}
             <DynamicSaleBanner setCurrentPage={setCurrentPage} />
 
-            {/* 7. Kids favorite placed right after Flash Sale */}
+            {/* 6. Kids favorite */}
             <KidsBanner setCurrentPage={setCurrentPage} />
 
-            {/* 8. Trust carousel restored after flash sale / kids */}
-            <TrustBenefits setCurrentPage={setCurrentPage} />
+            {/* 7. Trust Benefits banner placed right under Kids Banner with clean spacing */}
+            <div className="mt-4">
+              <TrustBenefits setCurrentPage={setCurrentPage} />
+            </div>
 
-            {/* 9. Men Collection & As ka sath nichy carousal */}
+            {/* 8. Men Collection & styles carousel */}
             <MensCollectionBanner setCurrentPage={setCurrentPage} />
             <MensStylesCarousel setCurrentPage={setCurrentPage} />
 
-            {/* 10. High demand products */}
+            {/* 9. High demand products */}
             <div id="new-arrivals-section">
               <NewArrivals setCurrentPage={setCurrentPage} />
             </div>
 
-            {/* 11. Why step and style (Commented out per request) */}
-            {/* <WhyStepAndStyl /> */}
-
-            {/* 12. Costumer review */}
+            {/* 10. Costumer review */}
             <CustomerReviews />
             <DiscoverMore setCurrentPage={setCurrentPage} />
 
-            {/* 13. Follow us */}
+            {/* 11. Follow us */}
             <FollowUsSection />
           </>
         ) : currentPage === 'shop' ? (
@@ -209,7 +205,7 @@ export default function Home() {
       {/* WhatsApp button only renders when splash screen is done */}
       {!showSplash && <WhatsAppButton />}
 
-      {/* 14. Footers */}
+      {/* Footer */}
       <Footer setCurrentPage={setCurrentPage} />
     </div>
   );

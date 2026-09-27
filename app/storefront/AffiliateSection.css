@@ -1,33 +1,35 @@
 /* ==========================================
-   AFFILIATE FULL-WIDTH BANNER STYLING
+   AFFILIATE SECTION STYLING (MATCHING MENS)
    ========================================== */
 
 .affiliate-section-full {
   width: 100%;
-  padding: 0;
-  background-color: #000000;
-  display: flex;
-  justify-content: center;
+  padding: 0 1.5rem 2rem 1.5rem;
+  background-color: #FFFFFF;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
 .affiliate-banner-container {
-  max-width: 1750px;
-  width: 100%;
+  max-width: 1600px;
   margin: 0 auto;
+  height: 500px;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 3rem;
+  padding-bottom: 3.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
   position: relative;
-  height: 520px; /* Fixed cinematic height for desktop */
-  background-color: #000000;
   overflow: hidden;
-  border-radius: 0px;
+  box-sizing: border-box;
 }
 
+/* Base banner background image wrapper */
 .affiliate-banner-image-wrapper {
-  width: 100%;
-  height: 100%;
   position: absolute;
   inset: 0;
+  z-index: 1;
 }
 
 .affiliate-banner-image-wrapper img {
@@ -36,18 +38,28 @@
   object-fit: cover;
   object-position: center;
   display: block;
-  filter: brightness(0.75); /* Darkens slightly for optimal button visibility */
+  filter: brightness(0.85);
 }
 
-/* Overlay to anchor the button at the bottom center or desired position */
+/* Desktop vs Mobile background image toggling */
+.desktop-banner-bg {
+  display: block;
+}
+
+.mobile-banner-bg {
+  display: none;
+}
+
+/* Overlay to anchor the button at the bottom center */
 .affiliate-banner-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.2); /* Subtle dark gradient vignette */
+  background: rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding-bottom: 3.5rem;
+  padding-bottom: 3rem;
+  z-index: 2;
 }
 
 /* Brand Button (Square corners with 0px radius) */
@@ -56,14 +68,14 @@
   color: #1F2937;
   font-family: system-ui, -apple-system, sans-serif;
   font-weight: 700;
-  padding: 0.9rem 3rem;
-  font-size: 0.75rem;
+  padding: 1.05rem 3rem;
   letter-spacing: 0.18em;
+  font-size: 0.85rem;
   text-transform: uppercase;
   border: none;
-  border-radius: 0px; /* Perfect square corners */
+  border-radius: 0px;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   transition: all 0.25s ease;
 }
 
@@ -74,27 +86,51 @@
 }
 
 /* ==========================================
-   TABLET & MOBILE RESPONSIVE OPTIMIZATIONS
+   MOBILE & TABLET RESPONSIVENESS FIXES
    ========================================== */
 
 @media (max-width: 1024px) {
   .affiliate-banner-container {
-    height: 380px;
+    height: 440px;
+    padding: 2rem;
   }
 }
 
 @media (max-width: 768px) {
+  /* Switch to mobile background images */
+  .desktop-banner-bg {
+    display: none !important;
+  }
+
+  .mobile-banner-bg {
+    display: block !important;
+  }
+
+  .affiliate-section-full {
+    padding: 0 0.5rem 1.5rem 0.5rem;
+  }
+  
   .affiliate-banner-container {
-    height: 260px; /* Optimized mobile height */
+    height: 420px; /* Matches Men's banner height on mobile */
+    padding: 1.25rem;
+    align-items: flex-end;
+    padding-bottom: 2.25rem;
+    border-radius: 8px;
   }
 
   .affiliate-banner-overlay {
     padding-bottom: 2rem;
   }
 
+  /* Optimized compact mobile button styling */
   .btn-join-affiliate {
-    padding: 0.65rem 2rem;
-    font-size: 0.68rem;
+    width: auto;
+    min-width: 180px;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.72rem;
     letter-spacing: 0.15em;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   }
 }

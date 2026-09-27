@@ -51,41 +51,50 @@ export default function TrustBenefits({ setCurrentPage }: TrustBenefitsProps) {
       onClick={() => setCurrentPage && setCurrentPage('shop')} 
       style={{ cursor: 'pointer' }}
     >
-      <div className="trust-hero-carousel-container">
+      <div className="trust-benefits-container">
         
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentSlide.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-            className="trust-hero-slide full-banner-slide"
-          >
-            {/* Full Size Banner Image Block */}
-            <div className="trust-hero-image-wrapper full-width-wrapper">
-              <img 
-                src={currentSlide.image} 
-                alt={currentSlide.title} 
-                className="trust-hero-img"
-                onError={(e) => {
-                  e.currentTarget.src = '/logo_main.png';
-                }}
-              />
-            </div>
-          </motion.div>
-        </AnimatePresence>
+        {/* Centered Section Header */}
+        <div className="trust-section-header">
+          <span className="trust-header-eyebrow">Our Commitment</span>
+          <h2 className="trust-header-title">WHY CHOOSE STEP & STYL</h2>
+          <div className="trust-header-underline"></div>
+        </div>
 
-        {/* Carousel Indicator Dots */}
-        <div className="trust-carousel-dots" onClick={(e) => e.stopPropagation()}>
-          {trustBenefitsSlides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`trust-dot ${currentIndex === index ? 'active' : ''}`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
+        <div className="trust-hero-carousel-container">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease: 'easeInOut' }}
+              className="trust-hero-slide full-banner-slide"
+            >
+              {/* Full Size Banner Image Block */}
+              <div className="trust-hero-image-wrapper full-width-wrapper">
+                <img 
+                  src={currentSlide.image} 
+                  alt={currentSlide.title} 
+                  className="trust-hero-img"
+                  onError={(e) => {
+                    e.currentTarget.src = '/logo_main.png';
+                  }}
+                />
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Carousel Indicator Dots */}
+          <div className="trust-carousel-dots" onClick={(e) => e.stopPropagation()}>
+            {trustBenefitsSlides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`trust-dot ${currentIndex === index ? 'active' : ''}`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
 
       </div>
