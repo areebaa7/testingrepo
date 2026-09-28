@@ -10,17 +10,17 @@ const menSlides = [
   {
     id: 1,
     image: '/assets/mens-shoes.jpg',
-    mobileImage: '/assets/men-collection1.jpg',
+    mobileImage: '/assets/men-collection4.png',
   },
   {
     id: 2,
     image: '/assets/mens-banner3.jpg',
-    mobileImage: '/assets/men-collection.jpg',
+    mobileImage: '/assets/mencollection.png',
   },
   {
     id: 3,
     image: '/assets/mens-banner3.jpg',
-    mobileImage: '/assets/men-collection3.jpg',
+    mobileImage: '/assets/men-collection01.png',
   }
 ];
 

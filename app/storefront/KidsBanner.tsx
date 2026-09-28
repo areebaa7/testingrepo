@@ -20,8 +20,27 @@ export default function KidsBanner({ setCurrentPage }: { setCurrentPage: (page: 
           setCurrentPage('kids');
           window.scrollTo({ top: 0, behavior: 'instant' });
         }}
-        style={{ backgroundImage: `url('/assets/kids-banner.jpg')` }}
       >
+        {/* Desktop Banner Image */}
+        <img 
+          src="/assets/kids-banner.jpg" 
+          alt="Kids Favorites Trending Styles" 
+          className="kids-editorial-img desktop-banner-bg"
+          onError={(e) => {
+            e.currentTarget.src = '/logo_main.png';
+          }}
+        />
+
+        {/* Mobile Banner Image */}
+        <img 
+          src="/assets/kids-mobile.jpg" 
+          alt="Kids Favorites Trending Styles" 
+          className="kids-editorial-img mobile-banner-bg"
+          onError={(e) => {
+            e.currentTarget.src = '/assets/kids-mobile.jpg';
+          }}
+        />
+
         {/* Dark cinematic overlay for maximum clarity and contrast */}
         <div className="kids-editorial-overlay"></div>
 

@@ -1,5 +1,5 @@
 /* ==========================================
-   KIDS BANNER STYLING (PURPLE SUBTITLE)
+   KIDS BANNER STYLING
    ========================================== */
 
 .kids-banner-section {
@@ -10,7 +10,7 @@
   margin-left: -50vw;
   margin-right: -50vw;
   padding: 0 0 3rem 0;
-  background-color: #FFFFFF; /* Changed from black to white to match page background */
+  background-color: #FFFFFF;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -18,16 +18,36 @@
 /* Editorial Full-Width Banner Card */
 .kids-editorial-card {
   width: 100%;
-  min-height: 560px;
-  background-size: cover;
-  background-position: center;
+  aspect-ratio: 1920 / 1080;
+  max-height: 650px;
   position: relative;
   display: flex;
-  align-items: flex-end; /* Aligns content lower within the card */
+  align-items: flex-end;
   border-radius: 0px;
   overflow: hidden;
   cursor: pointer;
   margin-bottom: 0;
+  background-color: #FFFFFF; /* White letterbox background so strips blend seamlessly */
+}
+
+/* Desktop vs Mobile background image toggling classes */
+.desktop-banner-bg {
+  display: block;
+}
+
+.mobile-banner-bg {
+  display: none;
+}
+
+/* Full banner image rendered with contain to prevent text/edge cutting */
+.kids-editorial-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; 
+  z-index: 1;
 }
 
 /* Gradient overlay completely removed */
@@ -38,43 +58,12 @@
 .kids-editorial-content {
   position: relative;
   z-index: 2;
-  padding: 3rem 6rem 5.5rem 6rem; /* Increased bottom padding to position button lower */
+  padding: 3rem 6rem 4rem 6rem; 
   max-width: 700px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   box-sizing: border-box;
-}
-
-.kids-editorial-subtitle {
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  color: #9b4de0; /* Signature brand purple */
-  margin-bottom: 0.75rem;
-  display: block;
-}
-
-/* Bold and Black Title */
-.kids-editorial-title {
-  font-family: Georgia, serif;
-  font-size: clamp(2.8rem, 5vw, 4.8rem);
-  font-weight: 800;
-  color: #000000;
-  line-height: 1.1;
-  margin: 0 0 1rem 0;
-  letter-spacing: 0.01em;
-}
-
-.kids-editorial-desc {
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 1.1rem;
-  color: #FFFFFF;
-  margin-bottom: 2rem;
-  line-height: 1.5;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
 /* Square Action Button (White by default, Purple on hover) */
@@ -105,47 +94,58 @@
   box-shadow: 0 10px 25px rgba(155, 77, 224, 0.4);
 }
 
-/* Tablet & Mobile Responsiveness */
+/* ==========================================
+   TABLET & MOBILE RESPONSIVENESS
+   ========================================== */
+
 @media (max-width: 1024px) {
   .kids-banner-section {
     padding-bottom: 2.5rem;
   }
 
   .kids-editorial-card {
-    min-height: 460px;
-    align-items: flex-end;
+    max-height: 480px;
   }
 
   .kids-editorial-content {
-    padding: 2.5rem 2rem 4rem 2rem;
+    padding: 2.5rem 2rem 3rem 2rem;
     align-items: center;
     text-align: center;
     max-width: 100%;
   }
-
-  .kids-editorial-desc,
-  .kids-editorial-subtitle {
-    text-align: center;
-  }
 }
 
 @media (max-width: 768px) {
+  /* Switch to mobile image asset */
+  .desktop-banner-bg {
+    display: none !important;
+  }
+
+  .mobile-banner-bg {
+    display: block !important;
+  }
+
   .kids-banner-section {
     padding-bottom: 2rem;
   }
 
   .kids-editorial-card {
-    min-height: 400px;
-    align-items: flex-end;
+    max-height: 320px;
   }
 
   .kids-editorial-content {
-    padding: 2rem 1.25rem 3.5rem 1.25rem;
+    padding: 1rem 1rem 1.5rem 1rem;
   }
 
+  /* Optimized compact mobile button */
   .kids-shop-btn {
-    width: 100%;
-    max-width: 250px;
+    width: auto;
+    min-width: 150px;
+    padding: 0.55rem 1.25rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
     justify-content: center;
+    margin-top: 0.2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   }
 }
