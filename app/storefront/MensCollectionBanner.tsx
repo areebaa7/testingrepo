@@ -19,8 +19,8 @@ const menSlides = [
   },
   {
     id: 3,
-    image: '/assets/mens-banner3.jpg',
-    mobileImage: '/assets/men-collection01.png',
+    image: '/assets/mens-desktop.jpeg',
+    mobileImage: '/assets/mens.jpeg',
   }
 ];
 
