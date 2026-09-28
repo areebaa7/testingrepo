@@ -9,7 +9,7 @@ export default function FollowUsSection() {
   // Gallery images representing Step & Styl footwear and luxury aesthetics
   const galleryImages = [
     '/assets/shoe-1.jpg',
-    '/assets/shoe-2.jpg',
+    '/assets/shoe-7.jpeg',
     '/assets/shoe-3.jpg',
     '/assets/shoe-4.jpg',
     '/assets/shoe-5.jpg',
