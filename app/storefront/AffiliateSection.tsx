@@ -26,7 +26,7 @@ export default function AffiliateSection({ setCurrentPage }: AffiliateSectionPro
         {/* Mobile Background Image Wrapper */}
         <div className="affiliate-banner-image-wrapper mobile-banner-bg">
           <img 
-            src="/assets/affiliate-mobile.jpg" 
+            src="/assets/affiliate-mobile.jpeg" 
             alt="Earn With Step & Styl Affiliate" 
             onError={(e) => { e.currentTarget.src = '/assets/affiliate-mobile.jpeg'; }}
           />
