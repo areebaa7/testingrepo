@@ -28,7 +28,7 @@ export default function AffiliateSection({ setCurrentPage }: AffiliateSectionPro
           <img 
             src="/assets/affiliate-mobile.jpg" 
             alt="Earn With Step & Styl Affiliate" 
-            onError={(e) => { e.currentTarget.src = '/assets/affiliate-mobile.png'; }}
+            onError={(e) => { e.currentTarget.src = '/assets/affiliate-mobile.jpg'; }}
           />
         </div>
 
