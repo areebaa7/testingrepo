@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -34,7 +35,18 @@ export default function ShopPage({ setCurrentPage, onAddToCart }) {
     if (cat === 'women') setCurrentPage('women');
     if (cat === 'men') setCurrentPage('men');
     if (cat === 'kids') setCurrentPage('kids');
+    if (cat === 'shop') setCurrentPage('shop');
   };
+
+  const categoriesList = [
+    { id: 'shop', label: 'All Shoes', image: '/assets/women-formal.jpg' },
+    { id: 'women', label: 'Women', image: '/assets/women-mustardshoes.jpeg' },
+    { id: 'men', label: 'Men', image: '/assets/sneaker-4.jpeg' },
+    { id: 'kids', label: 'Kids', image: '/assets/kids-2.jpeg' },
+  ];
+
+  // Tripled array for smooth infinite ticker looping
+  const loopingCategories = [...categoriesList, ...categoriesList, ...categoriesList];
 
   if (selectedProduct) {
     return (
@@ -57,23 +69,21 @@ export default function ShopPage({ setCurrentPage, onAddToCart }) {
         Shop Collection
       </motion.h1>
 
-      {/* Category Circle Selector */}
+      {/* Category Circle Infinite Carousel Selector */}
       <div className="shop-categories-row">
-        <div className="category-circle-item active" onClick={() => setCurrentPage('shop')}>
-          <div className="circle-image-wrapper"><img src="/assets/women-formal.jpg" alt="All Shoes" /></div>
-          <span className="category-label">All Shoes</span>
-        </div>
-        <div className="category-circle-item" onClick={() => handleCategoryClick('women')}>
-          <div className="circle-image-wrapper"><img src="/assets/women-mustardshoes.jpeg" alt="Women" /></div>
-          <span className="category-label">Women</span>
-        </div>
-        <div className="category-circle-item" onClick={() => handleCategoryClick('men')}>
-          <div className="circle-image-wrapper"><img src="/assets/sneaker-4.jpeg" alt="Men" /></div>
-          <span className="category-label">Men</span>
-        </div>
-        <div className="category-circle-item" onClick={() => handleCategoryClick('kids')}>
-          <div className="circle-image-wrapper"><img src="/assets/kids-2.jpeg" alt="Kids" /></div>
-          <span className="category-label">Kids</span>
+        <div className="categories-ticker-track">
+          {loopingCategories.map((cat, idx) => (
+            <div 
+              key={`${cat.id}-${idx}`}
+              className={`category-circle-item ${cat.id === 'shop' ? 'active' : ''}`} 
+              onClick={() => handleCategoryClick(cat.id)}
+            >
+              <div className="circle-image-wrapper">
+                <img src={cat.image} alt={cat.label} />
+              </div>
+              <span className="category-label">{cat.label}</span>
+            </div>
+          ))}
         </div>
       </div>
 

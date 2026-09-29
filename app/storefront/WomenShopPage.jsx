@@ -59,6 +59,16 @@ export default function WomenShopPage({ onAddToCart }) {
     setCurrentPageNum(1);
   };
 
+  const categoriesList = [
+    { id: 'all', label: 'All Women', image: '/assets/shoe-7.jpeg' },
+    { id: 'casual', label: 'Casual', image: '/assets/shoe-2.jpeg' },
+    { id: 'bridal', label: 'Bridal', image: '/assets/shoe-5.jpg' },
+    { id: 'formal', label: 'Formal', image: '/assets/women-formal.jpg' },
+  ];
+
+  // Tripled array for smooth infinite ticker looping
+  const loopingCategories = [...categoriesList, ...categoriesList, ...categoriesList];
+
   if (selectedProduct) {
     return (
       <ProductDetail 
@@ -80,23 +90,21 @@ export default function WomenShopPage({ onAddToCart }) {
         Women's Collection
       </motion.h1>
 
-      {/* Category Circle Selector */}
+      {/* Category Circle Infinite Carousel Selector */}
       <div className="shop-categories-row">
-        <div className={`category-circle-item ${activeSubcategory === 'all' ? 'active' : ''}`} onClick={() => handleSubcategoryChange('all')}>
-          <div className="circle-image-wrapper"><img src="/assets/shoe-7.jpeg" alt="All Women" /></div>
-          <span className="category-label">All Women</span>
-        </div>
-        <div className={`category-circle-item ${activeSubcategory === 'casual' ? 'active' : ''}`} onClick={() => handleSubcategoryChange('casual')}>
-          <div className="circle-image-wrapper"><img src="/assets/shoe-2.jpeg" alt="Casual" /></div>
-          <span className="category-label">Casual</span>
-        </div>
-        <div className={`category-circle-item ${activeSubcategory === 'bridal' ? 'active' : ''}`} onClick={() => handleSubcategoryChange('bridal')}>
-          <div className="circle-image-wrapper"><img src="/assets/shoe-5.jpg" alt="Bridal" /></div>
-          <span className="category-label">Bridal</span>
-        </div>
-        <div className={`category-circle-item ${activeSubcategory === 'formal' ? 'active' : ''}`} onClick={() => handleSubcategoryChange('formal')}>
-          <div className="circle-image-wrapper"><img src="/assets/women-formal.jpg" alt="Formal" /></div>
-          <span className="category-label">Formal</span>
+        <div className="categories-ticker-track">
+          {loopingCategories.map((cat, idx) => (
+            <div 
+              key={`${cat.id}-${idx}`}
+              className={`category-circle-item ${activeSubcategory === cat.id ? 'active' : ''}`} 
+              onClick={() => handleSubcategoryChange(cat.id)}
+            >
+              <div className="circle-image-wrapper">
+                <img src={cat.image} alt={cat.label} />
+              </div>
+              <span className="category-label">{cat.label}</span>
+            </div>
+          ))}
         </div>
       </div>
 

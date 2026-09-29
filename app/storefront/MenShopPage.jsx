@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -52,6 +53,16 @@ export default function MenShopPage({ onAddToCart }) {
     setCurrentPageNum(1);
   };
 
+  const categoriesList = [
+    { id: 'all', label: 'All Men', image: '/assets/sneaker-1.jpeg' },
+    { id: 'sneaker', label: 'Sneakers', image: '/assets/sneaker-2.jpeg' },
+    { id: 'formal', label: 'Formal', image: '/assets/men-formal2.jpeg' },
+    { id: 'casual', label: 'Casual', image: '/assets/men-sandals.jpeg' },
+  ];
+
+  // Tripled array for smooth infinite ticker looping
+  const loopingCategories = [...categoriesList, ...categoriesList, ...categoriesList];
+
   if (selectedProduct) {
     return (
       <ProductDetail 
@@ -74,21 +85,19 @@ export default function MenShopPage({ onAddToCart }) {
       </motion.h1>
 
       <div className="shop-categories-row">
-        <div className={`category-circle-item ${activeSubcategory === 'all' ? 'active' : ''}`} onClick={() => handleSubcategoryChange('all')}>
-          <div className="circle-image-wrapper"><img src="/assets/sneaker-1.jpeg" alt="All Men" /></div>
-          <span className="category-label">All Men</span>
-        </div>
-        <div className={`category-circle-item ${activeSubcategory === 'sneaker' ? 'active' : ''}`} onClick={() => handleSubcategoryChange('sneaker')}>
-          <div className="circle-image-wrapper"><img src="/assets/sneaker-2.jpeg" alt="Sneakers" /></div>
-          <span className="category-label">Sneakers</span>
-        </div>
-        <div className={`category-circle-item ${activeSubcategory === 'formal' ? 'active' : ''}`} onClick={() => handleSubcategoryChange('formal')}>
-          <div className="circle-image-wrapper"><img src="/assets/men-formal2.jpeg" alt="Formal" /></div>
-          <span className="category-label">Formal</span>
-        </div>
-        <div className={`category-circle-item ${activeSubcategory === 'casual' ? 'active' : ''}`} onClick={() => handleSubcategoryChange('casual')}>
-          <div className="circle-image-wrapper"><img src="/assets/men-sandals.jpeg" alt="Casual" /></div>
-          <span className="category-label">Casual</span>
+        <div className="categories-ticker-track">
+          {loopingCategories.map((cat, idx) => (
+            <div 
+              key={`${cat.id}-${idx}`}
+              className={`category-circle-item ${activeSubcategory === cat.id ? 'active' : ''}`} 
+              onClick={() => handleSubcategoryChange(cat.id)}
+            >
+              <div className="circle-image-wrapper">
+                <img src={cat.image} alt={cat.label} />
+              </div>
+              <span className="category-label">{cat.label}</span>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -104,7 +113,6 @@ export default function MenShopPage({ onAddToCart }) {
       ) : (
         <div className="shop-products-grid">
           {paginatedProducts.map((product, index) => {
-            // Check explicit stock flag OR calculate if all variant stocks total 0
             const variants = Array.isArray(product.variants) ? product.variants : [];
             const totalStock = variants.reduce((sum, v) => sum + Math.max(0, Number(v.stock) || 0), 0);
             const isOutOfStock = product.inStock === false || (variants.length > 0 && totalStock === 0);
@@ -121,7 +129,6 @@ export default function MenShopPage({ onAddToCart }) {
                 <div className="shop-image-box relative overflow-hidden">
                   {product.discount && !isOutOfStock && <span className="shop-discount-tag">{product.discount}</span>}
                   
-                  {/* Out of Stock / Sold Out Badge */}
                   {isOutOfStock && (
                     <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] flex items-center justify-center z-10">
                       <span className="bg-black text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 shadow-md">
