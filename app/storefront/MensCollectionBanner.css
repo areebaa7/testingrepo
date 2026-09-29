@@ -16,6 +16,7 @@
   border-radius: 12px;
   display: flex;
   align-items: flex-end;
+  justify-content: center; /* Center content horizontally */
   padding: 3rem;
   padding-bottom: 4rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
@@ -48,6 +49,10 @@
   z-index: 2;
   position: relative;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center children horizontally */
+  text-align: center; /* Center text */
 }
 
 .mens-banner-eyebrow {
@@ -95,6 +100,7 @@
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   transition: all 0.25s ease;
@@ -164,6 +170,7 @@
     height: 420px;
     padding: 1.25rem;
     align-items: flex-end;
+    justify-content: center;
     padding-bottom: 2.5rem;
     border-radius: 8px;
   }
@@ -171,6 +178,8 @@
   .mens-banner-content {
     max-width: 100%;
     padding-right: 0;
+    align-items: center;
+    text-align: center;
   }
 
   .mens-banner-title {

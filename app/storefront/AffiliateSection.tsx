@@ -12,45 +12,55 @@ interface AffiliateSectionProps {
 export default function AffiliateSection({ setCurrentPage }: AffiliateSectionProps) {
   return (
     <section className="affiliate-section-full">
-      <div className="affiliate-banner-container">
+      <div className="affiliate-section-container-inner">
         
-        {/* Desktop Background Image Wrapper */}
-        <div className="affiliate-banner-image-wrapper desktop-banner-bg">
-          <img 
-            src="/assets/affiliate.jpg" 
-            alt="Earn With Step & Styl Affiliate" 
-            onError={(e) => { e.currentTarget.src = '/assets/shoe-8.jpg'; }}
-          />
+        {/* Centered Section Header */}
+        <div className="affiliate-section-header">
+          <span className="affiliate-header-eyebrow">Partner Program</span>
+          <h2 className="affiliate-header-title">JOIN STEP & STYL AFFILIATE</h2>
+          <div className="affiliate-header-underline"></div>
         </div>
 
-        {/* Mobile Background Image Wrapper */}
-        <div className="affiliate-banner-image-wrapper mobile-banner-bg">
-          <img 
-            src="/assets/affiliate-mobile.jpeg" 
-            alt="Earn With Step & Styl Affiliate" 
-            onError={(e) => { e.currentTarget.src = '/assets/affiliate-mobile.jpeg'; }}
-          />
-        </div>
+        <div className="affiliate-banner-container">
+          
+          {/* Desktop Background Image Wrapper */}
+          <div className="affiliate-banner-image-wrapper desktop-banner-bg">
+            <img 
+              src="/assets/affiliate.jpg" 
+              alt="Earn With Step & Styl Affiliate" 
+              onError={(e) => { e.currentTarget.src = '/assets/shoe-8.jpg'; }}
+            />
+          </div>
 
-        {/* Absolute Overlay with Join Button Only */}
-        <div className="affiliate-banner-overlay">
-          <motion.button 
-            className="btn-join-affiliate"
-            onClick={() => {
-              setCurrentPage('affiliate');
-              window.scrollTo({ top: 0, behavior: 'instant' });
-            }}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <span>JOIN AFFILIATE PROGRAM</span>
-          </motion.button>
-        </div>
+          {/* Mobile Background Image Wrapper */}
+          <div className="affiliate-banner-image-wrapper mobile-banner-bg">
+            <img 
+              src="/assets/affiliate-mobile.jpeg" 
+              alt="Earn With Step & Styl Affiliate" 
+              onError={(e) => { e.currentTarget.src = '/assets/affiliate-mobile.jpeg'; }}
+            />
+          </div>
 
+          {/* Absolute Overlay with Join Button Only */}
+          <div className="affiliate-banner-overlay">
+            <motion.button 
+              className="btn-join-affiliate"
+              onClick={() => {
+                setCurrentPage('affiliate');
+                window.scrollTo({ top: 0, behavior: 'instant' });
+              }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <span>JOIN AFFILIATE PROGRAM</span>
+            </motion.button>
+          </div>
+
+        </div>
       </div>
     </section>
   );

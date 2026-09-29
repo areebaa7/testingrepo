@@ -1,8 +1,13 @@
+/* ==========================================
+   WOMENS COLLECTION BANNER & TICKER STYLING
+   ========================================== */
+
 .women-favorites-section {
   width: 100%;
   padding: 0.5rem 1.5rem 4rem 1.5rem; /* Minimized top padding to the absolute minimum */
   background-color: #FFFFFF;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .women-favorites-container {
@@ -160,7 +165,10 @@
   color: #9b4de0;
 }
 
-/* Responsive Media Queries for Mobile & Tablet */
+/* ==========================================
+   RESPONSIVE MEDIA QUERIES FOR MOBILE & TABLET
+   ========================================== */
+
 @media (max-width: 1024px) {
   .women-fav-banner {
     height: 380px;
@@ -175,19 +183,36 @@
 }
 
 @media (max-width: 640px) {
+  /* Full-width screen breakout on mobile to remove side white gaps */
   .women-favorites-section {
-    padding: 0.25rem 1rem 2rem 1.rem; /* Minimized top padding on mobile */
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: 0.25rem 0 2rem 0; /* Zero side padding */
   }
+
+  .women-favorites-container {
+    width: 100%;
+    max-width: 100%;
+    gap: 1.5rem;
+  }
+
   .women-fav-banner {
     height: 230px;
-    border-radius: 0px;
+    border-radius: 0px; /* Sharp edges edge-to-edge */
   }
+
   .women-product-card {
     flex: 0 0 190px;
   }
+  
   .women-product-img-wrap {
     height: 200px;
   }
+
   .women-ticker-track {
     gap: 1rem;
     animation-duration: 35s;
