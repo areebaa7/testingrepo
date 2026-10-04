@@ -155,7 +155,7 @@ export default function AccountModal({ isOpen, mode, onClose, onModeChange, onAu
                 }`}
                 onClick={() => onModeChange('register')}
               >
-                Sign Up
+                Customer Sign Up
               </button>
               <button
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
@@ -283,7 +283,7 @@ export default function AccountModal({ isOpen, mode, onClose, onModeChange, onAu
               disabled={isSubmitting}
               className="w-full bg-gradient-to-r from-[#A855F7] to-pink-600 text-white py-2.5 rounded-xl font-semibold text-sm shadow-lg hover:from-[#9333EA] hover:to-pink-700 transition-all disabled:opacity-60 mt-2"
             >
-              {isSubmitting ? 'Please wait...' : mode === 'register' ? 'Register' : 'Login'}
+              {isSubmitting ? 'Please wait...' : mode === 'register' ? 'Create Customer Account' : mode === 'login' ? 'Customer Sign In' : 'Admin Sign In'}
             </button>
           </form>
 
@@ -295,4 +295,5 @@ export default function AccountModal({ isOpen, mode, onClose, onModeChange, onAu
     </div>
   );
 }
+
 

@@ -150,6 +150,8 @@ export default function Navbar() {
       window.location.href = '/admin';
     } else if (user.role === 'INFLUENCER') {
       window.location.href = '/influencer';
+    } else {
+      window.location.href = '/account'; // Strictly route customers to their storefront dashboard
     }
   }, []);
 
@@ -261,10 +263,13 @@ export default function Navbar() {
                   <User className="w-5 h-5" />
                   {authUser && (
                     <div className="hidden xl:flex flex-col items-start leading-none">
-                        <span className="text-xs font-semibold max-w-[100px] truncate text-amber-300">
-                          {authUser.name || authUser.email.split('@')[0]}
-                        </span>
-                        {isAdmin && <span className="text-[9px] font-bold uppercase tracking-wider text-red-400">Admin</span>}
+                        {isAdmin ? (
+                          <span className="text-xs font-bold uppercase tracking-wider text-red-400">Admin</span>
+                        ) : (
+                          <span className="text-xs font-semibold max-w-[100px] truncate text-amber-300">
+                            {authUser.name}
+                          </span>
+                        )}
                       </div>
                   )}
                 </button>
@@ -274,7 +279,7 @@ export default function Navbar() {
                     {authUser ? (
                       <>
                         <div className="px-4 py-2 border-b border-gray-100">
-                          <p className="text-xs font-bold text-gray-900 truncate">{authUser.name || authUser.email.split('@')[0]}</p>
+                          <p className="text-xs font-bold text-gray-900 truncate">{authUser.name}</p>
                           <p className="text-[10px] text-gray-500 truncate">{authUser.email}</p>
                         </div>
                         {isAdmin && (
@@ -317,13 +322,13 @@ export default function Navbar() {
                           onClick={() => openAccountModal('login')}
                           className="w-full text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
                         >
-                          Sign In
-                        </button>
+                            Customer Login
+                          </button>
                         <button
                             onClick={() => openAccountModal('register')}
                             className="w-full text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
                           >
-                            Create Account
+                            Customer Sign Up
                           </button>
                           <button
                             onClick={() => openAccountModal('admin')}
@@ -419,3 +424,4 @@ export default function Navbar() {
     </>
   );
 }
+
