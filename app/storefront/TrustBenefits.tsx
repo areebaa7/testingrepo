@@ -3,28 +3,49 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Truck, PackageCheck, DollarSign, ShieldCheck, RefreshCw, Headphones, Percent } from 'lucide-react';
 import './TrustBenefits.css';
 
 const trustBenefitsSlides = [
   {
     id: 1,
-    title: 'Check Before You Pay',
-    image: '/assets/openAndpay.jpg',
+    eyebrow: 'OPEN & PAY POLICY',
+    title: 'Pay Cash on Delivery & Enjoy Open Parcel Facility',
+    features: [
+      { icon: Truck, title: 'Fast & Secure Delivery', desc: 'Prompt delivery to all cities with secure packaging & doorstep convenience.' },
+      { icon: PackageCheck, title: 'Open Parcel Facility', desc: 'Open package before payment to check items for accuracy & quality.' },
+      { icon: DollarSign, title: 'Cash on Delivery', desc: 'Secure cash payment with zero prepayments & total risk-free ordering.' }
+    ]
   },
   {
     id: 2,
-    title: '7 Days Easy Return',
-    image: '/assets/returnpolicy.jpg',
+    eyebrow: '7 DAYS RETURN POLICY',
+    title: 'Not Happy With Your Purchase? Return It Within 7 Days.',
+    features: [
+      { icon: RefreshCw, title: '7 Days Return', desc: 'Easy returns within 7 days of receiving your order.' },
+      { icon: ShieldCheck, title: '100% Trusted', desc: 'Hassle-free return process backed by our guarantee.' },
+      { icon: PackageCheck, title: 'Customer First', desc: 'Your complete satisfaction is our primary commitment.' }
+    ]
   },
   {
     id: 3,
-    title: '5% OFF Bank Transfer',
-    image: '/assets/trust3.jpg',
+    eyebrow: 'EXCLUSIVE SAVINGS',
+    title: 'Save 5% Extra on Bank Transfers',
+    features: [
+      { icon: DollarSign, title: 'Secure Bank Transfer', desc: 'Simple & secure transfer process with details at checkout.' },
+      { icon: PackageCheck, title: 'Open Parcel Facility', desc: 'Inspect items upon delivery before final confirmation.' },
+      { icon: Percent, title: 'Instant Discount', desc: 'Get an automatic 5% discount applied to your bank transfers.' }
+    ]
   },
   {
     id: 4,
-    title: 'Fast Delivery Across Pakistan',
-    image: '/assets/shipping.jpeg',
+    eyebrow: 'NATIONWIDE SERVICE',
+    title: 'Fast & Secure Delivery Across Pakistan',
+    features: [
+      { icon: Truck, title: 'Fast Delivery', desc: 'Shipping across Pakistan right to your doorstep.' },
+      { icon: ShieldCheck, title: 'Safe & Secure', desc: 'Every pair of footwear is packed with utmost care.' },
+      { icon: Headphones, title: 'Dedicated Support', desc: 'Always available to assist you with any questions.' }
+    ]
   },
 ];
 
@@ -35,11 +56,11 @@ interface TrustBenefitsProps {
 export default function TrustBenefits({ setCurrentPage }: TrustBenefitsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Auto-slide every 5 seconds
+  // Auto-slide every 6 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % trustBenefitsSlides.length);
-    }, 5000);
+    }, 6000);
     return () => clearInterval(timer);
   }, []);
 
@@ -57,29 +78,44 @@ export default function TrustBenefits({ setCurrentPage }: TrustBenefitsProps) {
         <div className="trust-section-header">
           <span className="trust-header-eyebrow">Our Commitment</span>
           <h2 className="trust-header-title">WHY CHOOSE STEP & STYL</h2>
-          <div className="trust-header-underline"></div>
         </div>
 
         <div className="trust-hero-carousel-container">
+          <div className="trust-container-glow-accent"></div>
+          
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, y: 15, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -15, scale: 0.98 }}
               transition={{ duration: 0.5, ease: 'easeInOut' }}
-              className="trust-hero-slide full-banner-slide"
+              className="trust-hero-slide text-banner-slide"
             >
-              {/* Full Size Banner Image Block */}
-              <div className="trust-hero-image-wrapper full-width-wrapper">
-                <img 
-                  src={currentSlide.image} 
-                  alt={currentSlide.title} 
-                  className="trust-hero-img"
-                  onError={(e) => {
-                    e.currentTarget.src = '/logo_main.png';
-                  }}
-                />
+              <div className="trust-slide-content-box">
+                <span className="trust-slide-badge">{currentSlide.eyebrow}</span>
+                <h3 className="trust-slide-heading">{currentSlide.title}</h3>
+                
+                <div className="trust-features-grid">
+                  {currentSlide.features.map((feat, idx) => {
+                    const IconComponent = feat.icon;
+                    return (
+                      <motion.div 
+                        key={idx} 
+                        className="trust-feature-card"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: idx * 0.12 }}
+                      >
+                        <div className="trust-feature-icon-wrap">
+                          <IconComponent size={22} />
+                        </div>
+                        <h4 className="trust-feature-title">{feat.title}</h4>
+                        <p className="trust-feature-desc">{feat.desc}</p>
+                      </motion.div>
+                    );
+                  })}
+                </div>
               </div>
             </motion.div>
           </AnimatePresence>

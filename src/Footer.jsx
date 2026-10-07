@@ -9,7 +9,10 @@ export default function Footer({ setCurrentPage }) {
         
         {/* Column 1: Step&Styl Navigation */}
         <div className="footer-column">
-          <h3 className="footer-heading">Step&Styl</h3>
+          <h3 className="footer-heading">
+            <span style={{ color: '#FFFFFF' }}>Step</span>
+            <span style={{ color: '#9b4de0' }}> & Styl</span>
+          </h3>
           <ul className="footer-links">
             <li onClick={() => setCurrentPage('category')}>Category</li>
             <li onClick={() => setCurrentPage('new-arrivals')}>New arrivals</li>

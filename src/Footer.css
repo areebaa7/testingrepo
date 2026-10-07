@@ -33,6 +33,11 @@
   margin-bottom: 1.8rem;
 }
 
+/* Specific class to force the brand purple color inside headings */
+.footer-heading .footer-brand-purple {
+  color: #9b4de0 !important;
+}
+
 .footer-links {
   list-style: none;
   padding: 0;
@@ -112,7 +117,7 @@
   padding-top: 2rem;
   display: flex;
   align-items: center;
-  justify-content: center; /* Centers the copyright text now that badges are removed */
+  justify-content: center;
   font-size: 0.8rem;
   color: #6B7280;
 }

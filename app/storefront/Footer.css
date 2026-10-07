@@ -42,7 +42,14 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+.footer-brand-white {
   color: #FFFFFF;
+}
+
+.footer-brand-purple {
+  color: #9b4de0;
 }
 
 .footer-description {

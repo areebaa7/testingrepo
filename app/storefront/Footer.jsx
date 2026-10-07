@@ -14,7 +14,10 @@ export default function Footer({ setCurrentPage }) {
         <div className="footer-column">
           <div className="footer-brand-header" onClick={() => setCurrentPage('home')}>
             <img src="/assets/step&styl-newlogo.png" alt="Step & Styl Logo" className="footer-logo-img" />
-            <span className="footer-brand-title">Step & Styl</span>
+            <span className="footer-brand-title">
+              <span className="footer-brand-purple">Step</span>
+              <span className="footer-brand-purple"> & Styl</span>
+            </span>
           </div>
           <p className="footer-description">
             Modern footwear for every style, occasion and step.
