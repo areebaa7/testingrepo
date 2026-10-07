@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Minus, Plus, ShoppingBag, 
@@ -10,6 +10,11 @@ import {
 import './ProductDetail.css';
 
 export default function ProductDetail({ product, onBack, onAddToCart }) {
+  // Automatically scroll to the top of the product card view when opened
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
 
   // Dynamic images and description switches based on color or default product data
