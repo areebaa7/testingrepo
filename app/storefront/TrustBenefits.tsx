@@ -55,16 +55,31 @@ interface TrustBenefitsProps {
 
 export default function TrustBenefits({ setCurrentPage }: TrustBenefitsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [featureIndex, setFeatureIndex] = useState(0);
 
-  // Auto-slide every 6 seconds
+  // Reset feature sub-index when slide changes
+  useEffect(() => {
+    setFeatureIndex(0);
+  }, [currentIndex]);
+
+  // Auto-slide: cycles through features one by one, then moves to the next slide
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % trustBenefitsSlides.length);
-    }, 6000);
+      const currentSlideFeatures = trustBenefitsSlides[currentIndex].features;
+      if (featureIndex < currentSlideFeatures.length - 1) {
+        setFeatureIndex((prev) => prev + 1);
+      } else {
+        setFeatureIndex(0);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % trustBenefitsSlides.length);
+      }
+    }, 4500);
+
     return () => clearInterval(timer);
-  }, []);
+  }, [currentIndex, featureIndex]);
 
   const currentSlide = trustBenefitsSlides[currentIndex];
+  const activeFeature = currentSlide.features[featureIndex];
+  const IconComponent = activeFeature.icon;
 
   return (
     <section 
@@ -83,49 +98,53 @@ export default function TrustBenefits({ setCurrentPage }: TrustBenefitsProps) {
         <div className="trust-hero-carousel-container">
           <div className="trust-container-glow-accent"></div>
           
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide.id}
-              initial={{ opacity: 0, y: 15, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -15, scale: 0.98 }}
-              transition={{ duration: 0.5, ease: 'easeInOut' }}
-              className="trust-hero-slide text-banner-slide"
-            >
-              <div className="trust-slide-content-box">
-                <span className="trust-slide-badge">{currentSlide.eyebrow}</span>
-                <h3 className="trust-slide-heading">{currentSlide.title}</h3>
-                
-                <div className="trust-features-grid">
-                  {currentSlide.features.map((feat, idx) => {
-                    const IconComponent = feat.icon;
-                    return (
-                      <motion.div 
-                        key={idx} 
-                        className="trust-feature-card"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: idx * 0.12 }}
-                      >
-                        <div className="trust-feature-icon-wrap">
-                          <IconComponent size={22} />
-                        </div>
-                        <h4 className="trust-feature-title">{feat.title}</h4>
-                        <p className="trust-feature-desc">{feat.desc}</p>
-                      </motion.div>
-                    );
-                  })}
-                </div>
+          <div className="trust-hero-slide text-banner-slide">
+            <div className="trust-slide-content-box">
+              <span className="trust-slide-badge">{currentSlide.eyebrow}</span>
+              <h3 className="trust-slide-heading">{currentSlide.title}</h3>
+              
+              <div className="trust-features-single-wrapper">
+                <AnimatePresence mode="wait">
+                  <motion.div 
+                    key={`${currentIndex}-${featureIndex}`}
+                    className="trust-feature-card single-card-display"
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -15 }}
+                    transition={{ duration: 0.4, ease: 'easeInOut' }}
+                  >
+                    <div className="trust-feature-icon-wrap">
+                      <IconComponent size={26} />
+                    </div>
+                    <h4 className="trust-feature-title">{activeFeature.title}</h4>
+                    <p className="trust-feature-desc">{activeFeature.desc}</p>
+                  </motion.div>
+                </AnimatePresence>
               </div>
-            </motion.div>
-          </AnimatePresence>
+
+              {/* Sub-indicators for features within the current slide */}
+              <div className="trust-sub-feature-dots" onClick={(e) => e.stopPropagation()}>
+                {currentSlide.features.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setFeatureIndex(idx)}
+                    className={`trust-sub-dot ${featureIndex === idx ? 'active' : ''}`}
+                    aria-label={`Go to feature ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
 
           {/* Carousel Indicator Dots */}
           <div className="trust-carousel-dots" onClick={(e) => e.stopPropagation()}>
             {trustBenefitsSlides.map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentIndex(index)}
+                onClick={() => {
+                  setCurrentIndex(index);
+                  setFeatureIndex(0);
+                }}
                 className={`trust-dot ${currentIndex === index ? 'active' : ''}`}
                 aria-label={`Go to slide ${index + 1}`}
               />

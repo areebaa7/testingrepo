@@ -63,9 +63,9 @@
   top: -50%;
   left: 50%;
   transform: translateX(-50%);
-  width: 600px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(155, 77, 224, 0.15) 0%, transparent 70%);
+  width: 650px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(155, 77, 224, 0.2) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -81,7 +81,7 @@
 
 .trust-slide-content-box {
   width: 100%;
-  max-width: 1300px;
+  max-width: 1400px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -91,13 +91,13 @@
 .trust-slide-badge {
   background: linear-gradient(135deg, #9b4de0 0%, #7c3aed 100%);
   color: #FFFFFF;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  padding: 7px 20px;
+  padding: 8px 22px;
   border-radius: 30px;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.9rem;
   box-shadow: 0 6px 20px rgba(155, 77, 224, 0.35);
 }
 
@@ -106,66 +106,96 @@
   font-size: clamp(1.6rem, 3.2vw, 2.4rem);
   font-weight: 600;
   color: #1F2937;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   letter-spacing: 0.02em;
 }
 
-/* Features Grid */
-.trust-features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+/* Balanced Single Feature Card Rotator Wrapper for Desktop */
+.trust-features-single-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
+  max-width: 640px; /* Perfectly proportioned: not too small, not too elongated */
+  margin: 0 auto;
+  min-height: 190px;
 }
 
-.trust-feature-card {
-  background-color: #FAF5FF; /* Subtle contrasting soft purple tint for cards on white background */
+.trust-feature-card.single-card-display {
+  width: 100%;
+  background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(155, 77, 224, 0.18);
-  border-radius: 16px;
-  padding: 2.2rem 1.75rem;
+  border: 2px solid rgba(155, 77, 224, 0.3);
+  border-radius: 18px;
+  padding: 2.2rem 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(155, 77, 224, 0.04);
+  box-shadow: 0 12px 35px rgba(155, 77, 224, 0.1);
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.trust-feature-card:hover {
-  transform: translateY(-6px);
-  background-color: #FFFFFF;
+.trust-feature-card.single-card-display:hover {
+  transform: translateY(-4px);
   border-color: #9b4de0;
-  box-shadow: 0 15px 35px rgba(155, 77, 224, 0.15);
+  box-shadow: 0 18px 40px rgba(155, 77, 224, 0.2);
 }
 
 .trust-feature-icon-wrap {
-  width: 54px;
-  height: 54px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%);
-  color: #7c3aed;
+  background: linear-gradient(135deg, #9b4de0 0%, #7c3aed 100%);
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.25rem;
-  box-shadow: 0 4px 12px rgba(155, 77, 224, 0.15);
+  margin-bottom: 1.1rem;
+  box-shadow: 0 6px 18px rgba(155, 77, 224, 0.3);
 }
 
 .trust-feature-title {
   font-family: system-ui, -apple-system, sans-serif;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #1F2937;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
 }
 
 .trust-feature-desc {
   font-family: system-ui, -apple-system, sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   color: #4B5563;
-  line-height: 1.6;
+  line-height: 1.55;
+  max-width: 520px;
   margin: 0;
+}
+
+/* Sub-feature Dots */
+.trust-sub-feature-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 1.25rem;
+  justify-content: center;
+}
+
+.trust-sub-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(155, 77, 224, 0.3);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.trust-sub-dot.active {
+  background-color: #9b4de0;
+  width: 20px;
+  border-radius: 4px;
 }
 
 /* Carousel Indicator Dots */
@@ -202,15 +232,7 @@
    TABLET & MOBILE RESPONSIVENESS FIXES
    ========================================== */
 
-@media (max-width: 1024px) {
-  .trust-features-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-  }
-}
-
 @media (max-width: 640px) {
-  /* Full-width screen breakout on mobile removing side white gaps */
   .trust-benefits-hero-section {
     width: 100vw;
     position: relative;
@@ -243,7 +265,7 @@
 
   .trust-hero-slide.text-banner-slide {
     min-height: auto;
-    padding: 1.75rem 1rem 3rem 1.0rem;
+    padding: 1.75rem 1rem 3rem 1rem;
   }
 
   .trust-slide-badge {
@@ -258,28 +280,27 @@
     margin-bottom: 1.5rem;
   }
 
-  .trust-features-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .trust-features-single-wrapper {
+    max-width: 100%;
   }
 
-  .trust-feature-card {
-    padding: 1.25rem 1rem;
-    border-radius: 12px;
+  .trust-feature-card.single-card-display {
+    padding: 1.75rem 1.25rem;
+    border-radius: 16px;
   }
 
   .trust-feature-icon-wrap {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     margin-bottom: 0.75rem;
   }
 
   .trust-feature-title {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
 
   .trust-feature-desc {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 
   .trust-carousel-dots {

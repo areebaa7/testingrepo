@@ -50,9 +50,13 @@ export default function Home() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authInitialTab, setAuthInitialTab] = useState<'login' | 'signup'>('login');
 
-  // Automatically reset scroll to top on every page view transition
+  // Automatically reset scroll to top on every page view transition using requestAnimationFrame to ensure DOM is fully ready
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo(0, 0);
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }, 0);
+    return () => clearTimeout(timer);
   }, [currentPage]);
 
   const handleOpenAuthModal = (tab: 'login' | 'signup' = 'login') => {
